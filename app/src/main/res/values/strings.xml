@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Team JerrysBears TCSS 450</string>
+
+    <string name="textView_register_title">Register</string>
+    <string name="textView_verifyEmail_title">How to Verify Email</string>
+    <string name="editText_register_firstName">First Name</string>
+    <string name="editText_register_lastName">Last Name</string>
+    <string name="editText_register_email">Email</string>
+    <string name="editText_register_nickname">Nickname</string>
+    <string name="editText_register_password">Password</string>
+    <string name="editText_register_retypePassword">Retype Password</string>
+
+    <string name="editText_register_emailForAccess">nadia.polk1@gmail.com</string>
+    <string name="editText_register_passwordForAccess">testPass</string>
+    <string name="button_register_register">Register</string>
+
+    <string name="textView_verifyEmail_instructions1">1. You will receive an email at the address provided.</string>
+    <string name="textView_verifyEmail_instructions2">2. In the email there will be a link.</string>
+    <string name="textView_verifyEmail_instructions3">3. Click the link.</string>
+</resources>

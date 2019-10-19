@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_fragment_register">
+
+    <fragment
+        android:id="@+id/nav_fragment_register"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.RegisterFragment"
+        android:label="Register"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_nav_fragment_register_to_verifyEmailFragment"
+            app:destination="@id/nav_fragment_verifyEmail" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_fragment_verifyEmail"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.VerifyEmailFragment"
+        android:label="Instructions for Verifying Email"
+        tools:layout="@layout/fragment_verify_email" />
+
+</navigation>
