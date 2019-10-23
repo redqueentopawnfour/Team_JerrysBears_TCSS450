@@ -49,7 +49,7 @@ public class RegisterFragment extends Fragment {
         EditText password2Edit = getActivity().findViewById(R.id.editText_register_retypePassword);
 
         if (validateFirstAndLastName(firstNameEdit, lastNameEdit)
-                && validateEmail(emailEdit)
+                && MainActivity.validateEmail(emailEdit)
                 && validateNickname(nicknameEdit)
                 && validatePasswords(password1Edit, password2Edit)) {
 
@@ -79,19 +79,6 @@ public class RegisterFragment extends Fragment {
         return isValid;
     }
 
-    private boolean validateEmail(EditText email) {
-        boolean isValid = false;
-
-        if (email.getText().length() == 0) {
-            email.setError("Email must not be empty.");
-        } else if (email.getText().toString().chars().filter(ch -> ch == '@').count() != 1) {
-            email.setError("Email address must be valid.");
-        } else {
-            isValid = true;
-        }
-
-        return isValid;
-    }
 
     private boolean validateNickname(EditText nickname) {
         boolean isValid = false;
@@ -114,7 +101,7 @@ public class RegisterFragment extends Fragment {
     private boolean validatePasswords(EditText password1, EditText password2) {
         boolean isValid = false;
 
-        if (validatePassword(password1) && validatePassword(password2)) {
+        if (MainActivity.validatePassword(password1) && MainActivity.validatePassword(password2)) {
             if (!password1.getText().toString().equals(password2.getText().toString())) {
                 password1.setError("Passwords must match.");
             } else {
@@ -125,17 +112,4 @@ public class RegisterFragment extends Fragment {
         return isValid;
     }
 
-    private boolean validatePassword(EditText password) {
-        boolean isValid = false;
-
-        if (password.getText().length() == 0) {
-            password.setError("Field must not be empty.");
-        } else if (password.getText().length() < 5) {
-            password.setError("Password must be longer than 5 characters");
-        } else {
-            isValid = true;
-        }
-
-        return isValid;
-    }
 }

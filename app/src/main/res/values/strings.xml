@@ -1,6 +1,12 @@
 <resources>
+<!--    login string-->
     <string name="app_name">Team JerrysBears TCSS 450</string>
-
+    <string name="textView_login_title">Login</string>
+    <string name="editText_login_email">Email</string>
+    <string name="editText_login_password">Password</string>
+    <string name="button_login_login">Login</string>
+    <string name="button_login_register">Register</string>
+<!--    register strings-->
     <string name="textView_register_title">Register</string>
     <string name="textView_verifyEmail_title">How to Verify Email</string>
     <string name="editText_register_firstName">First Name</string>
@@ -17,4 +23,7 @@
     <string name="textView_verifyEmail_instructions1">1. You will receive an email at the address provided.</string>
     <string name="textView_verifyEmail_instructions2">2. In the email there will be a link.</string>
     <string name="textView_verifyEmail_instructions3">3. Click the link.</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

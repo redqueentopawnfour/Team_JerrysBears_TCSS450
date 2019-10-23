@@ -3,8 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/nav_fragment_register">
+    app:startDestination="@id/nav_fragment_login">
 
+    <fragment
+        android:id="@+id/nav_fragment_login"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_nav_fragment_login_to_nav_fragment_register"
+            app:destination="@id/nav_fragment_register" />
+    </fragment>
     <fragment
         android:id="@+id/nav_fragment_register"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.RegisterFragment"
@@ -19,5 +28,6 @@
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.VerifyEmailFragment"
         android:label="Instructions for Verifying Email"
         tools:layout="@layout/fragment_verify_email" />
+
 
 </navigation>
