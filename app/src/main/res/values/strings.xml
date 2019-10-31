@@ -44,4 +44,8 @@
     <string name="menu_weather">Weather</string>
     <string name="menu_share">Share</string>
     <string name="menu_notification">Notification</string>
+
+<!--    Web Service keys-->
+    <string name="keys_json_jwt">token</string>
+    <string name="keys_json_success">success</string>
 </resources>

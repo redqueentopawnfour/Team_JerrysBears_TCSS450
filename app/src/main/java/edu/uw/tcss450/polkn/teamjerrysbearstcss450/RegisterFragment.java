@@ -1,22 +1,31 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450;
 
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class RegisterFragment extends Fragment {
 
-
+    private Credentials mCredentials;
     public RegisterFragment() {
     }
 
@@ -61,15 +70,28 @@ public class RegisterFragment extends Fragment {
 //            homeActivity.setJwt("Later");
 //            Navigation.findNavController(getView()).navigate(homeActivity);
             /* Before changing to show email on Home page.*/
-            Bundle args = new Bundle();
-            args.putSerializable("Key",
-                    new Credentials.Builder(
-                            emailEdit.getText().toString(),
-                            password1Edit.getText().toString())
-                            .build());
-
-            Navigation.findNavController(theButton)
-                    .navigate(R.id.action_nav_fragment_register_to_homeActivity, args);
+            Credentials credentials = new Credentials.Builder(
+                    emailEdit.getText().toString(),
+                    password1Edit.getText().toString())
+                    .addFirstName(firstNameEdit.getText().toString())
+                    .addLastName(lastNameEdit.getText().toString())
+                    .addUsername(nicknameEdit.getText().toString())
+                    .build();
+            //build the web service URL
+            Uri uri = new Uri.Builder()
+                    .scheme("https")
+                    .appendPath(getString(R.string.ep_base_url))
+                    .appendPath(getString(R.string.ep_register))
+                    .build();
+            //build the JSONObject
+            JSONObject msg = credentials.asJSONObject();
+            mCredentials = credentials;
+            //instantiate and execute the AsyncTask.
+            new SendPostAsyncTask.Builder(uri.toString(), msg)
+                    .onPreExecute(this::handleRegisterOnPre)
+                    .onPostExecute(this::handleRegisterOnPost)
+                    .onCancelled(this::handleErrorsInTask)
+                    .build().execute();
         }
     }
 
@@ -118,6 +140,70 @@ public class RegisterFragment extends Fragment {
         }
 
         return isValid;
+    }
+    /**
+     * handle errors in Async task.
+     * @param result the provided error message
+     */
+    private void handleErrorsInTask(String result) {
+        Log.e("ASYNC_TASK_ERROR", result);
+    }
+    /**
+     * Handle the setup of the UI before the HTTP call to the webservice.
+     */
+    private void handleRegisterOnPre() {
+        getActivity().findViewById(R.id.layout_register_wait).setVisibility(View.VISIBLE);
+    }
+    /**
+     * Handle onPostExecute of the AsynceTask. The result from our webservice is
+     * a JSON formatted String. Parse it for success or failure.
+     * @param result the JSON formatted String response from the web service
+     */
+    private void handleRegisterOnPost(String result) {
+        try {
+            JSONObject resultsJSON = new JSONObject(result);
+            boolean success =
+                    resultsJSON.getBoolean(
+                            getString(R.string.keys_json_success));
+            Log.d("results", resultsJSON.toString());
+            if (success) {
+//                RegisterFragmentDirections
+//                        .ActionRegisterFragmentToHomeActivity homeActivity =
+//                        RegisterFragmentDirections.actionRegisterFragmentToHomeActivity(mCredentials);
+//                homeActivity.setJwt(
+//                        resultsJSON.getString(
+//                                getString(R.string.keys_json_login_jwt)));
+//                Navigation.findNavController(getView())
+//                        .navigate(homeActivity);
+                Navigation.findNavController(getView())
+                        .navigate(R.id.action_nav_fragment_register_to_homeActivity);
+                return;
+            } else {
+                String errorMessage = resultsJSON.getJSONObject("error").getString("detail");
+                //Registration was unsuccessful. Don’t switch fragments and
+                // inform the user
+                Log.d("no success branch", "oop");
+                if(errorMessage != null) {
+                    ((TextView) getView().findViewById(R.id.editText_register_email))
+                            .setError(errorMessage);
+                } else {
+                    ((TextView) getView().findViewById(R.id.editText_register_email))
+                            .setError("Register Unsuccessful");
+                }
+            }
+            getActivity().findViewById(R.id.layout_register_wait)
+                    .setVisibility(View.GONE);
+        } catch (JSONException e) {
+            //It appears that the web service did not return a JSON formatted
+            //String or it did not have what we expected in it.
+            Log.e("JSON_PARSE_ERROR", result
+                    + System.lineSeparator()
+                    + e.getMessage());
+            getActivity().findViewById(R.id.layout_register_wait)
+                    .setVisibility(View.GONE);
+            ((TextView) getView().findViewById(R.id.editText_register_email))
+                    .setError("Register Unsuccessful");
+        }
     }
 
 }
