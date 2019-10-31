@@ -1,6 +1,7 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivityArgs;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
 
 public class HomeFragment extends Fragment {
 
@@ -30,6 +34,14 @@ public class HomeFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
+
+//        HomeActivityArgs args = HomeActivityArgs.fromBundle(getArguments());
+//        Credentials credentials = args.getCredentials();
+//        ((TextView) getActivity().findViewById(R.id.text_home)).
+//                setText(credentials.getEmail());
+//        String jwt = args.getJwt();
+//        Log.d("JWT", jwt);
         return root;
     }
 }

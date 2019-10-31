@@ -23,13 +23,13 @@ public class ConnectionFragment extends Fragment {
         connectionViewModel =
                 ViewModelProviders.of(this).get(ConnectionViewModel.class);
         View root = inflater.inflate(R.layout.fragment_connection, container, false);
-        final TextView textView = root.findViewById(R.id.text_connection);
-        connectionViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+//        final TextView textView = root.findViewById(R.id.text_connection);
+//        connectionViewModel.getText().observe(this, new Observer<String>() {
+//            @Override
+//            public void onChanged(@Nullable String s) {
+//                textView.setText(s);
+//            }
+//        });
         return root;
     }
 }
