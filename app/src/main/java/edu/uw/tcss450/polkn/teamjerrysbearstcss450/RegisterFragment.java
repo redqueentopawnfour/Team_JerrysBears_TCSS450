@@ -61,7 +61,7 @@ public class RegisterFragment extends Fragment {
                             .build());
 
             Navigation.findNavController(theButton)
-                    .navigate(R.id.action_nav_fragment_register_to_verifyEmailFragment, args);
+                    .navigate(R.id.action_nav_fragment_register_to_homeActivity, args);
         }
     }
 

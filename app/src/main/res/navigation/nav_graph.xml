@@ -20,14 +20,19 @@
         android:label="Register"
         tools:layout="@layout/fragment_register">
         <action
-            android:id="@+id/action_nav_fragment_register_to_verifyEmailFragment"
-            app:destination="@id/nav_fragment_verifyEmail" />
+            android:id="@+id/action_nav_fragment_register_to_homeActivity"
+            app:destination="@id/homeActivity" />
     </fragment>
     <fragment
         android:id="@+id/nav_fragment_verifyEmail"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.VerifyEmailFragment"
         android:label="Instructions for Verifying Email"
         tools:layout="@layout/fragment_verify_email" />
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity"
+        android:label="activity_home"
+        tools:layout="@layout/activity_home" />
 
 
 </navigation>

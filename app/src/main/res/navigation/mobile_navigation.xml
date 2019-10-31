@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_connection"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ConnectionFragment"
+        android:label="@string/menu_connection"
+        tools:layout="@layout/fragment_connection" />
+
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragment"
+        android:label="@string/menu_chat"
+        tools:layout="@layout/fragment_chat" />
+
+    <fragment
+        android:id="@+id/nav_weather"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherFragment"
+        android:label="@string/menu_weather"
+        tools:layout="@layout/fragment_weather" />
+
+    <fragment
+        android:id="@+id/nav_share"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.share.ShareFragment"
+        android:label="@string/menu_share"
+        tools:layout="@layout/fragment_share" />
+
+    <fragment
+        android:id="@+id/nav_notification"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Notification.NotificationFragment"
+        android:label="@string/menu_notification"
+        tools:layout="@layout/fragment_notification" />
+</navigation>
