@@ -7,17 +7,32 @@
     android:layout_height="match_parent"
     tools:context=".RegisterFragment">
 
+
+    <ImageView
+        android:id="@+id/image_login_logo"
+        android:layout_width="108dp"
+        android:layout_height="120dp"
+        android:src="@drawable/bears_color_image2_transparent"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView_register_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="243dp"
+        android:layout_height="55dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="120dp"
         android:layout_marginEnd="16dp"
+        android:fontFamily="sans-serif-medium"
         android:text="@string/textView_register_title"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textColor="#020202"
+        android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.566"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
