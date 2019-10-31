@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.navigation.NavController;
@@ -45,7 +46,7 @@ public class HomeActivity extends AppCompatActivity {
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_connection, R.id.nav_chat,
-                R.id.nav_weather, R.id.nav_share, R.id.nav_notification)
+                R.id.nav_weather)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -53,6 +54,30 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         navController.setGraph(R.navigation.mobile_navigation,getIntent().getExtras());
+
+        navigationView.setNavigationItemSelectedListener(this::onNavigationSelected);
+    }
+
+    private boolean onNavigationSelected(final MenuItem menuItem) {
+        NavController navController =
+                Navigation.findNavController(this, R.id.nav_host_fragment);
+        switch (menuItem.getItemId()) {
+            case R.id.nav_home:
+                navController.navigate(R.id.nav_home, getIntent().getExtras());
+                break;
+            case R.id.nav_connection:
+                navController.navigate(R.id.nav_connection);
+                break;
+            case R.id.nav_weather:
+                navController.navigate(R.id.nav_weather);
+                break;
+            case R.id.nav_chat:
+                navController.navigate(R.id.nav_chat);
+                break;
+        }
+//Close the drawer
+        ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawers();
+        return true;
     }
 
     @Override
