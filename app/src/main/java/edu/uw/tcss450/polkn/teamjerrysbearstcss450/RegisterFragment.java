@@ -78,7 +78,7 @@ public class RegisterFragment extends Fragment {
 
         return isValid;
     }
-
+    
 
     private boolean validateNickname(EditText nickname) {
         boolean isValid = false;
