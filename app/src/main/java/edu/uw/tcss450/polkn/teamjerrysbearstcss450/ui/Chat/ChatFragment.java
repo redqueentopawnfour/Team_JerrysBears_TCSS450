@@ -54,6 +54,7 @@ public class ChatFragment extends Fragment {
 
         TextView textView = v.findViewById(R.id.text_display);
         textView.setText(email.getText().toString());
+        email.setText("");
 
 
 

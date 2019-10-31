@@ -46,4 +46,10 @@
     <string name="menu_notification">Notification</string>
     <string name="textMessage">Text Message</string>
     <string name="MessageSend">SEND</string>
+
+
+
+    <!-- key  -->
+    <string name="key_chat">chat_key</string>
+    <string name="search">Search</string>
 </resources>
