@@ -10,10 +10,10 @@
 
     <ImageView
         android:id="@+id/image_login_logo"
-        android:layout_width="108dp"
-        android:layout_height="120dp"
-        android:src="@drawable/bears_color_image2_transparent"
-
+        android:layout_width="102dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="16dp"
+        android:src="@drawable/bears_color_image_transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,10 +21,10 @@
 
     <TextView
         android:id="@+id/textView_register_title"
-        android:layout_width="243dp"
-        android:layout_height="55dp"
+        android:layout_width="244dp"
+        android:layout_height="46dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="132dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="sans-serif-medium"
         android:text="@string/textView_register_title"
@@ -32,7 +32,7 @@
         android:textColor="#020202"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.566"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,7 +41,7 @@
         android:layout_width="0dp"
         android:layout_height="49dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/editText_register_firstName"
         android:inputType="textPersonName"
@@ -126,12 +126,13 @@
     <Button
         android:id="@+id/button_register_register"
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="51dp"
+        android:layout_width="97dp"
+        android:layout_height="47dp"
         android:layout_marginStart="304dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/customborder_greypurple"
         android:text="@string/button_register_register"
         android:textColor="#0B0F0B"
         android:textSize="18sp"
@@ -140,6 +141,6 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_register_retypePassword"
-        app:layout_constraintVertical_bias="0.534" />
+        app:layout_constraintVertical_bias="0.129" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
