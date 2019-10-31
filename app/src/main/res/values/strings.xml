@@ -44,4 +44,6 @@
     <string name="menu_weather">Weather</string>
     <string name="menu_share">Share</string>
     <string name="menu_notification">Notification</string>
+    <string name="textMessage">Text Message</string>
+    <string name="MessageSend">SEND</string>
 </resources>

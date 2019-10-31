@@ -57,15 +57,23 @@ public class LoginFragment extends Fragment {
         EditText pw = v.findViewById(R.id.editText_login_pw);
         if(MainActivity.validateEmail(email) && MainActivity.validatePassword(pw)) {
 
-            Bundle args = new Bundle();
-            args.putSerializable("Key",
-                    new Credentials.Builder(
-                            email.getText().toString(),
-                            pw.getText().toString())
-                            .build());
+            LoginFragmentDirections.ActionNavFragmentLoginToHomeActivity homeActivity =
+                    LoginFragmentDirections.actionNavFragmentLoginToHomeActivity(new Credentials.
+                            Builder(email.getText().toString(), pw.getText().toString()).
+                            build());
 
-            Navigation.findNavController(v)
-                    .navigate(R.id.action_nav_fragment_login_to_homeActivity, args);
+            homeActivity.setJwt("Later");
+            Navigation.findNavController(getView()).navigate(homeActivity);
+
+//            Bundle args = new Bundle();
+//            args.putSerializable("Key",
+//                    new Credentials.Builder(
+//                            email.getText().toString(),
+//                            pw.getText().toString())
+//                            .build());
+//
+//            Navigation.findNavController(v)
+//                    .navigate(R.id.action_nav_fragment_login_to_homeActivity, args);
         }
     }
 

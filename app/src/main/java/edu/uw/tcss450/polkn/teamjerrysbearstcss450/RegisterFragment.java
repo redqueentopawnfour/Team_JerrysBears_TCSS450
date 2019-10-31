@@ -53,23 +53,25 @@ public class RegisterFragment extends Fragment {
                 && validateNickname(nicknameEdit)
                 && validatePasswords(password1Edit, password2Edit)) {
 
-//            RegisterFragmentDirections.ActionNavFragmentRegisterToHomeActivity homeActivity =
-//                    RegisterFragmentDirections.actionNavFragmentRegisterToHomeActivity(new Credentials.
-//                            Builder(emailEdit.getText().toString(), password1Edit.getText().toString()).
-//                            build());
-//
-//            homeActivity.setJwt("Later");
-//            Navigation.findNavController(getView()).navigate(homeActivity);
-            /* Before changing to show email on Home page.*/
-            Bundle args = new Bundle();
-            args.putSerializable("Key",
-                    new Credentials.Builder(
-                            emailEdit.getText().toString(),
-                            password1Edit.getText().toString())
-                            .build());
+            RegisterFragmentDirections.ActionNavFragmentRegisterToHomeActivity homeActivity =
+                    RegisterFragmentDirections.actionNavFragmentRegisterToHomeActivity(new Credentials.
+                            Builder(emailEdit.getText().toString(), password1Edit.getText().toString()).
+                            build());
 
-            Navigation.findNavController(theButton)
-                    .navigate(R.id.action_nav_fragment_register_to_homeActivity, args);
+            homeActivity.setJwt("Later");
+            Navigation.findNavController(getView()).navigate(homeActivity);
+
+
+            /* Before changing to show email on Home page.*/
+//            Bundle args = new Bundle();
+//            args.putSerializable("Key",
+//                    new Credentials.Builder(
+//                            emailEdit.getText().toString(),
+//                            password1Edit.getText().toString())
+//                            .build());
+//
+//            Navigation.findNavController(theButton)
+//                    .navigate(R.id.action_nav_fragment_register_to_homeActivity, args);
         }
     }
 
