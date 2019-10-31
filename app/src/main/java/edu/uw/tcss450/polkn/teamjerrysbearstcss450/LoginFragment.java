@@ -16,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -54,9 +56,19 @@ public class LoginFragment extends Fragment {
         EditText email =  v.findViewById(R.id.editText_login_email);
         EditText pw = v.findViewById(R.id.editText_login_pw);
         if(MainActivity.validateEmail(email) && MainActivity.validatePassword(pw)) {
-            Log.d("tag", "replace with nagivation");
+
+            Bundle args = new Bundle();
+            args.putSerializable("Key",
+                    new Credentials.Builder(
+                            email.getText().toString(),
+                            pw.getText().toString())
+                            .build());
+
+            Navigation.findNavController(v)
+                    .navigate(R.id.action_nav_fragment_login_to_homeActivity, args);
         }
     }
+
     private void onRegisterClicked() {
         Navigation.findNavController(getView()).
                 navigate(R.id.action_nav_fragment_login_to_nav_fragment_register);

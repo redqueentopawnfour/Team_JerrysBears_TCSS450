@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_nav_fragment_login_to_nav_fragment_register"
             app:destination="@id/nav_fragment_register" />
+        <action
+            android:id="@+id/action_nav_fragment_login_to_homeActivity"
+            app:destination="@id/homeActivity" />
     </fragment>
     <fragment
         android:id="@+id/nav_fragment_register"
@@ -21,7 +24,7 @@
         tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_nav_fragment_register_to_homeActivity"
-            app:destination="@id/homeActivity" />
+            app:destination="@+id/homeActivity" />
     </fragment>
     <fragment
         android:id="@+id/nav_fragment_verifyEmail"

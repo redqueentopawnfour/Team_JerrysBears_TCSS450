@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <color name="colorPrimary">#4b2e83</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorPrimaryAlpha">#e1e5ec </color>
+    <color name="colorAccent">#85754d</color>
+    <color name="blogText">#FFFFFF</color>
+
+
+    <color name="border">#8877a9</color>
+    <color name="fill">#F3EFF3</color>
+    <color name="fill2">#F3FFF4</color>
+    <color name="fill3">#D0F7E5</color>
+    <color name="fill4">#FFFFFF</color>
+    <color name="text">#1C3D1F</color>
+    <color name="teaserText">#214418</color>
+
 </resources>
