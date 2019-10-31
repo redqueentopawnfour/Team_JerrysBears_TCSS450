@@ -35,7 +35,15 @@
         android:id="@+id/homeActivity"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity"
         android:label="activity_home"
-        tools:layout="@layout/activity_home" />
+        tools:layout="@layout/activity_home" >
+        <argument
+            android:name="credentials"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials" />
+        <argument
+            android:name="jwt"
+            app:argType="string"
+            android:defaultValue='""' />
+    </activity>
 
 
 </navigation>
