@@ -27,6 +27,8 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
+
         final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -36,12 +38,20 @@ public class HomeFragment extends Fragment {
         });
 
 
-//        HomeActivityArgs args = HomeActivityArgs.fromBundle(getArguments());
-//        Credentials credentials = args.getCredentials();
-//        ((TextView) getActivity().findViewById(R.id.text_home)).
-//                setText(credentials.getEmail());
-//        String jwt = args.getJwt();
-//        Log.d("JWT", jwt);
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        TextView test = view.findViewById(R.id.textView_email);
+
+        HomeActivityArgs args = HomeActivityArgs.fromBundle(getArguments());
+        Credentials credentials = args.getCredentials();
+        ((TextView) getActivity().findViewById(R.id.text_email)).
+                setText(credentials.getEmail());
+        String jwt = args.getJwt();
+        Log.d("JWT", jwt);
     }
 }

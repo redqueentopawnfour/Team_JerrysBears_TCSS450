@@ -62,13 +62,7 @@ public class RegisterFragment extends Fragment {
                 && validateNickname(nicknameEdit)
                 && validatePasswords(password1Edit, password2Edit)) {
 
-//            RegisterFragmentDirections.ActionNavFragmentRegisterToHomeActivity homeActivity =
-//                    RegisterFragmentDirections.actionNavFragmentRegisterToHomeActivity(new Credentials.
-//                            Builder(emailEdit.getText().toString(), password1Edit.getText().toString()).
-//                            build());
-//
-//            homeActivity.setJwt("Later");
-//            Navigation.findNavController(getView()).navigate(homeActivity);
+
             /* Before changing to show email on Home page.*/
             Credentials credentials = new Credentials.Builder(
                     emailEdit.getText().toString(),
@@ -167,16 +161,14 @@ public class RegisterFragment extends Fragment {
                             getString(R.string.keys_json_success));
             Log.d("results", resultsJSON.toString());
             if (success) {
-//                RegisterFragmentDirections
-//                        .ActionRegisterFragmentToHomeActivity homeActivity =
-//                        RegisterFragmentDirections.actionRegisterFragmentToHomeActivity(mCredentials);
-//                homeActivity.setJwt(
-//                        resultsJSON.getString(
-//                                getString(R.string.keys_json_login_jwt)));
-//                Navigation.findNavController(getView())
-//                        .navigate(homeActivity);
+                RegisterFragmentDirections
+                        .ActionNavFragmentRegisterToHomeActivity homeActivity =
+                        RegisterFragmentDirections.actionNavFragmentRegisterToHomeActivity(mCredentials);
+                homeActivity.setJwt(
+                        resultsJSON.getString(
+                                getString(R.string.keys_json_jwt)));
                 Navigation.findNavController(getView())
-                        .navigate(R.id.action_nav_fragment_register_to_homeActivity);
+                        .navigate(homeActivity);
                 return;
             } else {
                 String errorMessage = resultsJSON.getJSONObject("error").getString("detail");

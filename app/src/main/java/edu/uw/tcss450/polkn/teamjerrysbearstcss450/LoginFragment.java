@@ -62,7 +62,6 @@ public class LoginFragment extends Fragment {
         EditText email =  v.findViewById(R.id.editText_login_email);
         EditText pw = v.findViewById(R.id.editText_login_pw);
         if(MainActivity.validateEmail(email) && MainActivity.validatePassword(pw)) {
-
             Credentials credentials = new Credentials.Builder(
                     email.getText().toString(),
                     pw.getText().toString())
@@ -115,15 +114,15 @@ public class LoginFragment extends Fragment {
                             getString(R.string.keys_json_success));
             Log.d("results", resultsJSON.toString());
             if (success) {
-//                LoginFragmentDirection
-//                        .Action homeActivity =
-//                        LoginFragmentDirections
-//                                .actionLoginFragmentToHomeActivity(mCredentials);
-//                homeActivity.setJwt(
-//                        resultsJSON.getString(
-//                                getString(R.string.keys_json_jwt)));
+                LoginFragmentDirections.ActionNavFragmentLoginToHomeActivity
+                        homeActivity =
+                        LoginFragmentDirections
+                                .actionNavFragmentLoginToHomeActivity(mCredentials);
+                homeActivity.setJwt(
+                        resultsJSON.getString(
+                                getString(R.string.keys_json_jwt)));
                 Navigation.findNavController(getView())
-                        .navigate(R.id.action_nav_fragment_login_to_homeActivity);
+                        .navigate(homeActivity);
                 return;
             } else {
                 //Login was unsuccessful. Don’t switch fragments and

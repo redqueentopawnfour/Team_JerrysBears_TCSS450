@@ -1,7 +1,7 @@
 <resources>
     <!--    login string-->
-    <string name="app_name">Team JerrysBears TCSS 450</string>
-    <string name="textView_login_title">Login</string>
+    <string name="app_name"></string>
+    <string name="textView_login_title">Welcome</string>
     <string name="editText_login_email">Email</string>
     <string name="editText_login_password">Password</string>
     <string name="button_login_login">Login</string>
@@ -44,8 +44,9 @@
     <string name="menu_weather">Weather</string>
     <string name="menu_share">Share</string>
     <string name="menu_notification">Notification</string>
-
 <!--    Web Service keys-->
     <string name="keys_json_jwt">token</string>
     <string name="keys_json_success">success</string>
+    <string name="textMessage">Text Message</string>
+    <string name="MessageSend">SEND</string>
 </resources>

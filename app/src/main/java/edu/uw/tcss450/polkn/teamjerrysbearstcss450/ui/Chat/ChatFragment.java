@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -23,7 +25,7 @@ public class ChatFragment extends Fragment {
         chatViewModel =
                 ViewModelProviders.of(this).get(ChatViewModel.class);
         View root = inflater.inflate(R.layout.fragment_chat, container, false);
-        final TextView textView = root.findViewById(R.id.text_slideshow);
+        final TextView textView = root.findViewById(R.id.text_display);
         chatViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -31,5 +33,29 @@ public class ChatFragment extends Fragment {
             }
         });
         return root;
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        Button b = view.findViewById(R.id.button_send);
+        b.setOnClickListener(butt -> onSendClicked());
+
+
+    }
+    /*
+
+     */
+    private void onSendClicked() {
+        View v = getView();
+
+        EditText email =  v.findViewById(R.id.textInputEditText);
+
+        TextView textView = v.findViewById(R.id.text_display);
+        textView.setText(email.getText().toString());
+
+
+
     }
 }
