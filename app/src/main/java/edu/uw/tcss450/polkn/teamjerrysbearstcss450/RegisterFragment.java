@@ -161,14 +161,19 @@ public class RegisterFragment extends Fragment {
                             getString(R.string.keys_json_success));
             Log.d("results", resultsJSON.toString());
             if (success) {
-                RegisterFragmentDirections
+            /*    RegisterFragmentDirections
                         .ActionNavFragmentRegisterToHomeActivity homeActivity =
                         RegisterFragmentDirections.actionNavFragmentRegisterToHomeActivity(mCredentials);
-                homeActivity.setJwt(
+               homeActivity.setJwt(
                         resultsJSON.getString(
                                 getString(R.string.keys_json_jwt)));
+
                 Navigation.findNavController(getView())
-                        .navigate(homeActivity);
+                        .navigate(homeActivity);*/
+
+                Navigation.findNavController(getView()).
+                        navigate(R.id.action_nav_fragment_register_to_nav_fragment_verifyEmail);
+
                 return;
             } else {
                 String errorMessage = resultsJSON.getJSONObject("error").getString("detail");

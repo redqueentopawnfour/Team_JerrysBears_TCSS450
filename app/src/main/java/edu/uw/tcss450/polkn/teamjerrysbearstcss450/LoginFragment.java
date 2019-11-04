@@ -113,6 +113,11 @@ public class LoginFragment extends Fragment {
                     resultsJSON.getBoolean(
                             getString(R.string.keys_json_success));
             Log.d("results", resultsJSON.toString());
+
+            String message =
+                    resultsJSON.getString(
+                            getString(R.string.keys_json_message));
+
             if (success) {
                 LoginFragmentDirections.ActionNavFragmentLoginToHomeActivity
                         homeActivity =
@@ -128,8 +133,14 @@ public class LoginFragment extends Fragment {
                 //Login was unsuccessful. Don’t switch fragments and
                 // inform the user
                 Log.d("no success branch", "oop");
+
+                String errorMessage = "Login unsuccessful.";
+                if (message != null) {
+                    errorMessage= message;
+                }
+
                 ((TextView) getView().findViewById(R.id.editText_login_email))
-                        .setError("Login Unsuccessful");
+                        .setError(errorMessage);
             }
             getActivity().findViewById(R.id.layout_login_wait)
                     .setVisibility(View.GONE);
