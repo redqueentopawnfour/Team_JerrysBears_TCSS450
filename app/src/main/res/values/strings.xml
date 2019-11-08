@@ -19,6 +19,7 @@
     <string name="editText_register_emailForAccess">nadia.polk1@gmail.com</string>
     <string name="editText_register_passwordForAccess">testPass</string>
     <string name="button_register_register">Register</string>
+    <string name="editText_register_backToLogin">Back to Login</string>
 
     <string name="textView_verifyEmail_instructions1">1. You will receive an email at the address provided.</string>
     <string name="textView_verifyEmail_instructions2">2. In the email there will be a link. Click the link to verify.</string>
