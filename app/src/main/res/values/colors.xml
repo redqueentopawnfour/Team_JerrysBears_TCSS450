@@ -4,8 +4,10 @@
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorPrimaryAlpha">#e1e5ec </color>
     <color name="colorAccent">#85754d</color>
+    <color name="colorAccent2">#a38e50</color>
+    <color name="colorAccent3">#c2ab69</color>
+    #
     <color name="blogText">#FFFFFF</color>
-
 
     <color name="border">#8877a9</color>
     <color name="fill">#F3EFF3</color>

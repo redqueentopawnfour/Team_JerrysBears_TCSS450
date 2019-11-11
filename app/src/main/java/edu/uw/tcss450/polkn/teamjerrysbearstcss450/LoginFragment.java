@@ -1,6 +1,8 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -34,6 +36,29 @@ public class LoginFragment extends Fragment {
     public LoginFragment() {
         // Required empty public constructor
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        SharedPreferences prefs =
+                getActivity().getSharedPreferences(
+                        getString(R.string.keys_shared_prefs),
+                        Context.MODE_PRIVATE);
+        //retrieve the stored credentials from SharedPrefs
+        if (prefs.contains(getString(R.string.keys_prefs_email)) &&
+                prefs.contains(getString(R.string.keys_prefs_password))) {
+
+            final String email = prefs.getString(getString(R.string.keys_prefs_email), "");
+            final String password = prefs.getString(getString(R.string.keys_prefs_password), "");
+            //Load the two login EditTexts with the credentials found in SharedPrefs
+            EditText emailEdit = getActivity().findViewById(R.id.editText_login_email);
+            emailEdit.setText(email);
+            EditText passwordEdit = getActivity().findViewById(R.id.editText_login_pw);
+            passwordEdit.setText(password);
+        }
+    }
+
 
 
     @Override
@@ -119,6 +144,7 @@ public class LoginFragment extends Fragment {
                             getString(R.string.keys_json_message));
 
             if (success) {
+                saveCredentials(mCredentials);
                 LoginFragmentDirections.ActionNavFragmentLoginToHomeActivity
                         homeActivity =
                         LoginFragmentDirections
@@ -128,6 +154,8 @@ public class LoginFragment extends Fragment {
                                 getString(R.string.keys_json_jwt)));
                 Navigation.findNavController(getView())
                         .navigate(homeActivity);
+                //Remove this Activity from the back stack. Do not allow back navigation to login
+                getActivity().finish();
                 return;
             } else {
                 //Login was unsuccessful. Don’t switch fragments and
@@ -156,4 +184,15 @@ public class LoginFragment extends Fragment {
                     .setError("Login Unsuccessful");
         }
     }
+
+    private void saveCredentials(final Credentials credentials) {
+        SharedPreferences prefs =
+                getActivity().getSharedPreferences(
+                        getString(R.string.keys_shared_prefs),
+                        Context.MODE_PRIVATE);
+        //Store the credentials in SharedPrefs
+        prefs.edit().putString(getString(R.string.keys_prefs_email), credentials.getEmail()).apply();
+        prefs.edit().putString(getString(R.string.keys_prefs_password), credentials.getPassword()).apply();
+    }
+
 }

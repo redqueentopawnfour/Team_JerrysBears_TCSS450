@@ -12,16 +12,6 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_connection"
-        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ConnectionFragment"
-        android:label="@string/menu_connection"
-        tools:layout="@layout/fragment_connection" >
-        <action
-            android:id="@+id/action_nav_connection_to_nav_chat"
-            app:destination="@id/nav_chat" />
-    </fragment>
-
-    <fragment
         android:id="@+id/nav_chat"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragment"
         android:label="@string/menu_chat"
@@ -32,5 +22,32 @@
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherFragment"
         android:label="@string/menu_weather"
         tools:layout="@layout/fragment_weather" />
+    <fragment
+        android:id="@+id/nav_contactList"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragment"
+        android:label="Contacts"
+        tools:layout="@layout/fragment_contact_list" >
+        <argument
+            android:name="contact"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact[]" />
+    </fragment><action android:id="@+id/action_global_nav_contactList" app:destination="@id/nav_contactList"/>
+    <fragment
+        android:id="@+id/nav_addContactFragment"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.AddContactFragment"
+        android:label="@string/settings_addContact"
+        tools:layout="@layout/fragment_add_contact" />
+    <fragment
+        android:id="@+id/viewProfileFragment"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragment"
+        android:label="View Profile"
+        tools:layout="@layout/fragment_view_profile">
+        <action
+            android:id="@+id/action_viewProfileFragment_to_nav_chat"
+            app:destination="@id/nav_chat" />
+        <argument
+            android:name="contact"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact" />
+    </fragment>
+    <action android:id="@+id/action_global_viewProfileFragment" app:destination="@id/viewProfileFragment" />
 
 </navigation>

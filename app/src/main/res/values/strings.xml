@@ -1,11 +1,12 @@
 <resources>
     <!--    login string-->
-    <string name="app_name"></string>
+    <string name="app_name">Beary Good Connection</string>
     <string name="textView_login_title">Welcome</string>
     <string name="editText_login_email">Email</string>
     <string name="editText_login_password">Password</string>
     <string name="button_login_login">Login</string>
     <string name="button_login_register">Register</string>
+
     <!--    register strings-->
     <string name="textView_register_title">Register</string>
     <string name="textView_verifyEmail_title">How to Verify Email</string>
@@ -15,46 +16,69 @@
     <string name="editText_register_nickname">Nickname</string>
     <string name="editText_register_password">Password</string>
     <string name="editText_register_retypePassword">Retype Password</string>
-
-    <string name="editText_register_emailForAccess">nadia.polk1@gmail.com</string>
-    <string name="editText_register_passwordForAccess">testPass</string>
     <string name="button_register_register">Register</string>
     <string name="editText_register_backToLogin">Back to Login</string>
 
+    <!-- verify email strings-->
     <string name="textView_verifyEmail_instructions1">1. You will receive an email at the address provided.</string>
     <string name="textView_verifyEmail_instructions2">2. In the email there will be a link. Click the link to verify.</string>
     <string name="textView_verifyEmail_instructions3">3. Press back to login.</string>
 
-
-
+    <!-- add contact strings -->
+    <string name="editText_addContact_addContact">Send Contact Request</string>
+    <string name="editText_addContact_enterUsername">Enter username of contact</string>
+    <string name="button_addContact_sendRequest">Send</string>
     <!--    navigation Home page  strings-->
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Nickname</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
+
+    <!-- Settings button actions -->
     <string name="action_settings">Settings</string>
+    <string name="action_logout">Logout</string>
+    <string name="settings_addContact">Add Contact</string>
+    <string name="settings_viewProfile">View Profile</string>
+    <string name="settings_chat">Chat</string>
 
     <!-- Menu button string resource -->
     <string name="menu_home">Home</string>
     <string name="menu_connection">Connection</string>
+    <string name="menu_contacts">Contacts</string>
     <string name="menu_chat">Chat</string>
     <string name="menu_weather">Weather</string>
     <string name="menu_share">Share</string>
     <string name="menu_notification">Notification</string>
-<!--    Web Service keys-->
+
+
+    <!--    Web Service keys-->
     <string name="keys_json_jwt">token</string>
     <string name="keys_json_success">success</string>
     <string name="keys_json_message">message</string>
+    <string name="keys_json_contact_email">email</string>
+    <string name="keys_json_contact_username">username</string>
+    <string name="keys_json_contact_firstname">firstname</string>
+    <string name="keys_json_contact_lastname">lastname</string>
+    <string name="keys_json_contact_usericon">usericon</string>
+    <string name="keys_contact_view">Random key</string>
+
     <string name="textMessage">Text Message</string>
     <string name="MessageSend">SEND</string>
 
-
+    <!--view profile -->
+    <string name="image_viewProfile_icon">User Icon</string>
 
     <!-- key  -->
     <string name="key_chat">chat_key</string>
     <string name="search">Search</string>
+
+    <string name="keys_shared_prefs">edu.uw.tcss450.phishapp.PREFS</string>
+    <string name="keys_prefs_email">traffic_light_wont_let_me_through</string>
+    <string name="keys_prefs_password">see_the_city_see_the_zoo</string>
+
+
+
 </resources>

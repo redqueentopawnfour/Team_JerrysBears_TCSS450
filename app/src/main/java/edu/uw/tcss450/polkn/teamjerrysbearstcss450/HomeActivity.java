@@ -1,10 +1,15 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -22,9 +27,25 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragmentDirections;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragmentDirections;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
+
 public class HomeActivity extends AppCompatActivity {
 
+    //private String mJwToken;
+    private Credentials mCredentials;
     private AppBarConfiguration mAppBarConfiguration;
+    private MenuItem mAddContacts;
+    private MenuItem mViewOwnProfile;
+    private MenuItem mChat;
+    private Contact mMyProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +66,7 @@ public class HomeActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_connection, R.id.nav_chat,
+                R.id.nav_home, R.id.nav_contactList, R.id.nav_chat,
                 R.id.nav_weather)
                 .setDrawerLayout(drawer)
                 .build();
@@ -53,38 +74,135 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        navController.setGraph(R.navigation.mobile_navigation,getIntent().getExtras());
+        navController.setGraph(R.navigation.mobile_navigation, getIntent().getExtras());
 
         navigationView.setNavigationItemSelectedListener(this::onNavigationSelected);
+
+        HomeActivityArgs args = HomeActivityArgs.fromBundle(getIntent().getExtras());
+        mCredentials = args.getCredentials();
+
+        populateCurrentProfile();
     }
 
     private boolean onNavigationSelected(final MenuItem menuItem) {
         NavController navController =
                 Navigation.findNavController(this, R.id.nav_host_fragment);
+
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
+                mAddContacts.setVisible(false);
+                mViewOwnProfile.setVisible(false);
+
                 navController.navigate(R.id.nav_home, getIntent().getExtras());
                 break;
-            case R.id.nav_connection:
-                navController.navigate(R.id.nav_connection);
+            case R.id.nav_contactList:
+                mAddContacts.setVisible(true);
+                mViewOwnProfile.setVisible(true);
+
+                Uri uri_contacts = new Uri.Builder()
+                        .scheme("https")
+                        .appendPath(getString(R.string.ep_base_url))
+                        .appendPath(getString(R.string.ep_contacts))
+                        .build();
+
+                String email = mCredentials.getEmail();
+                String json = "{\"email\":\"" + email + "\"}";
+
+                try {
+                    JSONObject jsonEmail = new JSONObject(json);
+                    new SendPostAsyncTask.Builder(uri_contacts.toString(), jsonEmail)
+                            .onPostExecute(this::handleContactsOnPostExecute)
+                            .build().execute();
+
+                } catch (Throwable tx) {
+                    Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+                }
                 break;
             case R.id.nav_weather:
+                mAddContacts.setVisible(false);
+                mViewOwnProfile.setVisible(false);
                 navController.navigate(R.id.nav_weather);
                 break;
             case R.id.nav_chat:
+                mAddContacts.setVisible(false);
+                mViewOwnProfile.setVisible(false);
                 navController.navigate(R.id.nav_chat);
                 break;
         }
-//Close the drawer
+        //Close the drawer
         ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawers();
         return true;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+        mAddContacts = menu.findItem(R.id.action_addContact);
+        mViewOwnProfile = menu.findItem(R.id.action_viewOwnProfile);
+        mChat = menu.findItem(R.id.action_chat);
+
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.action_addContact) {
+            mAddContacts.setVisible(false);
+            mViewOwnProfile.setVisible(false);
+            mChat.setVisible(false);
+
+            NavController navController =
+                    Navigation.findNavController(this, R.id.nav_host_fragment);
+            navController.navigate(R.id.nav_addContactFragment, getIntent().getExtras());
+            return true;
+        } else if (id == R.id.action_logout) {
+            logout();
+            return true;
+        } else if (id == 16908332) {
+            mAddContacts.setVisible(true);
+            mViewOwnProfile.setVisible(true);
+            mChat.setVisible(false);
+
+            Uri uri_contacts = new Uri.Builder()
+                    .scheme("https")
+                    .appendPath(getString(R.string.ep_base_url))
+                    .appendPath(getString(R.string.ep_contacts))
+                    .build();
+
+            String email = mCredentials.getEmail();
+            String json = "{\"email\":\"" + email + "\"}";
+
+            try {
+                JSONObject jsonEmail = new JSONObject(json);
+
+                Log.d("Email string", jsonEmail.toString());
+                Log.d("Email", jsonEmail.getString("email"));
+
+                new SendPostAsyncTask.Builder(uri_contacts.toString(), jsonEmail)
+                        .onPostExecute(this::handleContactsOnPostExecute)
+                        .build().execute();
+
+            } catch (Throwable tx) {
+                Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+            }
+        } else if (id == R.id.action_viewOwnProfile) {
+            mAddContacts.setVisible(false);
+            mViewOwnProfile.setVisible(false);
+            mChat.setVisible(false);
+
+            MobileNavigationDirections.ActionGlobalViewProfileFragment directions
+                    = ViewProfileFragmentDirections.actionGlobalViewProfileFragment(mMyProfile);
+
+            Navigation.findNavController(this, R.id.nav_host_fragment)
+                    .navigate(directions);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -92,5 +210,151 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    private void handleContactsOnPostExecute(final String result) {
+        try {
+            JSONObject resultsJSON = new JSONObject(result);
+
+            boolean success =
+                    resultsJSON.getBoolean(
+                            getString(R.string.keys_json_success));
+
+            if (success) {
+                if (resultsJSON.has(getString(R.string.keys_json_message))) {
+                    JSONArray data = resultsJSON.getJSONArray(
+                            getString(R.string.keys_json_message));
+                    Contact[] contacts = new Contact[data.length()];
+
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject jsonContact = data.getJSONObject(i);
+
+                        contacts[i] = new Contact.Builder(
+                                jsonContact.getString(
+                                        getString(R.string.keys_json_contact_username)),
+                                jsonContact.getString(
+                                        getString(R.string.keys_json_contact_usericon)))
+                                .addFirstName(jsonContact.getString(
+                                        getString(R.string.keys_json_contact_firstname)))
+                                .addLastName(jsonContact.getString(
+                                        getString(R.string.keys_json_contact_lastname)))
+                                .addEmail(jsonContact.getString(
+                                        getString(R.string.keys_json_contact_email)))
+                                .build();
+                    }
+
+                    int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
+                    mViewOwnProfile.setIcon(drawableId);
+
+                    MobileNavigationDirections.ActionGlobalNavContactList directions
+                            = ContactFragmentDirections.actionGlobalNavContactList(contacts);
+
+                    Navigation.findNavController(this, R.id.nav_host_fragment)
+                            .navigate(directions);
+                } else {
+                    Log.e("ERROR!", "No response");
+                }
+
+            } else {
+                // failure
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e("ERROR!", e.getMessage());
+        }
+    }
+
+    private void handleMyProfileOnPostExecute(final String result) {
+        try {
+            JSONObject resultsJSON = new JSONObject(result);
+
+            boolean success =
+                    resultsJSON.getBoolean(
+                            getString(R.string.keys_json_success));
+
+            if (success) {
+                if (resultsJSON.has(getString(R.string.keys_json_message))) {
+                    JSONObject jsonContact = resultsJSON.getJSONObject(
+                            getString(R.string.keys_json_message));
+
+                    mMyProfile = new Contact.Builder(
+                            jsonContact.getString(
+                                    getString(R.string.keys_json_contact_username)),
+                            jsonContact.getString(
+                                    getString(R.string.keys_json_contact_usericon)))
+                            .addFirstName(jsonContact.getString(
+                                    getString(R.string.keys_json_contact_firstname)))
+                            .addLastName(jsonContact.getString(
+                                    getString(R.string.keys_json_contact_lastname)))
+                            .addEmail(jsonContact.getString(
+                                    getString(R.string.keys_json_contact_email)))
+                            .build();
+                } else {
+                    Log.e("ERROR!", "No response");
+                }
+
+            } else {
+                // failure
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e("ERROR!", e.getMessage());
+        }
+    }
+
+    private void logout() {
+        SharedPreferences prefs =
+                getSharedPreferences(
+                        getString(R.string.keys_shared_prefs),
+                        Context.MODE_PRIVATE);
+        //remove the saved credentials from StoredPrefs
+        prefs.edit().remove(getString(R.string.keys_prefs_password)).apply();
+        prefs.edit().remove(getString(R.string.keys_prefs_email)).apply();
+
+        //close the app
+        /*finishAndRemoveTask();*/
+
+        //or close this activity and bring back the Login
+        Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+
+        //End this Activity and remove it from the Activity back stack.
+        finish();
+    }
+
+    public void populateCurrentProfile() {
+        Uri uri_contacts = new Uri.Builder()
+                .scheme("https")
+                .appendPath(getString(R.string.ep_base_url))
+                .appendPath(getString(R.string.ep_contacts))
+                .appendPath(getString(R.string.ep_profile))
+                .build();
+
+        String email = mCredentials.getEmail();
+        String json = "{\"email\":\"" + email + "\"}";
+
+        try {
+            JSONObject jsonEmail = new JSONObject(json);
+
+            new SendPostAsyncTask.Builder(uri_contacts.toString(), jsonEmail)
+                    .onPostExecute(this::handleMyProfileOnPostExecute)
+                    .build().execute();
+
+        } catch (Throwable tx) {
+            Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+        }
+    }
+
+
+
+    public void showChatIcon(Contact theContact) {
+        mAddContacts.setVisible(false);
+        mViewOwnProfile.setVisible(false);
+
+        if (theContact.getUsername() == mMyProfile.getUsername()) {
+            mChat.setVisible(false);
+        } else {
+            mChat.setVisible(true);
+        }
     }
 }

@@ -6,12 +6,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_home_black_24dp"
             android:title="@string/menu_home" />
         <item
-            android:id="@+id/nav_connection"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_connection" />
+            android:id="@+id/nav_contactList"
+            android:icon="@drawable/ic_people_purple_24dp"
+            android:title="@string/menu_contacts" />
         <item
             android:id="@+id/nav_chat"
             android:icon="@drawable/ic_menu_slideshow"
@@ -20,6 +20,10 @@
             android:id="@+id/nav_weather"
             android:icon="@drawable/ic_menu_manage"
             android:title="@string/menu_weather" />
+ <!--       <item
+            android:id="@+id/nav_addFriend"
+            android:icon="@drawable/ic_person_add_gold_24dp"
+            android:title="@string/settings_addContact" />-->
     </group>
 
     <!--<item android:title="Communicate">
