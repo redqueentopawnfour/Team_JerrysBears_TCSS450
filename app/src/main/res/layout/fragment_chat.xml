@@ -27,6 +27,7 @@
         android:layout_marginTop="200dp"
         android:layout_marginEnd="60dp"
         android:hint="@string/textMessage"
+        android:inputType="text"
         android:pointerIcon="top_right_diagonal_double_arrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
