@@ -1,6 +1,9 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.annotation.RequiresApi;
 
 import java.io.Serializable;
 
@@ -17,16 +20,22 @@ public class Contact implements Serializable, Parcelable {
     private final String mFirstName;
     private final String mLastName;
     private final String mEmail;
+    private final Boolean mIsEmailVerified;
+   /* private final Boolean mIsContactVerified;*/
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     protected Contact(Parcel in) {
         mUsername = in.readString();
         mUserIcon = in.readString();
         mFirstName = in.readString();
         mLastName = in.readString();
         mEmail = in.readString();
+        mIsEmailVerified = in.readBoolean();
+      /*  mIsContactVerified = in.readBoolean();*/
     }
 
     public static final Creator<Contact> CREATOR = new Creator<Contact>() {
+        @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
         public Contact createFromParcel(Parcel in) {
             return new Contact(in);
@@ -43,6 +52,7 @@ public class Contact implements Serializable, Parcelable {
         return 0;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mUsername);
@@ -50,6 +60,8 @@ public class Contact implements Serializable, Parcelable {
         dest.writeString(mFirstName);
         dest.writeString(mLastName);
         dest.writeString(mEmail);
+        dest.writeBoolean(mIsEmailVerified);
+       /* dest.writeBoolean(mIsContactVerified);*/
     }
 
     /**
@@ -63,6 +75,8 @@ public class Contact implements Serializable, Parcelable {
         private String mFirstName = "";
         private String mLastName = "";
         private String mEmail = "";
+        private Boolean mIsEmailVerified = false;
+/*        private Boolean mIsContactVerified = false;*/
 
         /**
          * Constructs a new Builder.
@@ -108,6 +122,26 @@ public class Contact implements Serializable, Parcelable {
             mEmail = val;
             return this;
         }
+
+        /**
+         * Add an optional isEmailVerified for the full contact.
+         * @param val an optional isEmailVerified for the full contact
+         * @return the Builder of this Contact
+         */
+        public Builder addIsEmailVerified(final Boolean val) {
+            mIsEmailVerified = val;
+            return this;
+        }
+/*
+        *//**
+         * Add an optional isContactVerified for the full contact.
+         * @param val an optional if contact is verified for the current user
+         * @return the Builder of this Contact
+         *//*
+        public Builder addIsContactVerified(final Boolean val) {
+            mIsContactVerified = val;
+            return this;
+        }*/
     }
 
     private Contact(final Builder builder) {
@@ -116,6 +150,8 @@ public class Contact implements Serializable, Parcelable {
         this.mFirstName = builder.mFirstName;
         this.mLastName = builder.mLastName;
         this.mEmail = builder.mEmail;
+        this.mIsEmailVerified = builder.mIsEmailVerified;
+        /*this.mIsContactVerified = builder.mIsContactVerified;*/
     }
 
     public String getUsername() {
@@ -137,4 +173,12 @@ public class Contact implements Serializable, Parcelable {
     public String getUserIcon() {
         return mUserIcon;
     }
+
+    public Boolean getIsEmailVerified() {
+        return mIsEmailVerified;
+    }
+
+   /* public Boolean getmIsContactVerified() {
+        return mIsContactVerified;
+    }*/
 }

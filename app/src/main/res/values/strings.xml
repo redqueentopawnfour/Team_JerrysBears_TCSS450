@@ -63,6 +63,8 @@
     <string name="keys_json_contact_firstname">firstname</string>
     <string name="keys_json_contact_lastname">lastname</string>
     <string name="keys_json_contact_usericon">usericon</string>
+    <string name="keys_json_contacts_isEmailVerified">isverified</string>
+
     <string name="keys_contact_view">Random key</string>
 
     <string name="textMessage">Text Message</string>

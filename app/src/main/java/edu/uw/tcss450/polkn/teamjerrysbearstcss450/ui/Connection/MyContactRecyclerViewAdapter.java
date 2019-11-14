@@ -48,13 +48,15 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         String username = mValues.get(position).getUsername();
         String firstName = mValues.get(position).getFirstName();
         String lastName = mValues.get(position).getLastName();
+       /* Boolean isVerified = mValues.get(position).getmIsContactVerified();*/
 
         String displayString = "";
         if (username.length() > 0 && firstName.length() > 0 && lastName.length() > 0) {
-            displayString = username + " (" + firstName + " " + lastName + ")";
+            displayString = username + " (" + firstName + " " + lastName + ") - pending";
         } else if (username.length() > 0) {
-            displayString = username;
+            displayString = username + " - pending";
         }
+
 
         holder.mUsernameView.setText(displayString);
         Integer pos = new Integer(position);
