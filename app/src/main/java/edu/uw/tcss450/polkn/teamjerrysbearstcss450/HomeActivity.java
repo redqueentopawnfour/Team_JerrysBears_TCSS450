@@ -37,6 +37,7 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragmentDirection
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.GetAsyncTask;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
 import me.pushy.sdk.Pushy;
@@ -313,6 +314,8 @@ public class HomeActivity extends AppCompatActivity {
                                     getString(R.string.keys_json_contact_lastname)))
                             .addEmail(jsonContact.getString(
                                     getString(R.string.keys_json_contact_email)))
+                            .addUserId(jsonContact.getInt(
+                                    getString(R.string.key_json_contact_userid)))
                             .addIsEmailVerified(jsonContact.getBoolean(
                                     getString(R.string.keys_json_contacts_isEmailVerified)))
                             .build();
@@ -387,6 +390,7 @@ public class HomeActivity extends AppCompatActivity {
             mChat.setVisible(true);
         }
     }
+
 
     // Deleting the Pushy device token must be done asynchronously. Good thing
     // we have something that allows us to do that.

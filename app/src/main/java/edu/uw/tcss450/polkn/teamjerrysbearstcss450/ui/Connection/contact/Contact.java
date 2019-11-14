@@ -20,6 +20,7 @@ public class Contact implements Serializable, Parcelable {
     private final String mFirstName;
     private final String mLastName;
     private final String mEmail;
+    private final int mUserId;
     private final Boolean mIsEmailVerified;
    /* private final Boolean mIsContactVerified;*/
 
@@ -30,6 +31,7 @@ public class Contact implements Serializable, Parcelable {
         mFirstName = in.readString();
         mLastName = in.readString();
         mEmail = in.readString();
+        mUserId = in.readInt();
         mIsEmailVerified = in.readBoolean();
       /*  mIsContactVerified = in.readBoolean();*/
     }
@@ -60,6 +62,7 @@ public class Contact implements Serializable, Parcelable {
         dest.writeString(mFirstName);
         dest.writeString(mLastName);
         dest.writeString(mEmail);
+        dest.writeInt(mUserId);
         dest.writeBoolean(mIsEmailVerified);
        /* dest.writeBoolean(mIsContactVerified);*/
     }
@@ -75,6 +78,7 @@ public class Contact implements Serializable, Parcelable {
         private String mFirstName = "";
         private String mLastName = "";
         private String mEmail = "";
+        private int mUserId;
         private Boolean mIsEmailVerified = false;
 /*        private Boolean mIsContactVerified = false;*/
 
@@ -132,7 +136,14 @@ public class Contact implements Serializable, Parcelable {
             mIsEmailVerified = val;
             return this;
         }
-/*
+        /**
+         * Add an optional UserId for contant
+         */
+        public Builder addUserId(final int val) {
+            mUserId = val;
+            return this;
+        }
+        /*
         *//**
          * Add an optional isContactVerified for the full contact.
          * @param val an optional if contact is verified for the current user
@@ -150,6 +161,7 @@ public class Contact implements Serializable, Parcelable {
         this.mFirstName = builder.mFirstName;
         this.mLastName = builder.mLastName;
         this.mEmail = builder.mEmail;
+        this.mUserId = builder.mUserId;
         this.mIsEmailVerified = builder.mIsEmailVerified;
         /*this.mIsContactVerified = builder.mIsContactVerified;*/
     }
@@ -173,6 +185,8 @@ public class Contact implements Serializable, Parcelable {
     public String getUserIcon() {
         return mUserIcon;
     }
+
+    public int getmUserId(){ return mUserId; }
 
     public Boolean getIsEmailVerified() {
         return mIsEmailVerified;
