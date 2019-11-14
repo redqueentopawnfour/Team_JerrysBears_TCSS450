@@ -82,5 +82,8 @@
     <string name="keys_prefs_password">see_the_city_see_the_zoo</string>
     <string name="InputField">Text Message</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 
 </resources>

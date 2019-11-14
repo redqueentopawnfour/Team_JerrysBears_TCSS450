@@ -117,7 +117,7 @@ public class ChatFragment extends Fragment {
         JSONObject messageJson = new JSONObject();
         try {
             messageJson.put("email", mEmail);
-//            messageJson.put("username", mUserNmae);
+            messageJson.put("username", mUserNmae);
             messageJson.put("message", msg);
             messageJson.put("chatId", CHAT_ID);
         } catch (JSONException e) {

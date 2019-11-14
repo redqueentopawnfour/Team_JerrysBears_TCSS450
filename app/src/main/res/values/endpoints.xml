@@ -2,6 +2,7 @@
 <resources tools:ignore="ExtraTranslation" xmlns:tools="http://schemas.android.com/tools">
     <string name="ep_base_url">beary-good-connection.herokuapp.com</string>
 <!--    <string name="ep_base_url">polkn-lab4-backend.herokuapp.com</string>-->
+<!--    <string name="ep_base_url"> stelrq-lab4-backend.herokuapp.com</string>-->
     <string name="ep_login">login</string>
     <string name="ep_register">register</string>
     <string name="ep_contacts">contacts</string>

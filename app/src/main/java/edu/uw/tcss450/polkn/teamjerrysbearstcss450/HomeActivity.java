@@ -1,10 +1,13 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -39,8 +43,10 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragmentDirection
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.PushReceiver;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
+
 import me.pushy.sdk.Pushy;
 
 public class HomeActivity extends AppCompatActivity {
@@ -164,9 +170,9 @@ public class HomeActivity extends AppCompatActivity {
                             .navigate(directions);
 
 
-//                mAddContacts.setVisible(false);
-//                mViewOwnProfile.setVisible(false);
-//                navController.navigate(R.id.nav_chat);
+                mAddContacts.setVisible(false);
+                mViewOwnProfile.setVisible(false);
+                navController.navigate(R.id.nav_chat);
                 break;
         }
         //Close the drawer
@@ -411,6 +417,25 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if (mPushMessageReciever == null) {
+//            mPushMessageReciever = new HomePushMessageReceiver();
+//        }
+//        IntentFilter iFilter = new IntentFilter(PushReceiver.RECEIVED_NEW_MESSAGE);
+//        registerReceiver(mPushMessageReciever, iFilter);
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        if (mPushMessageReciever != null){
+//            unregisterReceiver(mPushMessageReciever);
+//        }
+//    }
+
     // Deleting the Pushy device token must be done asynchronously. Good thing
     // we have something that allows us to do that.
     class DeleteTokenAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -484,23 +509,5 @@ public class HomeActivity extends AppCompatActivity {
 //            }
 //        }
 //    }
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        if (mPushMessageReciever == null) {
-//            mPushMessageReciever = new HomePushMessageReceiver();
-//        }
-//        IntentFilter iFilter = new IntentFilter(PushReceiver.RECEIVED_NEW_MESSAGE);
-//        registerReceiver(mPushMessageReciever, iFilter);
-//    }
-//
-//    @Override
-//    public void onPause() {
-//        super.onPause();
-//        if (mPushMessageReciever != null){
-//            unregisterReceiver(mPushMessageReciever);
-//        }
-//    }
-
 
 }
