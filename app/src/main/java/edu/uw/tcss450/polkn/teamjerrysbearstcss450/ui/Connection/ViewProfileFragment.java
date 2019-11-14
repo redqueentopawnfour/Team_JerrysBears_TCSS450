@@ -73,11 +73,17 @@ public class ViewProfileFragment extends Fragment {
         TextView emailView = getActivity().findViewById(R.id.textView_viewProfile_email);
         TextView usernameView = getActivity().findViewById(R.id.textView_viewProfile_username);
         ImageView userIconView = getActivity().findViewById(R.id.image_viewProfile_usericon);
+        ImageView isEmailVerifiedView = getActivity().findViewById(R.id.imageView_viewProfile_isVerified);
         int drawableId = mContext.getResources().getIdentifier(mUser.getUserIcon(), "drawable", mContext.getPackageName());
+        Boolean isEmailVerified = mUser.getIsEmailVerified();
 
         firstLastView.setText(mUser.getFirstName() + " " + mUser.getLastName());
         emailView.setText(mUser.getEmail());
         usernameView.setText(mUser.getUsername());
         userIconView.setImageResource(drawableId);
+
+        if (isEmailVerified == true) {
+            isEmailVerifiedView.setVisibility(View.VISIBLE);
+        }
     }
 }

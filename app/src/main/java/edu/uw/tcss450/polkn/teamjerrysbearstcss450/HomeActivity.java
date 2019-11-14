@@ -240,6 +240,9 @@ public class HomeActivity extends AppCompatActivity {
                                         getString(R.string.keys_json_contact_lastname)))
                                 .addEmail(jsonContact.getString(
                                         getString(R.string.keys_json_contact_email)))
+                                .addIsEmailVerified(jsonContact.getBoolean(
+                                        getString(R.string.keys_json_contacts_isEmailVerified)))
+                               // .addIsContactVerified(false)
                                 .build();
                     }
 
@@ -277,6 +280,11 @@ public class HomeActivity extends AppCompatActivity {
                     JSONObject jsonContact = resultsJSON.getJSONObject(
                             getString(R.string.keys_json_message));
 
+                 /*   String contactEmail = jsonContact.getString(
+                            getString(R.string.keys_json_contact_email));
+                    String userEmail = mMyProfile.getEmail();
+                    Boolean isContactVerified = true;
+*/
                     mMyProfile = new Contact.Builder(
                             jsonContact.getString(
                                     getString(R.string.keys_json_contact_username)),
@@ -288,6 +296,8 @@ public class HomeActivity extends AppCompatActivity {
                                     getString(R.string.keys_json_contact_lastname)))
                             .addEmail(jsonContact.getString(
                                     getString(R.string.keys_json_contact_email)))
+                            .addIsEmailVerified(jsonContact.getBoolean(
+                                    getString(R.string.keys_json_contacts_isEmailVerified)))
                             .build();
                 } else {
                     Log.e("ERROR!", "No response");
