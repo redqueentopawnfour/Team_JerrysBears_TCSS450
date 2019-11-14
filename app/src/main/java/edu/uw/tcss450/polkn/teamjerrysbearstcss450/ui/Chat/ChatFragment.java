@@ -50,7 +50,6 @@ public class ChatFragment extends Fragment {
     private PushMessageReceiver mPushMessageReciever;
 
 
-//    private PushMessageReceiver mPushMessageReciever;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -81,13 +80,13 @@ public class ChatFragment extends Fragment {
         view.findViewById(R.id.button_chat_send).setOnClickListener(this::handleSendClick);
 
         ChatFragmentArgs args = ChatFragmentArgs.fromBundle(getArguments());
-//        if (args. != null) {
-//            mMessageOutputTextView.append(args.getMessage().getSender());
-//            mMessageOutputTextView.append(": ");
-//            mMessageOutputTextView.append(args.getMessage().getMessage());
-//            mMessageOutputTextView.append(System.lineSeparator());
-//            mMessageOutputTextView.append(System.lineSeparator());
-//        }
+        if (args.getMessage() != null) {
+            mMessageOutputTextView.append(args.getMessage().getSender());
+            mMessageOutputTextView.append(": ");
+            mMessageOutputTextView.append(args.getMessage().getMessage());
+            mMessageOutputTextView.append(System.lineSeparator());
+            mMessageOutputTextView.append(System.lineSeparator());
+        }
     }
 
 
@@ -118,7 +117,7 @@ public class ChatFragment extends Fragment {
         JSONObject messageJson = new JSONObject();
         try {
             messageJson.put("email", mEmail);
-            messageJson.put("username", mUserNmae);
+//            messageJson.put("username", mUserNmae);
             messageJson.put("message", msg);
             messageJson.put("chatId", CHAT_ID);
         } catch (JSONException e) {

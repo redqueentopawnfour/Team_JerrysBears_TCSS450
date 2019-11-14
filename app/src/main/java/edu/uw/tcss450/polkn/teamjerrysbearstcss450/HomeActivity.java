@@ -3,6 +3,8 @@ package edu.uw.tcss450.polkn.teamjerrysbearstcss450;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -54,6 +56,12 @@ public class HomeActivity extends AppCompatActivity {
     private Contact mMyProfile;
 
 
+//    private ColorFilter mDefault;
+//    private HomePushMessageReceiver mPushMessageReciever;
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,11 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+//        mDefault = toolbar.getNavigationIcon().getColorFilter();
+//        ((Toolbar) findViewById(R.id.toolbar)). getNavigationIcon().setColorFilter(mDefault);
+
+
 //        FloatingActionButton fab = findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -84,13 +97,23 @@ public class HomeActivity extends AppCompatActivity {
 
         navController.setGraph(R.navigation.mobile_navigation, getIntent().getExtras());
 
-        navigationView.setNavigationItemSelectedListener(this::onNavigationSelected);
+//        navigationView.setNavigationItemSelectedListener(this::onNavigationSelected);
 
         HomeActivityArgs args = HomeActivityArgs.fromBundle(getIntent().getExtras());
         mCredentials = args.getCredentials();
         mJwToken = args.getJwt();
         mEmail = args.getCredentials().getEmail();
         populateCurrentProfile();
+        if (args.getChatMessage() != null) {
+            MobileNavigationDirections.ActionGlobalNavChat directions =
+                    MobileNavigationDirections.actionGlobalNavChat().setJwt(mJwToken).setEmail(mEmail);
+            directions.setMessage(args.getChatMessage());
+            navController.navigate(directions);
+        } else {
+            navigationView.setNavigationItemSelectedListener(this::onNavigationSelected);
+        }
+
+
     }
 
     private boolean onNavigationSelected(final MenuItem menuItem) {
@@ -430,5 +453,54 @@ public class HomeActivity extends AppCompatActivity {
 //            finish();
         }
     }
+
+
+//    /**
+//     * A BroadcastReceiver that listens for messages sent from PushReceiver
+//     */
+//    private class HomePushMessageReceiver extends BroadcastReceiver {
+//
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//
+//            NavController nc =
+//                    Navigation.findNavController(HomeActivity.this, R.id.nav_host_fragment);
+//            NavDestination nd = nc.getCurrentDestination();
+//            if (nd.getId() != R.id.nav_chat) {
+//
+//                if (intent.hasExtra("SENDER") && intent.hasExtra("MESSAGE")) {
+//
+//
+//                    String sender = intent.getStringExtra("SENDER");
+//                    String messageText = intent.getStringExtra("MESSAGE");
+//
+//                    //change the hamburger icon to red alerting the user of the notification
+//                    ((Toolbar) findViewById(R.id.toolbar)).getNavigationIcon()
+//                            .setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+//
+//
+//                    Log.d("HOME", sender + ": " + messageText);
+//                }
+//            }
+//        }
+//    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if (mPushMessageReciever == null) {
+//            mPushMessageReciever = new HomePushMessageReceiver();
+//        }
+//        IntentFilter iFilter = new IntentFilter(PushReceiver.RECEIVED_NEW_MESSAGE);
+//        registerReceiver(mPushMessageReciever, iFilter);
+//    }
+//
+//    @Override
+//    public void onPause() {
+//        super.onPause();
+//        if (mPushMessageReciever != null){
+//            unregisterReceiver(mPushMessageReciever);
+//        }
+//    }
+
 
 }

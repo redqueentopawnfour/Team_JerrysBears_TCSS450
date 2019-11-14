@@ -32,6 +32,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatMessageNotification;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
 import me.pushy.sdk.Pushy;
 
@@ -341,6 +342,23 @@ public class LoginFragment extends Fragment {
                                     .actionNavFragmentLoginToHomeActivity(mCredentials);
                     homeActivity.setJwt(resultsJSON.getString(
                             getString(R.string.keys_json_jwt)));
+
+
+                    if (getArguments() != null) {
+
+                        if (getArguments().containsKey("type")) {
+                            if (getArguments().getString("type").equals("msg")) {
+                                String msg = getArguments().getString("message");
+                                String sender = getArguments().getString("sender");
+
+                                ChatMessageNotification chat =
+                                        new ChatMessageNotification.Builder(sender, msg).build();
+                                homeActivity.setChatMessage(chat);
+                            }
+                        }
+                    }
+
+
 
                     Navigation.findNavController(getView()).navigate(homeActivity);
                     getActivity().finish();
