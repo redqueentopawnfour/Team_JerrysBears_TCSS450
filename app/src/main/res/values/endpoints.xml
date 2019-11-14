@@ -7,4 +7,15 @@
     <string name="ep_contacts">contacts</string>
     <string name="ep_add">add</string>
    <string name="ep_profile">profile</string>
+
+
+
+<!--    chat fragment-->
+    <string name="ep_messaging_base">messaging</string>
+    <string name="ep_messaging_send">send</string>
+
+
+<!--    pushy endpoint-->
+
+    <string name="ep_pushy">pushy</string>
 </resources>

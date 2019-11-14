@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,15 +32,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragmentArgs;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
+import me.pushy.sdk.Pushy;
 
 public class HomeActivity extends AppCompatActivity {
 
-    //private String mJwToken;
+    private String mJwToken;
+    private String mEmail;
+
     private Credentials mCredentials;
     private AppBarConfiguration mAppBarConfiguration;
     private MenuItem mAddContacts;
@@ -47,20 +53,22 @@ public class HomeActivity extends AppCompatActivity {
     private MenuItem mChat;
     private Contact mMyProfile;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Invitation", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Invitation", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -80,7 +88,8 @@ public class HomeActivity extends AppCompatActivity {
 
         HomeActivityArgs args = HomeActivityArgs.fromBundle(getIntent().getExtras());
         mCredentials = args.getCredentials();
-
+        mJwToken = args.getJwt();
+        mEmail = args.getCredentials().getEmail();
         populateCurrentProfile();
     }
 
@@ -124,9 +133,17 @@ public class HomeActivity extends AppCompatActivity {
                 navController.navigate(R.id.nav_weather);
                 break;
             case R.id.nav_chat:
-                mAddContacts.setVisible(false);
-                mViewOwnProfile.setVisible(false);
-                navController.navigate(R.id.nav_chat);
+                    MobileNavigationDirections.ActionGlobalNavChat directions =
+                            ChatFragmentDirections.actionGlobalNavChat()
+                                    .setEmail(mEmail)
+                                    .setJwt(mJwToken);
+                    Navigation.findNavController(this, R.id.nav_host_fragment)
+                            .navigate(directions);
+
+
+//                mAddContacts.setVisible(false);
+//                mViewOwnProfile.setVisible(false);
+//                navController.navigate(R.id.nav_chat);
                 break;
         }
         //Close the drawer
@@ -313,16 +330,19 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        SharedPreferences prefs =
-                getSharedPreferences(
-                        getString(R.string.keys_shared_prefs),
-                        Context.MODE_PRIVATE);
-        //remove the saved credentials from StoredPrefs
-        prefs.edit().remove(getString(R.string.keys_prefs_password)).apply();
-        prefs.edit().remove(getString(R.string.keys_prefs_email)).apply();
+
+        new DeleteTokenAsyncTask().execute();
+//        SharedPreferences prefs =
+//                getSharedPreferences(
+//                        getString(R.string.keys_shared_prefs),
+//                        Context.MODE_PRIVATE);
+//        //remove the saved credentials from StoredPrefs
+//        prefs.edit().remove(getString(R.string.keys_prefs_password)).apply();
+//        prefs.edit().remove(getString(R.string.keys_prefs_email)).apply();
 
         //close the app
         /*finishAndRemoveTask();*/
+
 
         //or close this activity and bring back the Login
         Intent i = new Intent(this, MainActivity.class);
@@ -367,4 +387,48 @@ public class HomeActivity extends AppCompatActivity {
             mChat.setVisible(true);
         }
     }
+
+    // Deleting the Pushy device token must be done asynchronously. Good thing
+    // we have something that allows us to do that.
+    class DeleteTokenAsyncTask extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            //since we are already doing stuff in the background, go ahead
+            //and remove the credentials from shared prefs here.
+            SharedPreferences prefs =
+                    getSharedPreferences(
+                            getString(R.string.keys_shared_prefs),
+                            Context.MODE_PRIVATE);
+
+            prefs.edit().remove(getString(R.string.keys_prefs_password)).apply();
+            prefs.edit().remove(getString(R.string.keys_prefs_email)).apply();
+
+            //unregister the device from the Pushy servers
+            Pushy.unregister(HomeActivity.this);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            //close the app
+//            finishAndRemoveTask();
+
+//            //or close this activity and bring back the Login
+//            Intent i = new Intent(this, MainActivity.class);
+//
+//            startActivity(i);
+////            //Ends this Activity and removes it from the Activity back stack.
+//            finish();
+        }
+    }
+
 }

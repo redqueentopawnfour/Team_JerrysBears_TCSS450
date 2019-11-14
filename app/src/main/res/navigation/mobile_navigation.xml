@@ -15,7 +15,19 @@
         android:id="@+id/nav_chat"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragment"
         android:label="@string/menu_chat"
-        tools:layout="@layout/fragment_chat" />
+        tools:layout="@layout/fragment_chat" >
+        <argument android:name="jwt"
+            app:argType="string"
+            android:defaultValue='""' />
+        <argument
+            android:name="email"
+            app:argType="string"
+            android:defaultValue='""' />
+        <argument
+            android:name="username"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_weather"
@@ -49,5 +61,6 @@
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact" />
     </fragment>
     <action android:id="@+id/action_global_viewProfileFragment" app:destination="@id/viewProfileFragment" />
+    <action android:id="@+id/action_global_nav_chat" app:destination="@id/nav_chat" />
 
 </navigation>
