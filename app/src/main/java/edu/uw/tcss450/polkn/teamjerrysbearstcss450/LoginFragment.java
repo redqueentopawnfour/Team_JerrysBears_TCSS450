@@ -240,8 +240,6 @@ public class LoginFragment extends Fragment {
     }
 
 
-
-
     class AttemptLoginTask extends AsyncTask<String, Void, String> {
 
         @Override
@@ -364,6 +362,7 @@ public class LoginFragment extends Fragment {
                     getActivity().finish();
                     return;
                 } else {
+                    getActivity().findViewById(R.id.layout_login_wait).setVisibility(View.GONE);
                     //Saving the token wrong. Don’t switch fragments and inform the user
                     ((TextView) getView().findViewById(R.id.editText_login_email))
                             .setError("Login Unsuccessful");
