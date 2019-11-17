@@ -41,7 +41,7 @@ public class ChatFragment extends Fragment {
     private TextView mMessageOutputTextView;
     private EditText mMessageInputEditText;
 
-    private String mUserNmae;
+    private String mUserName;
     private String mEmail;
     private String mJwToken;
     private String mSendUrl;
@@ -95,7 +95,7 @@ public class ChatFragment extends Fragment {
         super.onStart();
 
         ChatFragmentArgs args = ChatFragmentArgs.fromBundle(getArguments());
-        mUserNmae = args.getUsername();
+        mUserName = args.getUsername();
         mEmail = args.getEmail();
         mJwToken = args.getJwt();
 
@@ -117,7 +117,7 @@ public class ChatFragment extends Fragment {
         JSONObject messageJson = new JSONObject();
         try {
             messageJson.put("email", mEmail);
-            messageJson.put("username", mUserNmae);
+            messageJson.put("username", mUserName);
             messageJson.put("message", msg);
             messageJson.put("chatId", CHAT_ID);
         } catch (JSONException e) {

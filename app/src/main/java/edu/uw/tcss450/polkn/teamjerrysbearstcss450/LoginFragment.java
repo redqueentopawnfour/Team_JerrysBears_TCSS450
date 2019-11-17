@@ -274,8 +274,6 @@ public class LoginFragment extends Fragment {
             StringBuilder response = new StringBuilder();
             HttpURLConnection urlConnection = null;
 
-
-
             try {
                 URL urlObject = new URL(urls[0]);
                 urlConnection = (HttpURLConnection) urlObject.openConnection();
@@ -325,11 +323,9 @@ public class LoginFragment extends Fragment {
             super.onPostExecute(result);
 
             try {
-
                 Log.d("JSON result",result);
                 JSONObject resultsJSON = new JSONObject(result);
                 boolean success = resultsJSON.getBoolean("success");
-
 
                 if (success) {
                     saveCredentials(mCredentials);
@@ -341,9 +337,7 @@ public class LoginFragment extends Fragment {
                     homeActivity.setJwt(resultsJSON.getString(
                             getString(R.string.keys_json_jwt)));
 
-
                     if (getArguments() != null) {
-
                         if (getArguments().containsKey("type")) {
                             if (getArguments().getString("type").equals("msg")) {
                                 String msg = getArguments().getString("message");
@@ -355,9 +349,6 @@ public class LoginFragment extends Fragment {
                             }
                         }
                     }
-
-
-
                     Navigation.findNavController(getView()).navigate(homeActivity);
                     getActivity().finish();
                     return;
@@ -379,6 +370,4 @@ public class LoginFragment extends Fragment {
             }
         }
     }
-
-
 }
