@@ -13,6 +13,7 @@
 <!--    chat fragment-->
     <string name="ep_messaging_base">messaging</string>
     <string name="ep_messaging_send">send</string>
+    <string name="ep_messaging_getall">getall</string>
 
 
 <!--    pushy endpoint-->

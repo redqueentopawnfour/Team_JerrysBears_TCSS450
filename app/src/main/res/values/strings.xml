@@ -67,7 +67,9 @@
     <string name="keys_json_contacts_isEmailVerified">isverified</string>
 
     <string name="keys_contact_view">Random key</string>
-
+    <string name="keys_chat_myemail">myemail</string>
+    <string name="keys_chat_theiremail">theiremail</string>
+    <string name="keys_chat_id">chatid</string>
     <string name="textMessage">Text Message</string>
     <string name="MessageSend">SEND</string>
 

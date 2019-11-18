@@ -314,11 +314,10 @@ public class HomeActivity extends AppCompatActivity {
                                     getString(R.string.keys_json_contact_lastname)))
                             .addEmail(jsonContact.getString(
                                     getString(R.string.keys_json_contact_email)))
-                            .addUserId(jsonContact.getInt(
-                                    getString(R.string.key_json_contact_userid)))
                             .addIsEmailVerified(jsonContact.getBoolean(
                                     getString(R.string.keys_json_contacts_isEmailVerified)))
                             .build();
+                    Log.d("other profile?", mMyProfile.toString());
                 } else {
                     Log.e("ERROR!", "No response");
                 }
@@ -365,7 +364,6 @@ public class HomeActivity extends AppCompatActivity {
 
         String email = mCredentials.getEmail();
         String json = "{\"email\":\"" + email + "\"}";
-
         try {
             JSONObject jsonEmail = new JSONObject(json);
 
@@ -384,7 +382,7 @@ public class HomeActivity extends AppCompatActivity {
         mAddContacts.setVisible(false);
         mViewOwnProfile.setVisible(false);
 
-        if (theContact.getUsername() == mMyProfile.getUsername()) {
+        if (theContact.getUsername().equals(mMyProfile.getUsername())) {
             mChat.setVisible(false);
         } else {
             mChat.setVisible(true);
@@ -433,6 +431,11 @@ public class HomeActivity extends AppCompatActivity {
 ////            //Ends this Activity and removes it from the Activity back stack.
 //            finish();
         }
+    }
+
+    //return a copy of the user of the apps email
+    public String getmMyEmail() {
+        return mMyProfile.getEmail();
     }
 
 }
