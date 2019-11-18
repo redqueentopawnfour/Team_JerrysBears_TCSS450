@@ -82,8 +82,8 @@ public class ViewProfileFragment extends Fragment {
         usernameView.setText(mUser.getUsername());
         userIconView.setImageResource(drawableId);
 
-        if (isEmailVerified == true) {
+       /* if (isEmailVerified == true) {
             isEmailVerifiedView.setVisibility(View.VISIBLE);
-        }
+        }*/
     }
 }

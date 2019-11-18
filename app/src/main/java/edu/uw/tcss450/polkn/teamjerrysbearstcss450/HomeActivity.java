@@ -70,6 +70,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,7 +97,6 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         navController.setGraph(R.navigation.mobile_navigation, getIntent().getExtras());
-        //navigationView.setNavigationItemSelectedListener(this::onNavigationSelected);
 
         HomeActivityArgs args = HomeActivityArgs.fromBundle(getIntent().getExtras());
         mCredentials = args.getCredentials();
@@ -109,13 +109,12 @@ public class HomeActivity extends AppCompatActivity {
 
         if (args.getChatMessage() != null) {
             MobileNavigationDirections.ActionGlobalNavChat directions =
-                    MobileNavigationDirections.actionGlobalNavChat().setJwt(mJwToken).setEmail(mEmail);
+                    ChatFragmentDirections.actionGlobalNavChat().setJwt(mJwToken).setEmail(mEmail);
             directions.setMessage(args.getChatMessage());
             navController.navigate(directions);
-        } else {
-            navigationView.setNavigationItemSelectedListener(this::onNavigationSelected);
         }
 
+        navigationView.setNavigationItemSelectedListener(this::onNavigationSelected);
         mDefault = toolbar.getNavigationIcon().getColorFilter();
     }
 
@@ -132,7 +131,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        if (mPushMessageReciever != null){
+        if (mPushMessageReciever != null) {
             unregisterReceiver(mPushMessageReciever);
         }
     }
@@ -236,32 +235,15 @@ public class HomeActivity extends AppCompatActivity {
             logout();
             return true;
         } else if (id == 16908332) {
-            mAddContacts.setVisible(true);
-            mViewOwnProfile.setVisible(true);
-            mChat.setVisible(false);
-
-            Uri uri_contacts = new Uri.Builder()
-                    .scheme("https")
-                    .appendPath(getString(R.string.ep_base_url))
-                    .appendPath(getString(R.string.ep_contacts))
-                    .build();
-
-            String email = mCredentials.getEmail();
-            String json = "{\"email\":\"" + email + "\"}";
-
-            try {
-                JSONObject jsonEmail = new JSONObject(json);
-
-                Log.d("Email string", jsonEmail.toString());
-                Log.d("Email", jsonEmail.getString("email"));
-
-                new SendPostAsyncTask.Builder(uri_contacts.toString(), jsonEmail)
-                        .onPostExecute(this::handleContactsOnPostExecute)
-                        .build().execute();
-
-            } catch (Throwable tx) {
-                Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+            NavController navController =
+                    Navigation.findNavController(this, R.id.nav_host_fragment);
+            NavDestination nd = navController.getCurrentDestination();
+            if (nd.getId() == R.id.nav_addContactFragment) {
+                loadContacts();
+            } else if (nd.getId() == R.id.nav_viewProfileFragment) {
+                loadContacts();
             }
+            return super.onOptionsItemSelected(item);
         } else if (id == R.id.action_viewOwnProfile) {
             mAddContacts.setVisible(false);
             mViewOwnProfile.setVisible(false);
@@ -275,6 +257,35 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void loadContacts() {
+        mAddContacts.setVisible(true);
+        mViewOwnProfile.setVisible(true);
+        mChat.setVisible(false);
+
+        Uri uri_contacts = new Uri.Builder()
+                .scheme("https")
+                .appendPath(getString(R.string.ep_base_url))
+                .appendPath(getString(R.string.ep_contacts))
+                .build();
+
+        String email = mCredentials.getEmail();
+        String json = "{\"email\":\"" + email + "\"}";
+
+        try {
+            JSONObject jsonEmail = new JSONObject(json);
+
+            Log.d("Email string", jsonEmail.toString());
+            Log.d("Email", jsonEmail.getString("email"));
+
+            new SendPostAsyncTask.Builder(uri_contacts.toString(), jsonEmail)
+                    .onPostExecute(this::handleContactsOnPostExecute)
+                    .build().execute();
+
+        } catch (Throwable tx) {
+            Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+        }
     }
 
     @Override
@@ -314,7 +325,10 @@ public class HomeActivity extends AppCompatActivity {
                                         getString(R.string.keys_json_contact_email)))
                                 .addIsEmailVerified(jsonContact.getBoolean(
                                         getString(R.string.keys_json_contacts_isEmailVerified)))
-                                // .addIsContactVerified(false)
+                                .addRequestNumber(jsonContact.getInt(
+                                        getString(R.string.keys_json_contacts_requestNumber)))
+                                .addIsContactVerified(jsonContact.getBoolean(
+                                        getString(R.string.keys_json_contacts_isContactVerified)))
                                 .build();
                     }
 
@@ -322,7 +336,7 @@ public class HomeActivity extends AppCompatActivity {
                     mViewOwnProfile.setIcon(drawableId);
 
                     MobileNavigationDirections.ActionGlobalNavContactList directions
-                            = ContactFragmentDirections.actionGlobalNavContactList(contacts);
+                            = ContactFragmentDirections.actionGlobalNavContactList(contacts, mMyProfile);
 
                     Navigation.findNavController(this, R.id.nav_host_fragment)
                             .navigate(directions);

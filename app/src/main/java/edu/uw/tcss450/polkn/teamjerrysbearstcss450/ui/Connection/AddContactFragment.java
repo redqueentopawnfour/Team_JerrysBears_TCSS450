@@ -1,13 +1,11 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,8 +25,8 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
 
 public class AddContactFragment extends Fragment {
 
-    String mEmail_sender;
-    String mUsername_requested;
+    private String mEmail_sender;
+    private String mUsername_requested;
 
     public AddContactFragment() {
     }
@@ -90,6 +88,7 @@ public class AddContactFragment extends Fragment {
     /**
      * Handle onPostExecute of the AsynceTask. The result from our webservice is
      * a JSON formatted String. Parse it for success or failure.
+     *
      * @param result the JSON formatted String response from the web service
      */
     private void handleAddContactOnPost(String result) {
@@ -112,7 +111,7 @@ public class AddContactFragment extends Fragment {
         } catch (JSONException e) {
             //It appears that the web service did not return a JSON formatted
             //String or it did not have what we expected in it.
-            Log.e("JSON_PARSE_ERROR",  result
+            Log.e("JSON_PARSE_ERROR", result
                     + System.lineSeparator()
                     + e.getMessage());
         }

@@ -43,6 +43,7 @@ import me.pushy.sdk.Pushy;
 public class LoginFragment extends Fragment {
 
     private Credentials mCredentials;
+
     public LoginFragment() {
         // Required empty public constructor
     }
@@ -55,7 +56,6 @@ public class LoginFragment extends Fragment {
                 getActivity().getSharedPreferences(
                         getString(R.string.keys_shared_prefs),
                         Context.MODE_PRIVATE);
-        //retrieve the stored credentials from SharedPrefs
         if (prefs.contains(getString(R.string.keys_prefs_email)) &&
                 prefs.contains(getString(R.string.keys_prefs_password))) {
 
@@ -73,8 +73,6 @@ public class LoginFragment extends Fragment {
         }
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -89,119 +87,31 @@ public class LoginFragment extends Fragment {
         b.setOnClickListener(butt -> onLoginClicked());
         b = view.findViewById(R.id.button_login_register);
         b.setOnClickListener(butt -> onRegisterClicked());
-
-
     }
-    /*
 
-     */
+
     private void onLoginClicked() {
         View v = getView();
 
-        EditText email =  v.findViewById(R.id.editText_login_email);
+        EditText email = v.findViewById(R.id.editText_login_email);
         EditText pw = v.findViewById(R.id.editText_login_pw);
-        if(MainActivity.validateEmail(email) && MainActivity.validatePassword(pw)) {
+        if (MainActivity.validateEmail(email) && MainActivity.validatePassword(pw)) {
             doLogin(new Credentials.Builder(
                     email.getText().toString(), pw.getText().toString()
             ).build());
-
-//            Credentials credentials = new Credentials.Builder(
-//                    email.getText().toString(),
-//                    pw.getText().toString())
-//                    .build();
-//            //build the web service URL
-//            Uri uri = new Uri.Builder()
-//                    .scheme("https")
-//                    .appendPath(getString(R.string.ep_base_url))
-//                    .appendPath(getString(R.string.ep_login))
-//                    .build();
-//            //build the JSONObject
-//            JSONObject msg = credentials.asJSONObject();
-//            mCredentials = credentials;
-//            //instantiate and execute the AsyncTask.
-//            new SendPostAsyncTask.Builder(uri.toString(), msg)
-//                    .onPreExecute(this::handleLoginOnPre)
-//                    .onPostExecute(this::handleLoginOnPost)
-//                    .onCancelled(this::handleErrorsInTask)
-//                    .build().execute();
         }
     }
-//    /**
-//     * handle errors in Async task.
-//     * @param result the provided error message
-//     */
-//    private void handleErrorsInTask(String result) {
-//        Log.e("ASYNC_TASK_ERROR", result);
-//    }
+
+    /**
+     * handle errors in Async task.
+     *
+     * @param result the provided error message
+     */
     private void onRegisterClicked() {
         Navigation.findNavController(getView()).
                 navigate(R.id.action_nav_fragment_login_to_nav_fragment_register);
     }
-//
-//    /**
-//     * Handle the setup of the UI before the HTTP call to the webservice.
-//     */
-//    private void handleLoginOnPre() {
-//        getActivity().findViewById(R.id.layout_login_wait).setVisibility(View.VISIBLE);
-//    }
-//    /**
-//     * Handle onPostExecute of the AsynceTask. The result from our webservice is
-//     * a JSON formatted String. Parse it for success or failure.
-//     * @param result the JSON formatted String response from the web service
-//     */
-//    private void handleLoginOnPost(String result) {
-//        try {
-//            JSONObject resultsJSON = new JSONObject(result);
-//            boolean success =
-//                    resultsJSON.getBoolean(
-//                            getString(R.string.keys_json_success));
-//            Log.d("results", resultsJSON.toString());
-//
-//            String message =
-//                    resultsJSON.getString(
-//                            getString(R.string.keys_json_message));
-//
-//            if (success) {
-//                saveCredentials(mCredentials);
-//                LoginFragmentDirections.ActionNavFragmentLoginToHomeActivity
-//                        homeActivity =
-//                        LoginFragmentDirections
-//                                .actionNavFragmentLoginToHomeActivity(mCredentials);
-//                homeActivity.setJwt(
-//                        resultsJSON.getString(
-//                                getString(R.string.keys_json_jwt)));
-//                Navigation.findNavController(getView())
-//                        .navigate(homeActivity);
-//                //Remove this Activity from the back stack. Do not allow back navigation to login
-//                getActivity().finish();
-//                return;
-//            } else {
-//                //Login was unsuccessful. Don’t switch fragments and
-//                // inform the user
-//                Log.d("no success branch", "oop");
-//
-//                String errorMessage = "Login unsuccessful.";
-//                if (message != null) {
-//                    errorMessage= message;
-//                }
-//
-//                ((TextView) getView().findViewById(R.id.editText_login_email))
-//                        .setError(errorMessage);
-//            }
-//            getActivity().findViewById(R.id.layout_login_wait)
-//                    .setVisibility(View.GONE);
-//        } catch (JSONException e) {
-//            //It appears that the web service did not return a JSON formatted
-//            //String or it did not have what we expected in it.
-//            Log.e("JSON_PARSE_ERROR", result
-//                    + System.lineSeparator()
-//                    + e.getMessage());
-//            getActivity().findViewById(R.id.layout_login_wait)
-//                    .setVisibility(View.GONE);
-//            ((TextView) getView().findViewById(R.id.editText_login_email))
-//                    .setError("Login Unsuccessful");
-//        }
-//    }
+
 
     private void saveCredentials(final Credentials credentials) {
         SharedPreferences prefs =
@@ -213,32 +123,17 @@ public class LoginFragment extends Fragment {
         prefs.edit().putString(getString(R.string.keys_prefs_password), credentials.getPassword()).apply();
     }
 
-
     private void doLogin(Credentials credentials) {
-        //build the web service URL
         Uri uri = new Uri.Builder()
                 .scheme("https")
                 .appendPath(getString(R.string.ep_base_url))
                 .appendPath(getString(R.string.ep_login))
-//                .appendPath(getString(R.string.ep_pushy))
                 .build();
-
-        //build the JSONObject
-//        JSONObject msg = credentials.asJSONObject();
 
         mCredentials = credentials;
 
         new AttemptLoginTask().execute(uri.toString());
-        //instantiate and execute the AsyncTask.
-        //Feel free to add a handler for onPreExecution so that a progress bar
-        //is displayed or maybe disable buttons.
-//        new SendPostAsyncTask.Builder(uri.toString(), msg)
-//                .onPreExecute(this::handleLoginOnPre)
-//                .onPostExecute(this::handleLoginOnPost)
-//                .onCancelled(this::handleErrorsInTask)
-//                .build().execute();
     }
-
 
     class AttemptLoginTask extends AsyncTask<String, Void, String> {
 
@@ -259,8 +154,7 @@ public class LoginFragment extends Fragment {
 
                 //subscribe to a topic (this is a Blocking call)
                 Pushy.subscribe("all", getActivity().getApplicationContext());
-            }
-            catch (Exception exc) {
+            } catch (Exception exc) {
 
                 cancel(true);
                 // Return exc to onCancelled
@@ -294,7 +188,7 @@ public class LoginFragment extends Fragment {
                 InputStream content = urlConnection.getInputStream();
                 BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
                 String s = "";
-                while((s = buffer.readLine()) != null) {
+                while ((s = buffer.readLine()) != null) {
                     response.append(s);
                 }
                 publishProgress();
@@ -303,7 +197,7 @@ public class LoginFragment extends Fragment {
                         + e.getMessage());
                 cancel(true);
             } finally {
-                if(urlConnection != null) {
+                if (urlConnection != null) {
                     urlConnection.disconnect();
                 }
             }
@@ -323,7 +217,7 @@ public class LoginFragment extends Fragment {
             super.onPostExecute(result);
 
             try {
-                Log.d("JSON result",result);
+                Log.d("JSON result", result);
                 JSONObject resultsJSON = new JSONObject(result);
                 boolean success = resultsJSON.getBoolean("success");
 
@@ -361,7 +255,7 @@ public class LoginFragment extends Fragment {
             } catch (JSONException e) {
                 //It appears that the web service didn’t return a JSON formatted String
                 //or it didn’t have what we expected in it.
-                Log.e("JSON_PARSE_ERROR",  result
+                Log.e("JSON_PARSE_ERROR", result
                         + System.lineSeparator()
                         + e.getMessage());
 
