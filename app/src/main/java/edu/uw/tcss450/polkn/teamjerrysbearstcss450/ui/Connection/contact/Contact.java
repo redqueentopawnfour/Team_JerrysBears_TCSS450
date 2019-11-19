@@ -23,6 +23,7 @@ public class Contact implements Serializable, Parcelable {
     private final Boolean mIsEmailVerified;
     private final Boolean mIsContactVerified;
     private final Integer mRequestNumber;   // If there is a request number, then the contact is the requester not the receiver
+    private final Integer mChatId;          // Default to 0
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     protected Contact(Parcel in) {
@@ -34,6 +35,7 @@ public class Contact implements Serializable, Parcelable {
         mIsEmailVerified = in.readBoolean();
         mIsContactVerified = in.readBoolean();
         mRequestNumber = in.readInt();
+        mChatId = in.readInt();
     }
 
     public static final Creator<Contact> CREATOR = new Creator<Contact>() {
@@ -65,6 +67,7 @@ public class Contact implements Serializable, Parcelable {
         dest.writeBoolean(mIsEmailVerified);
         dest.writeBoolean(mIsContactVerified);
         dest.writeInt(mRequestNumber);
+        dest.writeInt(mChatId);
     }
 
     /**
@@ -81,6 +84,7 @@ public class Contact implements Serializable, Parcelable {
         private Boolean mIsEmailVerified = false;
         private Boolean mIsContactVerified = false;
         private Integer mRequestNumber = 0;
+        private Integer mChatId = 0;
 
         /**
          * Constructs a new Builder.
@@ -156,6 +160,16 @@ public class Contact implements Serializable, Parcelable {
             mRequestNumber = val;
             return this;
         }
+
+        /**
+         * Add an optional chatid for the full contact.
+         * @param val an optional chatid for the full contact
+         * @return the Builder of this Contact
+         */
+        public Builder addChatId(final Integer val) {
+            mChatId = val;
+            return this;
+        }
     }
 
     private Contact(final Builder builder) {
@@ -167,6 +181,7 @@ public class Contact implements Serializable, Parcelable {
         this.mIsEmailVerified = builder.mIsEmailVerified;
         this.mIsContactVerified = builder.mIsContactVerified;
         this.mRequestNumber = builder.mRequestNumber;
+        this.mChatId = builder.mChatId;
     }
 
     public String getUsername() {
@@ -193,11 +208,19 @@ public class Contact implements Serializable, Parcelable {
         return mIsEmailVerified;
     }
 
-    public Boolean getmIsContactVerified() {
+    public Boolean getIsContactVerified() {
         return mIsContactVerified;
     }
 
-    public Integer getmRequestNumber() {
+    public Integer getRequestNumber() {
         return mRequestNumber;
     }
+
+    public Integer getChatId() {
+        return mChatId;
+    }
+
+   /* public Integer getmRequestNumber() {
+        return mRequestNumber;
+    }*/
 }

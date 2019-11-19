@@ -1,5 +1,6 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.drawable.Drawable;
@@ -16,7 +17,10 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragment.OnListFragmentInteractionListener;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
@@ -37,6 +41,7 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
     private Contact mMyProfile;
     private View mView;
     private String mUsername_requested;
+    private int mChatId;
 
     /*public MyContactRecyclerViewAdapter(List<Contact> items, HashMap drawableIds) {*/
     public MyContactRecyclerViewAdapter(List<Contact> items, HashMap drawableIds, Contact myProfile, OnListFragmentInteractionListener listener) {
@@ -60,13 +65,17 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         String username = mValues.get(position).getUsername();
         String firstName = mValues.get(position).getFirstName();
         String lastName = mValues.get(position).getLastName();
+        mChatId = mValues.get(position).getChatId();
+        Log.i("chat id: ", Integer.toString(mChatId));
+
+
         mUsername_requested = username;
         /*.setVisibility(View.GONE);*/
 
-        int requestNumber = mValues.get(position).getmRequestNumber();
+        int requestNumber = mValues.get(position).getRequestNumber();
         Log.i("Requestnum", Integer.toString(requestNumber));
 
-        Boolean contactVerified = mValues.get(position).getmIsContactVerified();
+        Boolean contactVerified = mValues.get(position).getIsContactVerified();
         Log.i("contact verified", Boolean.toString(contactVerified));
 
         String displayString = username;
@@ -92,7 +101,7 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         holder.mUsernameView.setText(displayString);
         Integer pos = new Integer(position);
         Drawable drawableIcon = mDrawableIds.get(pos);
-        drawableIcon.setBounds(0, 0, 60, 60);
+        drawableIcon.setBounds(0, 0, 120, 120);
         holder.mUsernameView.setCompoundDrawables(drawableIcon, null, null, null);
 
         holder.mAcceptButton.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +114,12 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
             @Override
             public void onClick(View v) {
                 rejectRequest();
+            }
+        });
+        holder.mChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openChat();
             }
         });
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -218,6 +233,11 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
                             mView.getContext().getString(R.string.keys_json_success));
 
             if (success) {
+                //mChatId = mValues.get(position).getChatId();
+                if (resultsJSON.has(mView.getContext().getResources().getString(R.string.keys_json_message))) {
+                    Log.i("contacts", "contacts");
+                }
+
                 mView.findViewById(R.id.imageButton_contact_accept).setVisibility(View.GONE);
                 /*mView.findViewById(R.id.imageButton_contact_reject).setVisibility(View.GONE);*/
                 mView.findViewById(R.id.text_contact_newContact).setVisibility(View.GONE);
@@ -239,6 +259,13 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
                     + System.lineSeparator()
                     + e.getMessage());
         }
+    }
+
+    private void openChat() {
+        MobileNavigationDirections.ActionGlobalNavChat directions
+                = ChatFragmentDirections.actionGlobalNavChat().setChatid(mChatId);
+
+        Navigation.findNavController(mView).navigate(directions);
     }
 
     /**

@@ -45,7 +45,7 @@ public class ChatFragment extends Fragment {
     private String mEmail;
     private String mJwToken;
     private String mSendUrl;
-
+    private int mChatId;
 
     private PushMessageReceiver mPushMessageReciever;
 
@@ -98,6 +98,13 @@ public class ChatFragment extends Fragment {
         mUserName = args.getUsername();
         mEmail = args.getEmail();
         mJwToken = args.getJwt();
+        mChatId = args.getChatid();
+        Log.i("chat id: ", Integer.toString(mChatId));
+
+        if (mChatId > 0) { // 0 is the default value which means no chat id has been passed
+            mMessageOutputTextView.append("CHAT ID: " + mChatId);
+        }
+
 
         //We will use this url every time the user hits send. Let's only build it once, ya?
         mSendUrl = new Uri.Builder()
@@ -107,7 +114,6 @@ public class ChatFragment extends Fragment {
                 .appendPath(getString(R.string.ep_messaging_send))
                 .build()
                 .toString();
-
     }
 
 
