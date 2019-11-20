@@ -2,7 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
-
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
@@ -14,29 +13,12 @@
             android:title="@string/menu_contacts" />
         <item
             android:id="@+id/nav_chat"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_chat_bubble_grey_24dp"
             android:title="@string/menu_chat" />
         <item
             android:id="@+id/nav_weather"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_cloud_black_24dp"
             android:title="@string/menu_weather" />
- <!--       <item
-            android:id="@+id/nav_addFriend"
-            android:icon="@drawable/ic_person_add_gold_24dp"
-            android:title="@string/settings_addContact" />-->
+
     </group>
-
-    <!--<item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/menu_share" />
-            <item
-                android:id="@+id/nav_notification"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/menu_notification" />
-        </menu>
-    </item>-->
-
 </menu>

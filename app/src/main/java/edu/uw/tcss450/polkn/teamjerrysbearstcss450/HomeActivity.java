@@ -1,8 +1,13 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -34,12 +40,14 @@ import org.json.JSONObject;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragmentArgs;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragmentDirections;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatMessageNotification;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.GetAsyncTask;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.PushReceiver;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
+
 import me.pushy.sdk.Pushy;
 
 public class HomeActivity extends AppCompatActivity {
@@ -53,15 +61,20 @@ public class HomeActivity extends AppCompatActivity {
     private MenuItem mViewOwnProfile;
     private MenuItem mChat;
     private Contact mMyProfile;
+    private ChatMessageNotification mChatMessage;
 
+    private ColorFilter mDefault;
+    private HomePushMessageReceiver mPushMessageReciever;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 //        FloatingActionButton fab = findViewById(R.id.fab);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -85,13 +98,42 @@ public class HomeActivity extends AppCompatActivity {
 
         navController.setGraph(R.navigation.mobile_navigation, getIntent().getExtras());
 
-        navigationView.setNavigationItemSelectedListener(this::onNavigationSelected);
-
         HomeActivityArgs args = HomeActivityArgs.fromBundle(getIntent().getExtras());
         mCredentials = args.getCredentials();
         mJwToken = args.getJwt();
         mEmail = args.getCredentials().getEmail();
+
+        Log.d("JWT", mJwToken);
+
         populateCurrentProfile();
+
+        if (args.getChatMessage() != null) {
+            MobileNavigationDirections.ActionGlobalNavChat directions =
+                    ChatFragmentDirections.actionGlobalNavChat().setJwt(mJwToken).setEmail(mEmail);
+            directions.setMessage(args.getChatMessage());
+            navController.navigate(directions);
+        }
+
+        navigationView.setNavigationItemSelectedListener(this::onNavigationSelected);
+        mDefault = toolbar.getNavigationIcon().getColorFilter();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mPushMessageReciever == null) {
+            mPushMessageReciever = new HomePushMessageReceiver();
+        }
+        IntentFilter iFilter = new IntentFilter(PushReceiver.RECEIVED_NEW_MESSAGE);
+        registerReceiver(mPushMessageReciever, iFilter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mPushMessageReciever != null) {
+            unregisterReceiver(mPushMessageReciever);
+        }
     }
 
     private boolean onNavigationSelected(final MenuItem menuItem) {
@@ -134,17 +176,28 @@ public class HomeActivity extends AppCompatActivity {
                 navController.navigate(R.id.nav_weather);
                 break;
             case R.id.nav_chat:
-                    MobileNavigationDirections.ActionGlobalNavChat directions =
-                            ChatFragmentDirections.actionGlobalNavChat()
-                                    .setEmail(mEmail)
-                                    .setJwt(mJwToken);
-                    Navigation.findNavController(this, R.id.nav_host_fragment)
-                            .navigate(directions);
+                ((Toolbar) findViewById(R.id.toolbar)).getNavigationIcon().setColorFilter(mDefault);
 
+                MobileNavigationDirections.ActionGlobalNavChat directions;
+                if (mChatMessage != null) {
 
-//                mAddContacts.setVisible(false);
-//                mViewOwnProfile.setVisible(false);
-//                navController.navigate(R.id.nav_chat);
+                    Log.d("Message", mChatMessage.getMessage());
+
+                    directions = ChatFragmentDirections.actionGlobalNavChat()
+                            .setEmail(mEmail)
+                            .setJwt(mJwToken)
+                            .setMessage(mChatMessage);
+                } else {
+                    directions = ChatFragmentDirections.actionGlobalNavChat()
+                            .setEmail(mEmail)
+                            .setJwt(mJwToken);
+                }
+
+                Navigation.findNavController(this, R.id.nav_host_fragment)
+                        .navigate(directions);
+
+                mAddContacts.setVisible(false);
+                mViewOwnProfile.setVisible(false);
                 break;
         }
         //Close the drawer
@@ -182,32 +235,15 @@ public class HomeActivity extends AppCompatActivity {
             logout();
             return true;
         } else if (id == 16908332) {
-            mAddContacts.setVisible(true);
-            mViewOwnProfile.setVisible(true);
-            mChat.setVisible(false);
-
-            Uri uri_contacts = new Uri.Builder()
-                    .scheme("https")
-                    .appendPath(getString(R.string.ep_base_url))
-                    .appendPath(getString(R.string.ep_contacts))
-                    .build();
-
-            String email = mCredentials.getEmail();
-            String json = "{\"email\":\"" + email + "\"}";
-
-            try {
-                JSONObject jsonEmail = new JSONObject(json);
-
-                Log.d("Email string", jsonEmail.toString());
-                Log.d("Email", jsonEmail.getString("email"));
-
-                new SendPostAsyncTask.Builder(uri_contacts.toString(), jsonEmail)
-                        .onPostExecute(this::handleContactsOnPostExecute)
-                        .build().execute();
-
-            } catch (Throwable tx) {
-                Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+            NavController navController =
+                    Navigation.findNavController(this, R.id.nav_host_fragment);
+            NavDestination nd = navController.getCurrentDestination();
+            if (nd.getId() == R.id.nav_addContactFragment) {
+                loadContacts();
+            } else if (nd.getId() == R.id.nav_viewProfileFragment) {
+                loadContacts();
             }
+            return super.onOptionsItemSelected(item);
         } else if (id == R.id.action_viewOwnProfile) {
             mAddContacts.setVisible(false);
             mViewOwnProfile.setVisible(false);
@@ -221,6 +257,35 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void loadContacts() {
+        mAddContacts.setVisible(true);
+        mViewOwnProfile.setVisible(true);
+        mChat.setVisible(false);
+
+        Uri uri_contacts = new Uri.Builder()
+                .scheme("https")
+                .appendPath(getString(R.string.ep_base_url))
+                .appendPath(getString(R.string.ep_contacts))
+                .build();
+
+        String email = mCredentials.getEmail();
+        String json = "{\"email\":\"" + email + "\"}";
+
+        try {
+            JSONObject jsonEmail = new JSONObject(json);
+
+            Log.d("Email string", jsonEmail.toString());
+            Log.d("Email", jsonEmail.getString("email"));
+
+            new SendPostAsyncTask.Builder(uri_contacts.toString(), jsonEmail)
+                    .onPostExecute(this::handleContactsOnPostExecute)
+                    .build().execute();
+
+        } catch (Throwable tx) {
+            Log.e("My App", "Could not parse malformed JSON: \"" + json + "\"");
+        }
     }
 
     @Override
@@ -260,7 +325,10 @@ public class HomeActivity extends AppCompatActivity {
                                         getString(R.string.keys_json_contact_email)))
                                 .addIsEmailVerified(jsonContact.getBoolean(
                                         getString(R.string.keys_json_contacts_isEmailVerified)))
-                               // .addIsContactVerified(false)
+                                .addRequestNumber(jsonContact.getInt(
+                                        getString(R.string.keys_json_contacts_requestNumber)))
+                                .addIsContactVerified(jsonContact.getBoolean(
+                                        getString(R.string.keys_json_contacts_isContactVerified)))
                                 .build();
                     }
 
@@ -268,7 +336,7 @@ public class HomeActivity extends AppCompatActivity {
                     mViewOwnProfile.setIcon(drawableId);
 
                     MobileNavigationDirections.ActionGlobalNavContactList directions
-                            = ContactFragmentDirections.actionGlobalNavContactList(contacts);
+                            = ContactFragmentDirections.actionGlobalNavContactList(contacts, mMyProfile);
 
                     Navigation.findNavController(this, R.id.nav_host_fragment)
                             .navigate(directions);
@@ -317,7 +385,6 @@ public class HomeActivity extends AppCompatActivity {
                             .addIsEmailVerified(jsonContact.getBoolean(
                                     getString(R.string.keys_json_contacts_isEmailVerified)))
                             .build();
-                    Log.d("other profile?", mMyProfile.toString());
                 } else {
                     Log.e("ERROR!", "No response");
                 }
@@ -364,6 +431,7 @@ public class HomeActivity extends AppCompatActivity {
 
         String email = mCredentials.getEmail();
         String json = "{\"email\":\"" + email + "\"}";
+
         try {
             JSONObject jsonEmail = new JSONObject(json);
 
@@ -376,19 +444,16 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-
-
     public void showChatIcon(Contact theContact) {
         mAddContacts.setVisible(false);
         mViewOwnProfile.setVisible(false);
 
-        if (theContact.getUsername().equals(mMyProfile.getUsername())) {
+        if (theContact.getUsername() == mMyProfile.getUsername()) {
             mChat.setVisible(false);
         } else {
             mChat.setVisible(true);
         }
     }
-
 
     // Deleting the Pushy device token must be done asynchronously. Good thing
     // we have something that allows us to do that.
@@ -422,7 +487,7 @@ public class HomeActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             //close the app
-//            finishAndRemoveTask();
+            finishAndRemoveTask();
 
 //            //or close this activity and bring back the Login
 //            Intent i = new Intent(this, MainActivity.class);
@@ -433,9 +498,36 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    //return a copy of the user of the apps email
-    public String getmMyEmail() {
-        return mMyProfile.getEmail();
-    }
+    /**
+     * A BroadcastReceiver that listens for messages sent from PushReceiver
+     */
+    private class HomePushMessageReceiver extends BroadcastReceiver {
 
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            NavController nc =
+                    Navigation.findNavController(HomeActivity.this, R.id.nav_host_fragment);
+            NavDestination nd = nc.getCurrentDestination();
+            if (nd.getId() != R.id.nav_chat) {
+
+                if (intent.hasExtra("SENDER") && intent.hasExtra("MESSAGE")) {
+
+                    String sender = intent.getStringExtra("SENDER");
+                    String messageText = intent.getStringExtra("MESSAGE");
+
+                    //change the hamburger icon to red alerting the user of the notification
+                    ((Toolbar) findViewById(R.id.toolbar)).getNavigationIcon()
+                            .setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+
+
+                    Log.d("HOME", sender + ": " + messageText);
+                    mChatMessage = new ChatMessageNotification.Builder(sender, messageText).build();
+                }
+            }
+        }
+    }
+    public String getmEmail() {
+        return mEmail;
+    }
 }

@@ -27,6 +27,11 @@
             android:name="username"
             app:argType="string"
             android:defaultValue='""' />
+        <argument
+            android:name="message"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatMessageNotification"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 
     <fragment
@@ -42,6 +47,9 @@
         <argument
             android:name="contact"
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact[]" />
+        <argument
+            android:name="profile"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact" />
     </fragment><action android:id="@+id/action_global_nav_contactList" app:destination="@id/nav_contactList"/>
     <fragment
         android:id="@+id/nav_addContactFragment"
@@ -49,7 +57,7 @@
         android:label="@string/settings_addContact"
         tools:layout="@layout/fragment_add_contact" />
     <fragment
-        android:id="@+id/viewProfileFragment"
+        android:id="@+id/nav_viewProfileFragment"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragment"
         android:label="View Profile"
         tools:layout="@layout/fragment_view_profile">
@@ -60,7 +68,7 @@
             android:name="contact"
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact" />
     </fragment>
-    <action android:id="@+id/action_global_viewProfileFragment" app:destination="@id/viewProfileFragment" />
+    <action android:id="@+id/action_global_viewProfileFragment" app:destination="@id/nav_viewProfileFragment" />
     <action android:id="@+id/action_global_nav_chat" app:destination="@id/nav_chat" />
 
 </navigation>

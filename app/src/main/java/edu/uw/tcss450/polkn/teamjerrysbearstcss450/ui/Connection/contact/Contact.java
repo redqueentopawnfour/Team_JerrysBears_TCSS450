@@ -21,7 +21,8 @@ public class Contact implements Serializable, Parcelable {
     private final String mLastName;
     private final String mEmail;
     private final Boolean mIsEmailVerified;
-   /* private final Boolean mIsContactVerified;*/
+    private final Boolean mIsContactVerified;
+    private final Integer mRequestNumber;   // If there is a request number, then the contact is the requester not the receiver
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     protected Contact(Parcel in) {
@@ -31,7 +32,8 @@ public class Contact implements Serializable, Parcelable {
         mLastName = in.readString();
         mEmail = in.readString();
         mIsEmailVerified = in.readBoolean();
-      /*  mIsContactVerified = in.readBoolean();*/
+        mIsContactVerified = in.readBoolean();
+        mRequestNumber = in.readInt();
     }
 
     public static final Creator<Contact> CREATOR = new Creator<Contact>() {
@@ -61,7 +63,8 @@ public class Contact implements Serializable, Parcelable {
         dest.writeString(mLastName);
         dest.writeString(mEmail);
         dest.writeBoolean(mIsEmailVerified);
-       /* dest.writeBoolean(mIsContactVerified);*/
+        dest.writeBoolean(mIsContactVerified);
+        dest.writeInt(mRequestNumber);
     }
 
     /**
@@ -76,7 +79,8 @@ public class Contact implements Serializable, Parcelable {
         private String mLastName = "";
         private String mEmail = "";
         private Boolean mIsEmailVerified = false;
-/*        private Boolean mIsContactVerified = false;*/
+        private Boolean mIsContactVerified = false;
+        private Integer mRequestNumber = 0;
 
         /**
          * Constructs a new Builder.
@@ -132,16 +136,26 @@ public class Contact implements Serializable, Parcelable {
             mIsEmailVerified = val;
             return this;
         }
-        /*
-        *//**
+
+        /**
          * Add an optional isContactVerified for the full contact.
-         * @param val an optional if contact is verified for the current user
+         * @param val an optional isContactVerified for the full contact
          * @return the Builder of this Contact
-         *//*
+         */
         public Builder addIsContactVerified(final Boolean val) {
             mIsContactVerified = val;
             return this;
-        }*/
+        }
+
+        /**
+         * Add an optional request number for the full contact.
+         * @param val an optional request number for the full contact
+         * @return the Builder of this Contact
+         */
+        public Builder addRequestNumber(final Integer val) {
+            mRequestNumber = val;
+            return this;
+        }
     }
 
     private Contact(final Builder builder) {
@@ -151,7 +165,8 @@ public class Contact implements Serializable, Parcelable {
         this.mLastName = builder.mLastName;
         this.mEmail = builder.mEmail;
         this.mIsEmailVerified = builder.mIsEmailVerified;
-        /*this.mIsContactVerified = builder.mIsContactVerified;*/
+        this.mIsContactVerified = builder.mIsContactVerified;
+        this.mRequestNumber = builder.mRequestNumber;
     }
 
     public String getUsername() {
@@ -178,7 +193,11 @@ public class Contact implements Serializable, Parcelable {
         return mIsEmailVerified;
     }
 
-   /* public Boolean getmIsContactVerified() {
+    public Boolean getmIsContactVerified() {
         return mIsContactVerified;
-    }*/
+    }
+
+    public Integer getmRequestNumber() {
+        return mRequestNumber;
+    }
 }

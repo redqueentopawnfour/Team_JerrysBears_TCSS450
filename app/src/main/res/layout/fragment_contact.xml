@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="49dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         app:cardCornerRadius="5dp">
 
         <LinearLayout
-            android:id="@+id/linearLayout"
+            android:id="@+id/linearlayout_contact_contact"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:orientation="vertical">
+            android:layout_height="67dp"
+            android:background="@drawable/customborder"
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/username"
-                android:layout_width="300dp"
+                android:id="@+id/text_contact_displayString"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:paddingTop="10dp"
+                android:layout_weight="0.5"
                 android:drawablePadding="5dp"
+                android:paddingTop="10dp"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -35,6 +38,78 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_conversion_absoluteHeight="21dp"
                 tools:layout_conversion_absoluteWidth="0dp" />
+
+            <TextView
+                android:id="@+id/text_contact_newContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="0.5"
+                android:drawablePadding="5dp"
+                android:paddingTop="10dp"
+                android:text="*NEW*"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textColor="#000000"
+                android:textStyle="italic"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_absoluteHeight="21dp"
+                tools:layout_conversion_absoluteWidth="0dp" />
+
+            <TextView
+                android:id="@+id/text_contact_pendingContact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="0.5"
+                android:drawablePadding="5dp"
+                android:paddingTop="10dp"
+                android:text="pending"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textColor="@color/colorAccent4"
+                android:textStyle="italic"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_absoluteHeight="21dp"
+                tools:layout_conversion_absoluteWidth="0dp" />
+
+            <ImageButton
+                android:id="@+id/imageButton_contact_accept"
+                style="@style/Widget.AppCompat.ImageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryAlpha"
+                android:visibility="gone"
+                android:paddingRight="10dp"
+                android:paddingLeft="10dp"
+                app:srcCompat="@drawable/ic_check_green_accept" />
+
+            <ImageButton
+                android:id="@+id/imageButton_contact_chat"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryAlpha"
+                android:visibility="gone"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                app:srcCompat="@drawable/ic_chat_bubble_outline_purple_24dp" />
+
+            <ImageButton
+                android:id="@+id/imageButton_contact_reject"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimaryAlpha"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_reject_red_24dp" />
+
 
             <!--   <TextView
                 android:id="@+id/firstName"

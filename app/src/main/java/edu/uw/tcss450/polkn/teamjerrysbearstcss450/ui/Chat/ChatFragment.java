@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -36,12 +37,12 @@ public class ChatFragment extends Fragment {
 
     private static final String TAG = "CHAT_FRAG";
 
-    private static final String CHAT_ID = "1";
+    private static final String CHAT_ID = "3";
 
     private TextView mMessageOutputTextView;
     private EditText mMessageInputEditText;
 
-    private String mUserNmae;
+    private String mUserName;
     private String mEmail;
     private String mJwToken;
     private String mSendUrl;
@@ -50,7 +51,6 @@ public class ChatFragment extends Fragment {
     private PushMessageReceiver mPushMessageReciever;
 
 
-//    private PushMessageReceiver mPushMessageReciever;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -81,13 +81,13 @@ public class ChatFragment extends Fragment {
         view.findViewById(R.id.button_chat_send).setOnClickListener(this::handleSendClick);
 
         ChatFragmentArgs args = ChatFragmentArgs.fromBundle(getArguments());
-//        if (args. != null) {
-//            mMessageOutputTextView.append(args.getMessage().getSender());
-//            mMessageOutputTextView.append(": ");
-//            mMessageOutputTextView.append(args.getMessage().getMessage());
-//            mMessageOutputTextView.append(System.lineSeparator());
-//            mMessageOutputTextView.append(System.lineSeparator());
-//        }
+        if (args.getMessage() != null) {
+            mMessageOutputTextView.append(args.getMessage().getSender());
+            mMessageOutputTextView.append(": ");
+            mMessageOutputTextView.append(args.getMessage().getMessage());
+            mMessageOutputTextView.append(System.lineSeparator());
+            mMessageOutputTextView.append(System.lineSeparator());
+        }
     }
 
 
@@ -96,7 +96,7 @@ public class ChatFragment extends Fragment {
         super.onStart();
 
         ChatFragmentArgs args = ChatFragmentArgs.fromBundle(getArguments());
-        mUserNmae = args.getUsername();
+        mUserName = args.getUsername();
         mEmail = args.getEmail();
         mJwToken = args.getJwt();
 
@@ -108,19 +108,19 @@ public class ChatFragment extends Fragment {
                 .appendPath(getString(R.string.ep_messaging_send))
                 .build()
                 .toString();
-
     }
 
 
     private void handleSendClick(final View theButton) {
         String msg = mMessageInputEditText.getText().toString();
-
+        mMessageInputEditText.onEditorAction(EditorInfo.IME_ACTION_DONE);
+        mMessageInputEditText.setText("");
         JSONObject messageJson = new JSONObject();
         try {
             messageJson.put("email", mEmail);
-            messageJson.put("username", mUserNmae);
+            messageJson.put("username", mUserName);
             messageJson.put("message", msg);
-            messageJson.put("chatId", CHAT_ID);
+            messageJson.put("chatid", CHAT_ID);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -137,9 +137,12 @@ public class ChatFragment extends Fragment {
             //This is the result from the web service
             JSONObject res = new JSONObject(result);
 
-            if(res.has("success")  && res.getBoolean("success")) {
+            if(res.has("success")  && !res.getBoolean("success")) {
                 //The web service got our message. Time to clear out the input EditText
-                mMessageInputEditText.setText("");
+                if(res.has(getString(R.string.keys_json_message))){
+                    mMessageInputEditText.setError(res.getString(getString(R.string.keys_json_message)));
+                }
+
 
                 //its up to you to decide if you want to send the message to the output here
                 //or wait for the message to come back from the web service.

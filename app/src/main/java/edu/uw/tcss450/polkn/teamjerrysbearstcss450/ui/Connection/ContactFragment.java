@@ -1,6 +1,9 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -15,19 +18,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivityArgs;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.PushReceiver;
 
 /**
  * A fragment representing a list of Items.
@@ -37,13 +38,13 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact
  */
 public class ContactFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private List<Contact> mContacts;
     private HashMap iconDrawables;
+    private Contact mProfile;
+    private PushMessageReceiver mPushMessageReciever;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -52,7 +53,6 @@ public class ContactFragment extends Fragment {
     public ContactFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static ContactFragment newInstance(int columnCount) {
         ContactFragment fragment = new ContactFragment();
@@ -68,7 +68,7 @@ public class ContactFragment extends Fragment {
 
         ContactFragmentArgs args = ContactFragmentArgs.fromBundle(getArguments());
         mContacts = new ArrayList<>(Arrays.asList(args.getContact()));
-
+        mProfile = args.getProfile();
         iconDrawables = new HashMap<Integer, Drawable>();
     }
 
@@ -87,9 +87,27 @@ public class ContactFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             populateIconDrawables(context);
-            recyclerView.setAdapter(new MyContactRecyclerViewAdapter(mContacts, iconDrawables, this::displayContact));
+            recyclerView.setAdapter(new MyContactRecyclerViewAdapter(mContacts, iconDrawables, mProfile, this::displayContact));
         }
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mPushMessageReciever == null) {
+            mPushMessageReciever = new PushMessageReceiver();
+        }
+        IntentFilter iFilter = new IntentFilter(PushReceiver.RECEIVED_NEW_MESSAGE);
+        getActivity().registerReceiver(mPushMessageReciever, iFilter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mPushMessageReciever != null){
+            getActivity().unregisterReceiver(mPushMessageReciever);
+        }
     }
 
     private void populateIconDrawables(Context context) {
@@ -114,7 +132,6 @@ public class ContactFragment extends Fragment {
                 .navigate(directions);
     }
 
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -129,4 +146,33 @@ public class ContactFragment extends Fragment {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Contact item);
     }
+
+
+
+    /**
+     * A BroadcastReceiver that listens for messages sent from PushReceiver
+     */
+    private class PushMessageReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.hasExtra("SENDER") && intent.hasExtra("MESSAGE")) {
+
+                String sender = intent.getStringExtra("SENDER");
+                String messageText = intent.getStringExtra("MESSAGE");
+
+                Toast toast = Toast.makeText(getView().getContext(), "Sender " + sender + " has sent you a connection request.",
+                        Toast.LENGTH_LONG);
+                View view = toast.getView();
+                view.setBackgroundResource(R.drawable.customborder_goldblack);
+                /*TextView text = (TextView) view.findViewById(android.R.id.message);*/
+                toast.show();
+
+              /*  mMessageOutputTextView.append(sender + ":" + messageText);
+                mMessageOutputTextView.append(System.lineSeparator());
+                mMessageOutputTextView.append(System.lineSeparator());*/
+            }
+        }
+    }
+
 }

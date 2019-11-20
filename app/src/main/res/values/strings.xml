@@ -64,7 +64,10 @@
     <string name="keys_json_contact_firstname">firstname</string>
     <string name="keys_json_contact_lastname">lastname</string>
     <string name="keys_json_contact_usericon">usericon</string>
-    <string name="keys_json_contacts_isEmailVerified">isverified</string>
+    <string name="keys_json_contacts_isEmailVerified">emailverified</string>
+    <string name="keys_json_contacts_isContactVerified">contactverified</string>
+    <string name="keys_json_contacts_requestNumber">requestnumber</string>
+
 
     <string name="keys_contact_view">Random key</string>
     <string name="keys_chat_myemail">myemail</string>
@@ -84,6 +87,9 @@
     <string name="keys_prefs_email">traffic_light_wont_let_me_through</string>
     <string name="keys_prefs_password">see_the_city_see_the_zoo</string>
     <string name="InputField">Text Message</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

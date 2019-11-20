@@ -94,7 +94,7 @@ public class ViewProfileFragment extends Fragment {
         emailView.setText(mUser.getEmail());
         usernameView.setText(mUser.getUsername());
         userIconView.setImageResource(drawableId);
-        Log.d("viewing profile", mUser.getEmail().toString());
+
         if (isEmailVerified == true) {
             isEmailVerifiedView.setVisibility(View.VISIBLE);
         }
@@ -124,12 +124,11 @@ public class ViewProfileFragment extends Fragment {
                 .appendPath(getString(R.string.ep_messaging_getall))
                 .build()
                 .toString();
-        String myEmail = ((HomeActivity) getActivity()).getmMyEmail();
+        String myEmail = ((HomeActivity) getActivity()).getmEmail();
         String theirEmail = mUser.getEmail();
-        String[] emails = {myEmail, mUser.getEmail()};
-        Arrays.sort(emails);
-        int chatId = Objects.hash(emails);
         JSONObject jsonObject = new JSONObject();
+        //hardcoded for test fix later
+        int chatId = 2;
         try {
             jsonObject.put(getString(R.string.keys_chat_id), chatId);
             jsonObject.put(getString(R.string.keys_chat_theiremail), theirEmail);

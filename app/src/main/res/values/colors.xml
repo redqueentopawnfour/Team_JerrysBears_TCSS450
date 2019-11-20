@@ -7,9 +7,10 @@
     <color name="colorAccent2">#a38e50</color>
     <color name="colorAccent3">#c2ab69</color>
     #
+    <color name="colorAccent4">#696969</color>
     <color name="blogText">#FFFFFF</color>
 
-    <color name="border">#8877a9</color>
+    <color name="border">#8877A9</color>
     <color name="fill">#F3EFF3</color>
     <color name="fill2">#F3FFF4</color>
     <color name="fill3">#D0F7E5</color>

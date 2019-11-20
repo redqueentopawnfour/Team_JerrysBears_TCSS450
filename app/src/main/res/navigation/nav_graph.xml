@@ -50,6 +50,11 @@
             android:name="jwt"
             app:argType="string"
             android:defaultValue='""' />
+        <argument
+            android:name="chatMessage"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatMessageNotification"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </activity>
 
 
