@@ -65,7 +65,7 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         String username = mValues.get(position).getUsername();
         String firstName = mValues.get(position).getFirstName();
         String lastName = mValues.get(position).getLastName();
-        mChatId = mValues.get(position).getChatId();
+//        mChatId = mValues.get(position).getChatId();
         Log.i("chat id: ", Integer.toString(mChatId));
 
 
@@ -119,7 +119,7 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         holder.mChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openChat();
+                openChat(mValues.get(position).getChatId());
             }
         });
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -261,9 +261,9 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         }
     }
 
-    private void openChat() {
+    private void openChat(int chatId) {
         MobileNavigationDirections.ActionGlobalNavChat directions
-                = ChatFragmentDirections.actionGlobalNavChat().setChatid(mChatId);
+                = ChatFragmentDirections.actionGlobalNavChat().setChatid(chatId);
 
         Navigation.findNavController(mView).navigate(directions);
     }
