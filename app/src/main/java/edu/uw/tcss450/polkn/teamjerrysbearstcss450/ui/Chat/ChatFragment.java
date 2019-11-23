@@ -62,6 +62,10 @@ public class ChatFragment extends Fragment {
                 ViewModelProviders.of(this).get(ChatViewModel.class);
         View root = inflater.inflate(R.layout.fragment_chat, container, false);
         final TextView textView = root.findViewById(R.id.text_chat_message_display);
+
+        ((HomeActivity)getActivity()).hideViewProfile();
+        ((HomeActivity)getActivity()).hideAddUser();
+
         chatViewModel.getText().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -92,6 +96,10 @@ public class ChatFragment extends Fragment {
             mMessageOutputTextView.append(System.lineSeparator());
             mMessageOutputTextView.append(System.lineSeparator());
         }
+
+
+
+
     }
 
 
