@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,9 +27,11 @@ import org.json.JSONObject;
 
 import java.security.spec.PSSParameterSpec;
 
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.PushReceiver;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
 
 public class ChatFragment extends Fragment {
 
@@ -98,13 +101,15 @@ public class ChatFragment extends Fragment {
 
         ChatFragmentArgs args = ChatFragmentArgs.fromBundle(getArguments());
         mUserName = args.getUsername();
-        mEmail = args.getEmail();
+        Credentials cred = ((HomeActivity)getActivity()).getmCredentials();
+        mEmail = cred.getEmail();
+        mUserName = cred.getUsername();
         mJwToken = args.getJwt();
         mChatId = args.getChatid();
         Log.i("chat id: ", Integer.toString(mChatId));
 
         if (mChatId > 0) { // 0 is the default value which means no chat id has been passed
-            mMessageOutputTextView.append("CHAT ID: " + mChatId);
+            mMessageOutputTextView.append("CHAT ID: " + mChatId + '\n');
         }
 
 
@@ -123,12 +128,14 @@ public class ChatFragment extends Fragment {
         String msg = mMessageInputEditText.getText().toString();
         mMessageInputEditText.onEditorAction(EditorInfo.IME_ACTION_DONE);
         mMessageInputEditText.setText("");
+        Log.d("this should be the chatid", mChatId + "");
+        Log.d("email? and then username?", mEmail + mUserName);
         JSONObject messageJson = new JSONObject();
         try {
             messageJson.put("email", mEmail);
             messageJson.put("username", mUserName);
             messageJson.put("message", msg);
-            messageJson.put("chatid", CHAT_ID);
+            messageJson.put("chatid", mChatId);
         } catch (JSONException e) {
             e.printStackTrace();
         }
