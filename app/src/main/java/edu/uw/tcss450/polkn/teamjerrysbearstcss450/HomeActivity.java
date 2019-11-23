@@ -470,6 +470,15 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    public void hideViewProfile() {
+        mViewOwnProfile.setVisible(false);
+    }
+
+    public void hideAddUser() {
+        mAddContacts.setVisible(false);
+    }
+
+
     // Deleting the Pushy device token must be done asynchronously. Good thing
     // we have something that allows us to do that.
     class DeleteTokenAsyncTask extends AsyncTask<Void, Void, Void> {
