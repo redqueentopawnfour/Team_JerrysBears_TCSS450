@@ -45,6 +45,7 @@ public class ContactFragment extends Fragment {
     private HashMap iconDrawables;
     private Contact mProfile;
     private PushMessageReceiver mPushMessageReciever;
+    private String mJwt;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -69,6 +70,7 @@ public class ContactFragment extends Fragment {
         ContactFragmentArgs args = ContactFragmentArgs.fromBundle(getArguments());
         mContacts = new ArrayList<>(Arrays.asList(args.getContact()));
         mProfile = args.getProfile();
+        mJwt = args.getJwt();
         iconDrawables = new HashMap<Integer, Drawable>();
     }
 
@@ -87,7 +89,7 @@ public class ContactFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             populateIconDrawables(context);
-            recyclerView.setAdapter(new MyContactRecyclerViewAdapter(mContacts, iconDrawables, mProfile, this::displayContact));
+            recyclerView.setAdapter(new MyContactRecyclerViewAdapter(mContacts, mJwt, iconDrawables, mProfile, this::displayContact));
         }
         return view;
     }

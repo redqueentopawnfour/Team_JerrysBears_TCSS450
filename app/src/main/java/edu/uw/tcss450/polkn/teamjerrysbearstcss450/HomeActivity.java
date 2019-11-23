@@ -255,6 +255,17 @@ public class HomeActivity extends AppCompatActivity {
             Navigation.findNavController(this, R.id.nav_host_fragment)
                     .navigate(directions);
             return true;
+        } else if (id == R.id.action_chat) {
+            mAddContacts.setVisible(false);
+            mViewOwnProfile.setVisible(false);
+            mChat.setVisible(false);
+
+            MobileNavigationDirections.ActionGlobalNavChat directions
+                    = ChatFragmentDirections.actionGlobalNavChat();
+
+            Navigation.findNavController(this, R.id.nav_host_fragment)
+                    .navigate(directions);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -329,6 +340,8 @@ public class HomeActivity extends AppCompatActivity {
                                         getString(R.string.keys_json_contacts_requestNumber)))
                                 .addIsContactVerified(jsonContact.getBoolean(
                                         getString(R.string.keys_json_contacts_isContactVerified)))
+                                .addChatId(jsonContact.getInt(
+                                        getString(R.string.keys_json_contacts_chatId)))
                                 .build();
                     }
 
@@ -336,7 +349,7 @@ public class HomeActivity extends AppCompatActivity {
                     mViewOwnProfile.setIcon(drawableId);
 
                     MobileNavigationDirections.ActionGlobalNavContactList directions
-                            = ContactFragmentDirections.actionGlobalNavContactList(contacts, mMyProfile);
+                            = ContactFragmentDirections.actionGlobalNavContactList(contacts, mMyProfile).setJwt(mJwToken);
 
                     Navigation.findNavController(this, R.id.nav_host_fragment)
                             .navigate(directions);
@@ -451,7 +464,8 @@ public class HomeActivity extends AppCompatActivity {
         if (theContact.getUsername() == mMyProfile.getUsername()) {
             mChat.setVisible(false);
         } else {
-            mChat.setVisible(true);
+           // mChat.setVisible(true);
+            mChat.setVisible(false);    // NP 11/28/2019 set false for rn until figure out how to pass it a chatId through the global action from homeActivity
         }
     }
 
@@ -527,6 +541,10 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
+
+  /*  public void setChatId(int chatId) {
+        mChatId = chatId;
+    }*/
     public String getmEmail() {
         return mEmail;
     }
