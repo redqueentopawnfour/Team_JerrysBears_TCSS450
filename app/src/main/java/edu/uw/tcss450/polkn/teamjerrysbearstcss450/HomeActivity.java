@@ -5,15 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import android.util.Log;
 import android.view.MenuItem;
@@ -33,15 +29,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragmentArgs;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatMessageNotification;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragment;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragmentDirections;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactNotification;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.PushReceiver;
@@ -60,8 +58,11 @@ public class HomeActivity extends AppCompatActivity {
     private MenuItem mAddContacts;
     private MenuItem mViewOwnProfile;
     private MenuItem mChat;
+    private MenuItem mNavContactList;
     private Contact mMyProfile;
     private ChatMessageNotification mChatMessage;
+    private ContactNotification mContactNotification;
+    private Contact[] mContacts;
 
     private ColorFilter mDefault;
     private HomePushMessageReceiver mPushMessageReciever;
@@ -94,20 +95,30 @@ public class HomeActivity extends AppCompatActivity {
         mCredentials = args.getCredentials();
         mJwToken = args.getJwt();
         mEmail = args.getCredentials().getEmail();
-
         Log.d("JWT", mJwToken);
 
         populateCurrentProfile();
 
-        if (args.getChatMessage() != null) {
-            MobileNavigationDirections.ActionGlobalNavChat directions =
-                    ChatFragmentDirections.actionGlobalNavChat().setJwt(mJwToken).setEmail(mEmail);
-            directions.setMessage(args.getChatMessage());
-            navController.navigate(directions);
-        }
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        if (args.getChatMessage() != null) {
+                            MobileNavigationDirections.ActionGlobalNavChat directions =
+                                    ChatFragmentDirections.actionGlobalNavChat().setJwt(mJwToken).setEmail(mEmail);
+                            directions.setMessage(args.getChatMessage());
+                            navController.navigate(directions);
+                        } else if (args.getContactMessage() != null) {
+                           loadContacts();
+                        }
+                    }
+                },
+                500);
 
         navigationView.setNavigationItemSelectedListener(this::onNavigationSelected);
         mDefault = toolbar.getNavigationIcon().getColorFilter();
+
+        Menu menuNav = navigationView.getMenu();
+        mNavContactList = menuNav.findItem(R.id.nav_contactList);
     }
 
     @Override
@@ -134,6 +145,9 @@ public class HomeActivity extends AppCompatActivity {
 
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
+                mChat.setVisible(false);                        // NP 11/23/2019- Set icons to invisible from here when navigating to Home - all other icon handling done in individual fragments
+                mViewOwnProfile.setVisible(false);              // but since HomeFragment loads before the menu inflater, HomeFragment must be handled from HomeActivity
+                mAddContacts.setVisible(false);
                 navController.navigate(R.id.nav_home, getIntent().getExtras());
                 break;
             case R.id.nav_contactList:
@@ -192,7 +206,6 @@ public class HomeActivity extends AppCompatActivity {
         mAddContacts = menu.findItem(R.id.action_addContact);
         mViewOwnProfile = menu.findItem(R.id.action_viewOwnProfile);
         mChat = menu.findItem(R.id.action_chat);
-
         return true;
     }
 
@@ -228,7 +241,7 @@ public class HomeActivity extends AppCompatActivity {
             Navigation.findNavController(this, R.id.nav_host_fragment)
                     .navigate(directions);
             return true;
-        }  else if (id == R.id.action_chat) {
+        } else if (id == R.id.action_chat) {
             MobileNavigationDirections.ActionGlobalNavChat directions
                     = ChatFragmentDirections.actionGlobalNavChat();
 
@@ -280,48 +293,61 @@ public class HomeActivity extends AppCompatActivity {
                             getString(R.string.keys_json_success));
 
             if (success) {
-                if (resultsJSON.has(getString(R.string.keys_json_message))) {
-                    JSONArray data = resultsJSON.getJSONArray(
-                            getString(R.string.keys_json_message));
-                    Contact[] contacts = new Contact[data.length()];
+                String message = resultsJSON.getString(getString(R.string.keys_json_message));
 
-                    for (int i = 0; i < data.length(); i++) {
-                        JSONObject jsonContact = data.getJSONObject(i);
-
-                        contacts[i] = new Contact.Builder(
-                                jsonContact.getString(
-                                        getString(R.string.keys_json_contact_username)),
-                                jsonContact.getString(
-                                        getString(R.string.keys_json_contact_usericon)))
-                                .addFirstName(jsonContact.getString(
-                                        getString(R.string.keys_json_contact_firstname)))
-                                .addLastName(jsonContact.getString(
-                                        getString(R.string.keys_json_contact_lastname)))
-                                .addEmail(jsonContact.getString(
-                                        getString(R.string.keys_json_contact_email)))
-                                .addIsEmailVerified(jsonContact.getBoolean(
-                                        getString(R.string.keys_json_contacts_isEmailVerified)))
-                                .addRequestNumber(jsonContact.getInt(
-                                        getString(R.string.keys_json_contacts_requestNumber)))
-                                .addIsContactVerified(jsonContact.getBoolean(
-                                        getString(R.string.keys_json_contacts_isContactVerified)))
-                                .addChatId(jsonContact.getInt(
-                                        getString(R.string.keys_json_contacts_chatId)))
-                                .build();
-                    }
-
+                if (message.equals("no contacts found")) {
                     int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
                     mViewOwnProfile.setIcon(drawableId);
 
                     MobileNavigationDirections.ActionGlobalNavContactList directions
-                            = ContactFragmentDirections.actionGlobalNavContactList(contacts, mMyProfile);
+                            = ContactFragmentDirections.actionGlobalNavContactList(mMyProfile);
 
                     Navigation.findNavController(this, R.id.nav_host_fragment)
                             .navigate(directions);
                 } else {
-                    Log.e("ERROR!", "No response");
-                }
+                    if (resultsJSON.has(getString(R.string.keys_json_message))) {
+                        JSONArray data = resultsJSON.getJSONArray(
+                                getString(R.string.keys_json_message));
+                        mContacts  = new Contact[data.length()];
 
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject jsonContact = data.getJSONObject(i);
+
+                            mContacts[i] = new Contact.Builder(
+                                    jsonContact.getString(
+                                            getString(R.string.keys_json_contact_username)),
+                                    jsonContact.getString(
+                                            getString(R.string.keys_json_contact_usericon)))
+                                    .addFirstName(jsonContact.getString(
+                                            getString(R.string.keys_json_contact_firstname)))
+                                    .addLastName(jsonContact.getString(
+                                            getString(R.string.keys_json_contact_lastname)))
+                                    .addEmail(jsonContact.getString(
+                                            getString(R.string.keys_json_contact_email)))
+                                    .addIsEmailVerified(jsonContact.getBoolean(
+                                            getString(R.string.keys_json_contacts_isEmailVerified)))
+                                    .addRequestNumber(jsonContact.getInt(
+                                            getString(R.string.keys_json_contacts_requestNumber)))
+                                    .addIsContactVerified(jsonContact.getBoolean(
+                                            getString(R.string.keys_json_contacts_isContactVerified)))
+                                    .addChatId(jsonContact.getInt(
+                                            getString(R.string.keys_json_contacts_chatId)))
+                                    .build();
+                        }
+
+                        int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
+                        mViewOwnProfile.setIcon(drawableId);
+                        MobileNavigationDirections.ActionGlobalNavContactList directions
+                                = ContactFragmentDirections.actionGlobalNavContactList(mMyProfile);
+
+                        directions.setContact(mContacts);
+
+                        Navigation.findNavController(this, R.id.nav_host_fragment)
+                                .navigate(directions);
+                    } else {
+                        Log.e("ERROR!", "No response");
+                    }
+                }
             } else {
                 // failure
             }
@@ -427,23 +453,33 @@ public class HomeActivity extends AppCompatActivity {
     }*/
 
     public void hideChatIcon() {
-        mChat.setVisible(false);
+        if (mChat != null) {
+            mChat.setVisible(false);
+        }
     }
 
     public void hideViewProfile() {
-        mViewOwnProfile.setVisible(false);
+        if (mViewOwnProfile != null) {
+            mViewOwnProfile.setVisible(false);
+        }
     }
 
     public void showViewProfile() {
-        mViewOwnProfile.setVisible(true);
+        if (mViewOwnProfile != null) {
+            mViewOwnProfile.setVisible(true);
+        }
     }
 
     public void hideAddUser() {
-        mAddContacts.setVisible(false);
+        if (mAddContacts != null) {
+            mAddContacts.setVisible(false);
+        }
     }
 
     public void showAddUser() {
-        mAddContacts.setVisible(true);
+        if (mAddContacts != null) {
+            mAddContacts.setVisible(true);
+        }
     }
 
 
@@ -501,22 +537,69 @@ public class HomeActivity extends AppCompatActivity {
             NavController nc =
                     Navigation.findNavController(HomeActivity.this, R.id.nav_host_fragment);
             NavDestination nd = nc.getCurrentDestination();
+
+            Log.i("PUSHY type", intent.getStringExtra("TYPE"));
+            Log.i("PUSHY message", intent.getStringExtra("MESSAGE"));
+            Log.i("PUSHY sender", intent.getStringExtra("SENDER"));
+
             if (nd.getId() != R.id.nav_chat) {
-
-                if (intent.hasExtra("SENDER") && intent.hasExtra("MESSAGE")) {
-
+                if (intent.hasExtra("SENDER") && intent.hasExtra("MESSAGE") && intent.hasExtra("TYPE")) {
+                    String type = intent.getStringExtra("TYPE");
                     String sender = intent.getStringExtra("SENDER");
                     String messageText = intent.getStringExtra("MESSAGE");
 
-                    //change the hamburger icon to red alerting the user of the notification
-                    ((Toolbar) findViewById(R.id.toolbar)).getNavigationIcon()
-                            .setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                    if (type.equals("msg")) {
+                        Toast toast = Toast.makeText(getBaseContext(), sender + ": " + messageText,
+                                Toast.LENGTH_LONG);
+                        View view = toast.getView();
+                        view.setBackgroundResource(R.drawable.customborder_greypurple);
+                        toast.show();
 
+                       /* //change the hamburger icon to red alerting the user of the notification
+                        ((Toolbar) findViewById(R.id.toolbar)).getNavigationIcon()
+                                .setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);*/
 
-                    Log.d("HOME", sender + ": " + messageText);
-                    mChatMessage = new ChatMessageNotification.Builder(sender, messageText).build();
+                        mChatMessage = new ChatMessageNotification.Builder(sender, messageText).build();
+
+                    } else if (type.equals("connectionReq")) {
+                        Toast toast = Toast.makeText(getBaseContext(), messageText + " from " + sender,
+                                Toast.LENGTH_LONG);
+                        View view = toast.getView();
+                        view.setBackgroundResource(R.drawable.customborder_greypurple);
+                        toast.show();
+                    } else if (type.equals("connectionAccepted")) {
+                        Toast toast = Toast.makeText(getBaseContext(), sender + " has accepted your connection.",
+                                Toast.LENGTH_LONG);
+                        View view = toast.getView();
+                        view.setBackgroundResource(R.drawable.customborder_greypurple);
+                        toast.show();
+                    } else if (type.equals("connectionRejected")) {
+                        Toast toast = Toast.makeText(getBaseContext(), sender + " has rejected your connection.",
+                                Toast.LENGTH_LONG);
+                        View view = toast.getView();
+                        view.setBackgroundResource(R.drawable.customborder_greypurple);
+                        toast.show();
+
+                        mContactNotification = new ContactNotification.Builder(sender, messageText).build();
+                    }
                 }
             }
         }
+    }
+
+    public void reloadContactList() {
+        onNavigationSelected(mNavContactList);
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        NavController navController =
+                Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavDestination nd = navController.getCurrentDestination();
+        if (nd.getId() == R.id.nav_viewProfileFragment || nd.getId() == R.id.nav_addContactFragment) {
+            reloadContactList();                                                    // NP 11/23/2019 -ONLY show View Profile and Add Contact icons in Contacts so that this Back press works as expected
+        }                                                                           // , otherwise contact list doesn't load properly on back pressed
+        super.onBackPressed();  // optional depending on your needs
     }
 }

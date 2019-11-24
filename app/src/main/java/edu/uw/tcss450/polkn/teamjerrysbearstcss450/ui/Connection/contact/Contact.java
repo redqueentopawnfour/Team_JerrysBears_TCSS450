@@ -64,8 +64,8 @@ public class Contact implements Serializable, Parcelable {
         dest.writeString(mFirstName);
         dest.writeString(mLastName);
         dest.writeString(mEmail);
-        dest.writeBoolean(mIsEmailVerified);
-        dest.writeBoolean(mIsContactVerified);
+        dest.writeByte((byte) (mIsEmailVerified ? 1 : 0));
+        dest.writeByte((byte) (mIsContactVerified ? 1 : 0));
         dest.writeInt(mRequestNumber);
         dest.writeInt(mChatId);
     }

@@ -54,6 +54,7 @@ public class PushReceiver extends BroadcastReceiver {
             Intent i = new Intent(RECEIVED_NEW_MESSAGE);
             i.putExtra("SENDER", sender);
             i.putExtra("MESSAGE", messageText);
+            i.putExtra("TYPE", typeOfMessage);
             i.putExtras(intent.getExtras());
 
             context.sendBroadcast(i);

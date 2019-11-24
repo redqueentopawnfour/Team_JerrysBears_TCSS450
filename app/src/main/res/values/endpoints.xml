@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources tools:ignore="ExtraTranslation" xmlns:tools="http://schemas.android.com/tools">
-    <string name="ep_base_url">beary-good-connection.herokuapp.com</string>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
+        <string name="ep_base_url">beary-good-connection.herokuapp.com</string>
 <!--    <string name="ep_base_url">polkn-lab4-backend.herokuapp.com</string>-->
-<!--    <string name="ep_base_url"> stelrq-lab4-backend.herokuapp.com</string>-->
+    <!--    <string name="ep_base_url"> stelrq-lab4-backend.herokuapp.com</string>-->
     <string name="ep_login">login</string>
     <string name="ep_register">register</string>
     <string name="ep_contacts">contacts</string>
     <string name="ep_add">add</string>
+    <string name="ep_search">search</string>
     <string name="ep_accept">accept</string>
     <string name="ep_reject">reject</string>
-   <string name="ep_profile">profile</string>
+    <string name="ep_profile">profile</string>
 
-
-<!--    chat fragment-->
+    <!--    chat fragment-->
     <string name="ep_messaging_base">messaging</string>
     <string name="ep_messaging_send">send</string>
     <string name="ep_messaging_getall">getall</string>
 
-
-<!--    pushy endpoint-->
-
+    <!--    pushy endpoint-->
     <string name="ep_pushy">pushy</string>
 </resources>

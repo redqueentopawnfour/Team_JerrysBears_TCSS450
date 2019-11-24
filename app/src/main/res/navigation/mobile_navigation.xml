@@ -45,12 +45,15 @@
         tools:layout="@layout/fragment_weather" />
     <fragment
         android:id="@+id/nav_contactList"
+        android:tag="fragment_contactList"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragment"
         android:label="Contacts"
         tools:layout="@layout/fragment_contact_list" >
         <argument
             android:name="contact"
-            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact[]" />
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
         <argument
             android:name="profile"
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact" />
@@ -59,6 +62,11 @@
             app:argType="string"
             app:nullable="true"
             android:defaultValue='""' />
+        <argument
+            android:name="contactNotification"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactNotification"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment><action android:id="@+id/action_global_nav_contactList" app:destination="@id/nav_contactList"/>
     <fragment
         android:id="@+id/nav_addContactFragment"

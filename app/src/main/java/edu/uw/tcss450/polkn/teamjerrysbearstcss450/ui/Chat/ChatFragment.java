@@ -103,9 +103,9 @@ public class ChatFragment extends Fragment {
 
         ChatFragmentArgs args = ChatFragmentArgs.fromBundle(getArguments());
         mUserName = args.getUsername();
-        Credentials cred = ((HomeActivity)getActivity()).getmCredentials();
-        mEmail = cred.getEmail();
-        mUserName = cred.getUsername();
+       /* Credentials cred = ((HomeActivity)getActivity()).getmCredentials();*/
+     /*   mEmail = cred.getEmail();
+        mUserName = cred.getUsername();*/
         mJwToken = args.getJwt();
         mChatId = args.getChatid();
         Log.i("chat id: ", Integer.toString(mChatId));

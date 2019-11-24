@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/frameLayout3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.Connection.AddContactFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout3"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".ui.Connection.AddContactFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/frameLayout4"
+        android:id="@+id/addContacts_inner"
         android:layout_width="398dp"
         android:layout_height="222dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/customborder"
+        android:clickable="true"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
         <EditText
-            android:id="@+id/editText_addContact_enterUsername"
+            android:id="@+id/editText_addContact_enterSearchTerm"
             android:layout_width="242dp"
             android:layout_height="46dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
-            android:textSize="14sp"
             android:hint="@string/editText_addContact_enterUsername"
             android:inputType="textPersonName"
-            app:layout_constraintEnd_toStartOf="@+id/button_addContact_sendRequest"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@+id/button_addContact_searchContacts"
             app:layout_constraintHorizontal_bias="0.538"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView_addContact_addContact" />
@@ -43,20 +46,111 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@string/editText_addContact_addContact"
-            android:textSize="24sp"
             android:textColor="@color/colorPrimary"
+            android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!--   <Button
+               android:id="@+id/button_addContact_sendRequest"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginEnd="16dp"
+               style="@style/Widget.AppCompat.Button.Borderless"
+               android:text="@string/button_addContact_sendRequest"
+               android:background="@drawable/customborder_goldblack"
+               app:layout_constraintBaseline_toBaselineOf="@+id/editText_addContact_enterUsername"
+               app:layout_constraintEnd_toEndOf="parent" />-->
+
         <Button
-            android:id="@+id/button_addContact_sendRequest"
+            android:id="@+id/button_addContact_searchContacts"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:text="@string/button_addContact_sendRequest"
             android:background="@drawable/customborder_goldblack"
-            app:layout_constraintBaseline_toBaselineOf="@+id/editText_addContact_enterUsername"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/button_addContact_searchContacts"
+            android:drawableLeft="@drawable/ic_search"
+            android:paddingRight="10dp"
+            android:paddingLeft="10dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/editText_addContact_enterSearchTerm"
             app:layout_constraintEnd_toEndOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/addContacts_recyclerHolder"
+        android:layout_width="398dp"
+        android:layout_height="450dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="240dp"
+        android:layout_marginEnd="8dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/addContacts_recyclerView_contactResults"
+            android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.AddContactFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:visibility="gone"
+            app:layoutManager="LinearLayoutManager"
+            tools:context=".ui.Connection.AddContactFragment"
+            tools:listitem="@layout/fragment_contact" />
+
+
+        <LinearLayout
+            android:id="@+id/linear_contactsResults_noResults"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:textAlignment="center">
+
+            <TextView
+                android:id="@+id/text_contactsResults_noResultsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:text="@string/editText_recycler_noContactsTitle"
+                android:textColor="@color/colorPrimary"
+                android:textSize="35sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/image_home_bears"
+                android:layout_width="217dp"
+                android:layout_height="268dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/bears_color_image_transparent" />
+
+            <TextView
+                android:id="@+id/text_contactsResults_noResultsText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:paddingLeft="10dp"
+                android:paddingTop="20dp"
+                android:paddingRight="10dp"
+                android:text="@string/editText_recycler_noSearchResults"
+                android:textAppearance="?attr/textAppearanceListItem"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

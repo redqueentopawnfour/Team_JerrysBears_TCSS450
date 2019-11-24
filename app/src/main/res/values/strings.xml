@@ -25,9 +25,11 @@
     <string name="textView_verifyEmail_instructions3">3. Press back to login.</string>
 
     <!-- add contact strings -->
-    <string name="editText_addContact_addContact">Send Contact Request</string>
-    <string name="editText_addContact_enterUsername">Enter username of contact</string>
+    <string name="editText_addContact_addContact">Look for Contacts</string>
+    <string name="editText_addContact_enterUsername">Enter first/last name or username</string>
     <string name="button_addContact_sendRequest">Send</string>
+    <string name="button_addContact_searchContacts">Search</string>
+
     <!--    navigation Home page  strings-->
 
     <string name="title_activity_home">HomeActivity</string>
@@ -78,6 +80,13 @@
 
     <!--view profile -->
     <string name="image_viewProfile_icon">User Icon</string>
+
+
+    <!--recycler view -->
+    <string name="editText_recycler_noContacts">You have no connections! Use the button above to find some.</string>
+    <string name="editText_recycler_noSearchResults">No contacts were found with that criteria. Please try again!</string>
+    <string name="editText_recycler_noContactsTitle">Uh oh!</string>
+
 
     <!-- key  -->
     <string name="key_chat">chat_key</string>
