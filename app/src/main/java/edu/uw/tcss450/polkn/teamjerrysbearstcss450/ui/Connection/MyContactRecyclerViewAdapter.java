@@ -3,6 +3,7 @@ package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
@@ -104,10 +105,12 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         drawableIcon.setBounds(0, 0, 120, 120);
         holder.mUsernameView.setCompoundDrawables(drawableIcon, null, null, null);
 
+        Log.i("username requested", mValues.get(position).getUsername());
+
         holder.mAcceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                acceptRequest();
+                acceptRequest(mValues.get(position).getUsername());
             }
         });
         holder.mRejectButton.setOnClickListener(new View.OnClickListener() {
@@ -169,7 +172,7 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         }
     }
 
-    public void acceptRequest() {
+    public void acceptRequest(String usernameRequested) {
         //build the web service URL
         Uri uri = new Uri.Builder()
                 .scheme("https")
@@ -181,7 +184,7 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         try {
             JSONObject jsonAddContact = new JSONObject();
             jsonAddContact.put("email_sender", mMyProfile.getEmail());
-            jsonAddContact.put("username_requested", mUsername_requested);
+            jsonAddContact.put("username_requested", usernameRequested);
 
             Log.i("json", jsonAddContact.toString());
 

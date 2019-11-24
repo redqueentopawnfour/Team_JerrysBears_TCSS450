@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
@@ -89,6 +90,11 @@ public class ContactFragment extends Fragment {
             populateIconDrawables(context);
             recyclerView.setAdapter(new MyContactRecyclerViewAdapter(mContacts, iconDrawables, mProfile, this::displayContact));
         }
+
+        ((HomeActivity)getActivity()).showAddUser();
+        ((HomeActivity)getActivity()).showViewProfile();
+        ((HomeActivity)getActivity()).hideChatIcon();
+
         return view;
     }
 
@@ -161,12 +167,15 @@ public class ContactFragment extends Fragment {
                 String sender = intent.getStringExtra("SENDER");
                 String messageText = intent.getStringExtra("MESSAGE");
 
-                Toast toast = Toast.makeText(getView().getContext(), "Sender " + sender + " has sent you a connection request.",
+                Toast toast = Toast.makeText(getView().getContext(), sender + " " + messageText,
                         Toast.LENGTH_LONG);
                 View view = toast.getView();
                 view.setBackgroundResource(R.drawable.customborder_goldblack);
                 /*TextView text = (TextView) view.findViewById(android.R.id.message);*/
                 toast.show();
+
+
+                // set background of new contact to be gold
 
               /*  mMessageOutputTextView.append(sender + ":" + messageText);
                 mMessageOutputTextView.append(System.lineSeparator());

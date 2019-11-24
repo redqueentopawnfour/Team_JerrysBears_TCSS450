@@ -56,7 +56,11 @@ public class ViewProfileFragment extends Fragment {
         // get "start chat" icon
         // add on click listener to it
         updateProfile();
-        ((HomeActivity)getActivity()).showChatIcon(mUser);
+
+        /*((HomeActivity)getActivity()).showChatIcon(mUser);*/
+        ((HomeActivity)getActivity()).hideChatIcon();
+        ((HomeActivity)getActivity()).hideAddUser();
+        ((HomeActivity)getActivity()).hideViewProfile();
     }
 
     @Override
