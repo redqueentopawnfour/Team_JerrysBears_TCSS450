@@ -52,8 +52,6 @@ public class ChatFragment extends Fragment {
 
     private PushMessageReceiver mPushMessageReciever;
 
-
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         chatViewModel =
@@ -94,10 +92,6 @@ public class ChatFragment extends Fragment {
             mMessageOutputTextView.append(System.lineSeparator());
             mMessageOutputTextView.append(System.lineSeparator());
         }
-
-
-
-
     }
 
 
@@ -114,7 +108,6 @@ public class ChatFragment extends Fragment {
         if (mChatId > 0) { // 0 is the default value which means no chat id has been passed
             mMessageOutputTextView.append("CHAT ID: " + mChatId + '\n');
         }
-
 
         //We will use this url every time the user hits send. Let's only build it once, ya?
         mSendUrl = new Uri.Builder()
@@ -207,5 +200,4 @@ public class ChatFragment extends Fragment {
             getActivity().unregisterReceiver(mPushMessageReciever);
         }
     }
-
 }

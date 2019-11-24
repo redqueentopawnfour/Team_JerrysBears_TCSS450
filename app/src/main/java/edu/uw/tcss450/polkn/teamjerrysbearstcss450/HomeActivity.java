@@ -75,21 +75,13 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Invitation", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_contactList, R.id.nav_chat,
-                R.id.nav_weather)
+                R.id.nav_home, R.id.nav_contactList, R.id.nav_weather)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -142,15 +134,9 @@ public class HomeActivity extends AppCompatActivity {
 
         switch (menuItem.getItemId()) {
             case R.id.nav_home:
-                mAddContacts.setVisible(false);
-                mViewOwnProfile.setVisible(false);
-
                 navController.navigate(R.id.nav_home, getIntent().getExtras());
                 break;
             case R.id.nav_contactList:
-                mAddContacts.setVisible(true);
-                mViewOwnProfile.setVisible(true);
-
                 Uri uri_contacts = new Uri.Builder()
                         .scheme("https")
                         .appendPath(getString(R.string.ep_base_url))
@@ -171,8 +157,6 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.nav_weather:
-                mAddContacts.setVisible(false);
-                mViewOwnProfile.setVisible(false);
                 navController.navigate(R.id.nav_weather);
                 break;
             case R.id.nav_chat:
@@ -195,9 +179,6 @@ public class HomeActivity extends AppCompatActivity {
 
                 Navigation.findNavController(this, R.id.nav_host_fragment)
                         .navigate(directions);
-
-                mAddContacts.setVisible(false);
-                mViewOwnProfile.setVisible(false);
                 break;
         }
         //Close the drawer
@@ -223,10 +204,6 @@ public class HomeActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_addContact) {
-            mAddContacts.setVisible(false);
-            mViewOwnProfile.setVisible(false);
-            mChat.setVisible(false);
-
             NavController navController =
                     Navigation.findNavController(this, R.id.nav_host_fragment);
             navController.navigate(R.id.nav_addContactFragment, getIntent().getExtras());
@@ -245,21 +222,13 @@ public class HomeActivity extends AppCompatActivity {
             }
             return super.onOptionsItemSelected(item);
         } else if (id == R.id.action_viewOwnProfile) {
-            mAddContacts.setVisible(false);
-            mViewOwnProfile.setVisible(false);
-            mChat.setVisible(false);
-
             MobileNavigationDirections.ActionGlobalViewProfileFragment directions
                     = ViewProfileFragmentDirections.actionGlobalViewProfileFragment(mMyProfile);
 
             Navigation.findNavController(this, R.id.nav_host_fragment)
                     .navigate(directions);
             return true;
-        } else if (id == R.id.action_chat) {
-            mAddContacts.setVisible(false);
-            mViewOwnProfile.setVisible(false);
-            mChat.setVisible(false);
-
+        }  else if (id == R.id.action_chat) {
             MobileNavigationDirections.ActionGlobalNavChat directions
                     = ChatFragmentDirections.actionGlobalNavChat();
 
@@ -271,10 +240,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void loadContacts() {
-        mAddContacts.setVisible(true);
-        mViewOwnProfile.setVisible(true);
-        mChat.setVisible(false);
-
         Uri uri_contacts = new Uri.Builder()
                 .scheme("https")
                 .appendPath(getString(R.string.ep_base_url))
@@ -379,11 +344,6 @@ public class HomeActivity extends AppCompatActivity {
                     JSONObject jsonContact = resultsJSON.getJSONObject(
                             getString(R.string.keys_json_message));
 
-                 /*   String contactEmail = jsonContact.getString(
-                            getString(R.string.keys_json_contact_email));
-                    String userEmail = mMyProfile.getEmail();
-                    Boolean isContactVerified = true;
-*/
                     mMyProfile = new Contact.Builder(
                             jsonContact.getString(
                                     getString(R.string.keys_json_contact_username)),
@@ -457,24 +417,33 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    public void showChatIcon(Contact theContact) {
-        mAddContacts.setVisible(false);
-        mViewOwnProfile.setVisible(false);
-
+/*    public void showChatIcon(Contact theContact) {
         if (theContact.getUsername() == mMyProfile.getUsername()) {
             mChat.setVisible(false);
-        } else {
-           // mChat.setVisible(true);
-            mChat.setVisible(false);    // NP 11/28/2019 set false for rn until figure out how to pass it a chatId through the global action from homeActivity
+        } else if (theContact.getChatId() > 0) {
+            // mChat.setVisible(true);
+            mChat.setVisible(true);    // NP 11/28/2019 set false for rn until figure out how to pass it a chatId through the global action from homeActivity
         }
+    }*/
+
+    public void hideChatIcon() {
+        mChat.setVisible(false);
     }
 
     public void hideViewProfile() {
         mViewOwnProfile.setVisible(false);
     }
 
+    public void showViewProfile() {
+        mViewOwnProfile.setVisible(true);
+    }
+
     public void hideAddUser() {
         mAddContacts.setVisible(false);
+    }
+
+    public void showAddUser() {
+        mAddContacts.setVisible(true);
     }
 
 
@@ -550,11 +519,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
     }
-
-  /*  public void setChatId(int chatId) {
-        mChatId = chatId;
-    }*/
-    public String getmEmail() {
+    public String getmEmail(){
         return mEmail;
     }
 }
