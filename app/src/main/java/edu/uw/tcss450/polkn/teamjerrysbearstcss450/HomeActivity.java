@@ -557,7 +557,4 @@ public class HomeActivity extends AppCompatActivity {
     public String getmEmail() {
         return mEmail;
     }
-    public Credentials getmCredentials() {
-        return mCredentials;
-    }
 }

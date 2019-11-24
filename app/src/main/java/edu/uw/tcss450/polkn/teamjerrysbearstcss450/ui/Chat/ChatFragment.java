@@ -44,8 +44,6 @@ public class ChatFragment extends Fragment {
 
     private TextView mMessageOutputTextView;
     private EditText mMessageInputEditText;
-
-    private String mUserName;
     private String mEmail;
     private String mJwToken;
     private String mSendUrl;
@@ -108,10 +106,7 @@ public class ChatFragment extends Fragment {
         super.onStart();
 
         ChatFragmentArgs args = ChatFragmentArgs.fromBundle(getArguments());
-        mUserName = args.getUsername();
-        Credentials cred = ((HomeActivity)getActivity()).getmCredentials();
-        mEmail = cred.getEmail();
-        mUserName = cred.getUsername();
+        mEmail = ((HomeActivity)getActivity()).getmEmail();
         mJwToken = args.getJwt();
         mChatId = args.getChatid();
         Log.i("chat id: ", Integer.toString(mChatId));
@@ -137,11 +132,11 @@ public class ChatFragment extends Fragment {
         mMessageInputEditText.onEditorAction(EditorInfo.IME_ACTION_DONE);
         mMessageInputEditText.setText("");
         Log.d("this should be the chatid", mChatId + "");
-        Log.d("email? and then username?", mEmail + mUserName);
+        Log.d("email? and then username?", mEmail);
         JSONObject messageJson = new JSONObject();
         try {
             messageJson.put("email", mEmail);
-            messageJson.put("username", mUserName);
+            messageJson.put("username", "");
             messageJson.put("message", msg);
             messageJson.put("chatid", mChatId);
         } catch (JSONException e) {
