@@ -108,7 +108,7 @@ public class HomeActivity extends AppCompatActivity {
                             directions.setMessage(args.getChatMessage());
                             navController.navigate(directions);
                         } else if (args.getContactMessage() != null) {
-                           loadContacts();
+                            loadContacts();
                         }
                     }
                 },
@@ -308,7 +308,7 @@ public class HomeActivity extends AppCompatActivity {
                     if (resultsJSON.has(getString(R.string.keys_json_message))) {
                         JSONArray data = resultsJSON.getJSONArray(
                                 getString(R.string.keys_json_message));
-                        mContacts  = new Contact[data.length()];
+                        mContacts = new Contact[data.length()];
 
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject jsonContact = data.getJSONObject(i);
@@ -337,8 +337,14 @@ public class HomeActivity extends AppCompatActivity {
 
                         int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
                         mViewOwnProfile.setIcon(drawableId);
+
+                       /* MobileNavigationDirections.ActionGlobalNavContactList directions
+                                = ContactFragmentDirections.actionGlobalNavContactList(contacts, mMyProfile).setJwt(mJwToken);
+                            */
+
                         MobileNavigationDirections.ActionGlobalNavContactList directions
-                                = ContactFragmentDirections.actionGlobalNavContactList(mMyProfile);
+                                = ContactFragmentDirections.actionGlobalNavContactList(mMyProfile).setJwt(mJwToken);
+                        ;
 
                         directions.setContact(mContacts);
 
@@ -591,7 +597,6 @@ public class HomeActivity extends AppCompatActivity {
         onNavigationSelected(mNavContactList);
     }
 
-
     @Override
     public void onBackPressed() {
         NavController navController =
@@ -601,5 +606,9 @@ public class HomeActivity extends AppCompatActivity {
             reloadContactList();                                                    // NP 11/23/2019 -ONLY show View Profile and Add Contact icons in Contacts so that this Back press works as expected
         }                                                                           // , otherwise contact list doesn't load properly on back pressed
         super.onBackPressed();  // optional depending on your needs
+    }
+
+    public String getmEmail() {
+        return mEmail;
     }
 }
