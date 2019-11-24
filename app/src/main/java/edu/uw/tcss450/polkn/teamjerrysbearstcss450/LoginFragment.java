@@ -102,11 +102,7 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    /**
-     * handle errors in Async task.
-     *
-     * @param result the provided error message
-     */
+
     private void onRegisterClicked() {
         Navigation.findNavController(getView()).
                 navigate(R.id.action_nav_fragment_login_to_nav_fragment_register);

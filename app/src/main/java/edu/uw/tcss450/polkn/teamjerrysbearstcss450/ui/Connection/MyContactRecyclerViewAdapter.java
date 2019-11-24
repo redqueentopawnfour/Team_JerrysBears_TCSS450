@@ -42,15 +42,17 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
     private Contact mMyProfile;
     private View mView;
     private String mUsername_requested;
+    private String mJwt;
     private int mChatId;
 
     /*public MyContactRecyclerViewAdapter(List<Contact> items, HashMap drawableIds) {*/
-    public MyContactRecyclerViewAdapter(List<Contact> items, HashMap drawableIds, Contact myProfile, OnListFragmentInteractionListener listener) {
+    public MyContactRecyclerViewAdapter(List<Contact> items, String theJwt, HashMap drawableIds, Contact myProfile, OnListFragmentInteractionListener listener) {
         mValues = items;
         mDrawableIds = drawableIds;
         mListener = listener;
         mMyProfile = myProfile;
         mUsername_requested = "";
+        mJwt = theJwt;
     }
 
     @Override
@@ -266,7 +268,7 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
 
     private void openChat(int chatId) {
         MobileNavigationDirections.ActionGlobalNavChat directions
-                = ChatFragmentDirections.actionGlobalNavChat().setChatid(chatId);
+                = ChatFragmentDirections.actionGlobalNavChat().setChatid(chatId).setJwt(mJwt);
 
         Navigation.findNavController(mView).navigate(directions);
     }

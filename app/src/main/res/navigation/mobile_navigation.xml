@@ -54,6 +54,11 @@
         <argument
             android:name="profile"
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact" />
+        <argument
+            android:name="jwt"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue='""' />
     </fragment><action android:id="@+id/action_global_nav_contactList" app:destination="@id/nav_contactList"/>
     <fragment
         android:id="@+id/nav_addContactFragment"

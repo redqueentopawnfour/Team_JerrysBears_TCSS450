@@ -56,6 +56,7 @@
 
     <!--    Web Service keys-->
     <string name="keys_json_jwt">token</string>
+    <string name="key_json_contact_userid">userid</string>
     <string name="keys_json_success">success</string>
     <string name="keys_json_message">message</string>
     <string name="keys_json_contact_email">email</string>
@@ -69,7 +70,9 @@
     <string name="keys_json_contacts_chatId">chatId</string>
 
     <string name="keys_contact_view">Random key</string>
-
+    <string name="keys_chat_myemail">myemail</string>
+    <string name="keys_chat_theiremail">theiremail</string>
+    <string name="keys_chat_id">chatid</string>
     <string name="textMessage">Text Message</string>
     <string name="MessageSend">SEND</string>
 
