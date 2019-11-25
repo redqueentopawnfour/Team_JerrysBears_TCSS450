@@ -33,6 +33,7 @@ import java.net.URL;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatMessageNotification;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactNotification;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
 import me.pushy.sdk.Pushy;
 
@@ -236,6 +237,16 @@ public class LoginFragment extends Fragment {
                                 ChatMessageNotification chat =
                                         new ChatMessageNotification.Builder(sender, msg).build();
                                 homeActivity.setChatMessage(chat);
+                            } else if (getArguments().getString("type").equals("connectionReq") ||
+                                    getArguments().getString("type").equals("connectionAccepted") ||
+                                    getArguments().getString("type").equals("connectionRejected")) {
+
+                                String msg = getArguments().getString("message");
+                                String sender = getArguments().getString("sender");
+
+                                ContactNotification contact =
+                                        new ContactNotification.Builder(sender, msg).build();
+                                homeActivity.setContactMessage(contact);
                             }
                         }
                     }

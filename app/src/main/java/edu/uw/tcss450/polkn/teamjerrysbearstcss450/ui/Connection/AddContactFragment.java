@@ -1,39 +1,54 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivityArgs;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
 
 public class AddContactFragment extends Fragment {
 
     private String mEmail_sender;
-    private String mUsername_requested;
-
+    private Contact[] mContacts;
+    private List<Contact> mContactResultsList;
+    private HashMap iconDrawables;
+    private View viewNoContacts;
     public AddContactFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        iconDrawables = new HashMap<Integer, Drawable>();
     }
 
     @Override
@@ -52,32 +67,36 @@ public class AddContactFragment extends Fragment {
         Credentials credentials = args.getCredentials();
         mEmail_sender = credentials.getEmail();
 
-        view.findViewById(R.id.button_addContact_sendRequest)
-                .setOnClickListener(this::sendRequest);
+        View innerView = view.findViewById(R.id.addContacts_inner);
+        Button searchButton = innerView.findViewById(R.id.button_addContact_searchContacts);
+        searchButton.setOnClickListener(this::searchContacts);
+
+        view.setOnClickListener(this::searchContacts);
+        ((HomeActivity) getActivity()).hideAddUser();
+        ((HomeActivity) getActivity()).hideViewProfile();
     }
 
-    private void sendRequest(final View theButton) {
-        EditText contactUsernameView = getActivity().findViewById(R.id.editText_addContact_enterUsername);
-        String contactUsername = contactUsernameView.getText().toString();
-        mUsername_requested = contactUsername;
+    private void searchContacts(final View theButton) {
+        EditText contactSearchBoxView = getActivity().findViewById(R.id.editText_addContact_enterSearchTerm);
+        String searchTerm = contactSearchBoxView.getText().toString();
 
         //build the web service URL
         Uri uri = new Uri.Builder()
                 .scheme("https")
                 .appendPath(getString(R.string.ep_base_url))
                 .appendPath(getString(R.string.ep_contacts))
-                .appendPath(getString(R.string.ep_add))
+                .appendPath(getString(R.string.ep_search))
                 .build();
 
         try {
-            JSONObject jsonAddContact = new JSONObject();
-            jsonAddContact.put("email_sender", mEmail_sender);
-            jsonAddContact.put("username_requested", contactUsername);
+            JSONObject jsonSearch = new JSONObject();
+            jsonSearch.put("searchTerm", searchTerm);
+            jsonSearch.put("email_sender", mEmail_sender);
 
-            Log.i("json", jsonAddContact.toString());
+            Log.i("json", jsonSearch.toString());
 
-            new SendPostAsyncTask.Builder(uri.toString(), jsonAddContact)
-                    .onPostExecute(this::handleAddContactOnPost)
+            new SendPostAsyncTask.Builder(uri.toString(), jsonSearch)
+                    .onPostExecute(this::handleSearchOnPostExecute)
                     .build().execute();
 
         } catch (JSONException e) {
@@ -91,21 +110,59 @@ public class AddContactFragment extends Fragment {
      *
      * @param result the JSON formatted String response from the web service
      */
-    private void handleAddContactOnPost(String result) {
+    private void handleSearchOnPostExecute(String result) {
         try {
             JSONObject resultsJSON = new JSONObject(result);
             boolean success =
                     resultsJSON.getBoolean(
                             getString(R.string.keys_json_success));
 
+            RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.addContacts_recyclerView_contactResults);
+            viewNoContacts = getView().findViewById(R.id.linear_contactsResults_noResults);
+            Context context = getView().getContext();
+
             if (success) {
-                Toast.makeText(getActivity(), "Contact " + mUsername_requested + " successfully added.",
-                        Toast.LENGTH_LONG).show();
-                EditText contactUsernameView = getActivity().findViewById(R.id.editText_addContact_enterUsername);
-                contactUsernameView.setText("");
-            } else {
-                ((TextView) getView().findViewById(R.id.editText_addContact_enterUsername))
-                        .setError("Unable to add user.");
+                if (resultsJSON.has(getString(R.string.keys_json_message))) {
+                    JSONArray data = resultsJSON.getJSONArray(
+                            getString(R.string.keys_json_message));
+                    mContacts  = new Contact[data.length()];
+
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject jsonContact = data.getJSONObject(i);
+
+                        mContacts[i] = new Contact.Builder(
+                                jsonContact.getString(
+                                        getString(R.string.keys_json_contact_username)),
+                                jsonContact.getString(
+                                        getString(R.string.keys_json_contact_usericon)))
+                                .addFirstName(jsonContact.getString(
+                                        getString(R.string.keys_json_contact_firstname)))
+                                .addLastName(jsonContact.getString(
+                                        getString(R.string.keys_json_contact_lastname)))
+                                .addEmail(jsonContact.getString(
+                                        getString(R.string.keys_json_contact_email)))
+                                .build();
+                    }
+
+                    mContactResultsList = new ArrayList<>(Arrays.asList(mContacts));
+
+                    if (recyclerView instanceof RecyclerView) {
+                        if (mContacts != null) {
+                            recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
+                            populateIconDrawables(context);
+                            recyclerView.setAdapter(new ContactSearchResultsRecyclerViewAdapter(mContactResultsList, iconDrawables, mEmail_sender));
+                            recyclerView.setVisibility(View.VISIBLE);
+                            viewNoContacts.setVisibility(View.GONE);
+                        } else {
+                            recyclerView.setVisibility(View.GONE);
+                            viewNoContacts.setVisibility(View.VISIBLE);
+                        }
+                    }
+                } else {
+                    Log.e("ERROR!", "No response");
+                }
+            } else {recyclerView.setVisibility(View.GONE);
+                viewNoContacts.setVisibility(View.VISIBLE);
 
             }
         } catch (JSONException e) {
@@ -114,6 +171,17 @@ public class AddContactFragment extends Fragment {
             Log.e("JSON_PARSE_ERROR", result
                     + System.lineSeparator()
                     + e.getMessage());
+        }
+    }
+
+    private void populateIconDrawables(Context context) {
+        for (int i = 0; i < mContactResultsList.size(); i++) {
+            String userIcon = mContactResultsList.get(i).getUserIcon();
+            Log.i("usericon", userIcon);
+            int drawableId = context.getResources().getIdentifier(userIcon, "drawable", context.getPackageName());
+            Drawable drawableIcon = ResourcesCompat.getDrawable(getResources(), drawableId, null);
+
+            iconDrawables.put(i, drawableIcon);
         }
     }
 }

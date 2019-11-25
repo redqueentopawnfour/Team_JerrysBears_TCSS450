@@ -1,9 +1,10 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
@@ -18,7 +19,6 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragmentDirections;
@@ -41,18 +41,17 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
     private final OnListFragmentInteractionListener mListener;
     private Contact mMyProfile;
     private View mView;
-    private String mUsername_requested;
     private String mJwt;
     private int mChatId;
+    private int mCount;
 
-    /*public MyContactRecyclerViewAdapter(List<Contact> items, HashMap drawableIds) {*/
     public MyContactRecyclerViewAdapter(List<Contact> items, String theJwt, HashMap drawableIds, Contact myProfile, OnListFragmentInteractionListener listener) {
         mValues = items;
         mDrawableIds = drawableIds;
         mListener = listener;
         mMyProfile = myProfile;
-        mUsername_requested = "";
         mJwt = theJwt;
+        mCount = items.size();
     }
 
     @Override
@@ -68,12 +67,7 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         String username = mValues.get(position).getUsername();
         String firstName = mValues.get(position).getFirstName();
         String lastName = mValues.get(position).getLastName();
-//        mChatId = mValues.get(position).getChatId();
         Log.i("chat id: ", Integer.toString(mChatId));
-
-
-        mUsername_requested = username;
-        /*.setVisibility(View.GONE);*/
 
         int requestNumber = mValues.get(position).getRequestNumber();
         Log.i("Requestnum", Integer.toString(requestNumber));
@@ -83,24 +77,18 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
 
         String displayString = username;
 
-   /*     if (username.length() > 0 && firstName.length() > 0 && lastName.length() > 0) {
-            displayString = username + " (" + firstName + " " + lastName + ")";
-        } else if (username.length() > 0) {
-            displayString = username;
-        }*/
-
         if (requestNumber > 0 && !contactVerified) {
             holder.mPendingContactView.setVisibility(View.VISIBLE);
+            holder.mAcceptButton.setVisibility(View.INVISIBLE);
         } else if (requestNumber == 0 && !contactVerified) {
-            /* holder.mLinearLayoutContact.setBackgroundResource(R.drawable.customborder_gold);    use this for notification*/
+            holder.mLinearLayoutContact.setBackgroundResource(R.drawable.customborder_gold);   // use this for notification
             holder.mNewContactView.setVisibility(View.VISIBLE);
             holder.mAcceptButton.setVisibility(View.VISIBLE);
-            holder.mRejectButton.setVisibility(View.VISIBLE);
         } else if (contactVerified) {
             holder.mChat.setVisibility(View.VISIBLE);
-            holder.mRejectButton.setVisibility(View.VISIBLE);
         }
 
+        holder.mRejectButton.setVisibility(View.VISIBLE);
         holder.mUsernameView.setText(displayString);
         Integer pos = new Integer(position);
         Drawable drawableIcon = mDrawableIds.get(pos);
@@ -112,13 +100,13 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         holder.mAcceptButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                acceptRequest(mValues.get(position).getUsername());
+                acceptRequest(mValues.get(position).getUsername(), holder.mAcceptButton, holder.mChat, holder.mNewContactView, holder.mLinearLayoutContact);
             }
         });
         holder.mRejectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rejectRequest();
+                rejectRequest(mValues.get(position).getUsername(), holder.mAcceptButton, holder.mChat, holder.mNewContactView, holder.mLinearLayoutContact);
             }
         });
         holder.mChat.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +162,7 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         }
     }
 
-    public void acceptRequest(String usernameRequested) {
+    public void acceptRequest(String usernameRequested, ImageButton btnAccept, ImageButton btnChat, TextView txtNewContact, LinearLayout layout) {
         //build the web service URL
         Uri uri = new Uri.Builder()
                 .scheme("https")
@@ -194,12 +182,21 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
                     .onPostExecute(this::handleAcceptOnPost)
                     .build().execute();
 
+            btnAccept.setVisibility(View.GONE);
+            txtNewContact.setVisibility(View.GONE);
+            btnChat.setVisibility(View.VISIBLE);
+            layout.setBackgroundResource(R.drawable.customborder);
+            Toast toast = Toast.makeText(mView.getContext(), "Contact " + usernameRequested + " accepted.",
+                    Toast.LENGTH_LONG);
+            View view = toast.getView();
+            view.setBackgroundResource(R.drawable.customborder_goldblack);
+            toast.show();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    public void rejectRequest() {
+    public void rejectRequest(String usernameRequested, ImageButton btnAccept, ImageButton btnReject, TextView txtNewContact, LinearLayout layout) {
         //build the web service URL
         Uri uri = new Uri.Builder()
                 .scheme("https")
@@ -211,7 +208,7 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         try {
             JSONObject jsonAddContact = new JSONObject();
             jsonAddContact.put("email_sender", mMyProfile.getEmail());
-            jsonAddContact.put("username_requested", mUsername_requested);
+            jsonAddContact.put("username_requested", usernameRequested);
 
             Log.i("json", jsonAddContact.toString());
 
@@ -219,6 +216,16 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
                     .onPostExecute(this::handleRejectOnPost)
                     .build().execute();
 
+            btnAccept.setVisibility(View.GONE);
+            btnReject.setVisibility(View.GONE);
+            txtNewContact.setVisibility(View.GONE);
+            layout.setVisibility(View.GONE);
+
+            Toast toast = Toast.makeText(mView.getContext(), "Contact " + usernameRequested + " removed.",
+                    Toast.LENGTH_LONG);
+            View view = toast.getView();
+            view.setBackgroundResource(R.drawable.customborder_goldblack);
+            toast.show();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -231,28 +238,17 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
      * @param result the JSON formatted String response from the web service
      */
     private void handleAcceptOnPost(String result) {
+
         try {
             JSONObject resultsJSON = new JSONObject(result);
             boolean success =
                     resultsJSON.getBoolean(
                             mView.getContext().getString(R.string.keys_json_success));
-
             if (success) {
                 //mChatId = mValues.get(position).getChatId();
                 if (resultsJSON.has(mView.getContext().getResources().getString(R.string.keys_json_message))) {
                     Log.i("contacts", "contacts");
                 }
-
-                mView.findViewById(R.id.imageButton_contact_accept).setVisibility(View.GONE);
-                /*mView.findViewById(R.id.imageButton_contact_reject).setVisibility(View.GONE);*/
-                mView.findViewById(R.id.text_contact_newContact).setVisibility(View.GONE);
-                mView.findViewById(R.id.imageButton_contact_chat).setVisibility(View.VISIBLE);
-                Toast toast = Toast.makeText(mView.getContext(), "Contact " + mUsername_requested + " accepted.",
-                        Toast.LENGTH_LONG);
-                View view = toast.getView();
-                view.setBackgroundResource(R.drawable.customborder_goldblack);
-                /*TextView text = (TextView) view.findViewById(android.R.id.message);*/
-                toast.show();
             } else {
                 Toast.makeText(mView.getContext(), "Error accepting contact.",
                         Toast.LENGTH_LONG).show();
@@ -287,16 +283,15 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
                             mView.getContext().getString(R.string.keys_json_success));
 
             if (success) {
-                mView.findViewById(R.id.imageButton_contact_accept).setVisibility(View.GONE);
-                mView.findViewById(R.id.imageButton_contact_reject).setVisibility(View.GONE);
-                mView.findViewById(R.id.text_contact_newContact).setVisibility(View.GONE);
-                mView.findViewById(R.id.linearlayout_contact_contact).setVisibility(View.GONE);
-                Toast toast = Toast.makeText(mView.getContext(), "Contact " + mUsername_requested + " removed.",
-                        Toast.LENGTH_LONG);
-                View view = toast.getView();
-                view.setBackgroundResource(R.drawable.customborder_goldblack);
-                /*TextView text = (TextView) view.findViewById(android.R.id.message);*/
-                toast.show();
+                mCount = mCount - 1;
+
+                if (mCount == 0) {
+                    FragmentManager manager = ((AppCompatActivity) mView.getContext()).getSupportFragmentManager();
+                    LinearLayout noContacts = (LinearLayout) ((AppCompatActivity) mView.getContext()).findViewById(R.id.linear_contacts_noContacts);
+                    RecyclerView recyclerView = (RecyclerView) ((AppCompatActivity) mView.getContext()).findViewById(R.id.list);
+                    noContacts.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(View.GONE);
+                }
             } else {
                 Toast.makeText(mView.getContext(), "Error rejecting contact.",
                         Toast.LENGTH_LONG).show();

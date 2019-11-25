@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +46,8 @@ public class ContactFragment extends Fragment {
     private Contact mProfile;
     private PushMessageReceiver mPushMessageReciever;
     private String mJwt;
+    private RecyclerView recyclerView;
+    private View viewNoContacts;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -69,7 +70,10 @@ public class ContactFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ContactFragmentArgs args = ContactFragmentArgs.fromBundle(getArguments());
-        mContacts = new ArrayList<>(Arrays.asList(args.getContact()));
+
+        if (args.getContact() != null) {
+            mContacts = new ArrayList<>(Arrays.asList(args.getContact()));
+        }
         mProfile = args.getProfile();
         mJwt = args.getJwt();
         iconDrawables = new HashMap<Integer, Drawable>();
@@ -79,23 +83,24 @@ public class ContactFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contact_list, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        Context context = recyclerView.getContext();
+        viewNoContacts = view.findViewById(R.id.linear_contacts_noContacts);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
+        if (recyclerView instanceof RecyclerView) {
+            if (mContacts != null) {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                populateIconDrawables(context);
+                recyclerView.setAdapter(new MyContactRecyclerViewAdapter(mContacts, mJwt, iconDrawables, mProfile, this::displayContact));
+            } else {
+                viewNoContacts.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
-            populateIconDrawables(context);
-            recyclerView.setAdapter(new MyContactRecyclerViewAdapter(mContacts, mJwt, iconDrawables, mProfile, this::displayContact));
         }
 
-        ((HomeActivity)getActivity()).showAddUser();
-        ((HomeActivity)getActivity()).showViewProfile();
-        ((HomeActivity)getActivity()).hideChatIcon();
+        ((HomeActivity) getActivity()).showAddUser();
+        ((HomeActivity) getActivity()).showViewProfile();
+        ((HomeActivity) getActivity()).hideChatIcon();
 
         return view;
     }
@@ -113,14 +118,13 @@ public class ContactFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (mPushMessageReciever != null){
+        if (mPushMessageReciever != null) {
             getActivity().unregisterReceiver(mPushMessageReciever);
         }
     }
 
     private void populateIconDrawables(Context context) {
         for (int i = 0; i < mContacts.size(); i++) {
-            /*   String userIcon = mContacts.get(i).getUserIcon() + "_resized";*/
             String userIcon = mContacts.get(i).getUserIcon();
             Log.i("usericon", userIcon);
             int drawableId = context.getResources().getIdentifier(userIcon, "drawable", context.getPackageName());
@@ -156,7 +160,6 @@ public class ContactFragment extends Fragment {
     }
 
 
-
     /**
      * A BroadcastReceiver that listens for messages sent from PushReceiver
      */
@@ -164,26 +167,18 @@ public class ContactFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.hasExtra("SENDER") && intent.hasExtra("MESSAGE")) {
-
+            if (intent.hasExtra("SENDER") && intent.hasExtra("MESSAGE") && intent.hasExtra("TYPE")) {
+                String type = intent.getStringExtra("TYPE");
                 String sender = intent.getStringExtra("SENDER");
                 String messageText = intent.getStringExtra("MESSAGE");
 
-                Toast toast = Toast.makeText(getView().getContext(), sender + " " + messageText,
-                        Toast.LENGTH_LONG);
-                View view = toast.getView();
-                view.setBackgroundResource(R.drawable.customborder_goldblack);
-                /*TextView text = (TextView) view.findViewById(android.R.id.message);*/
-                toast.show();
-
-
-                // set background of new contact to be gold
-
-              /*  mMessageOutputTextView.append(sender + ":" + messageText);
-                mMessageOutputTextView.append(System.lineSeparator());
-                mMessageOutputTextView.append(System.lineSeparator());*/
+                ((HomeActivity) getActivity()).reloadContactList();
             }
         }
     }
 
+    public void showNoContacts() {
+        viewNoContacts.setVisibility(View.VISIBLE);
+        recyclerView.setVisibility(View.GONE);
+    }
 }

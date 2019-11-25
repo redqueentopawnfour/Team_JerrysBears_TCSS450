@@ -55,6 +55,7 @@ public class PushReceiver extends BroadcastReceiver {
             i.putExtra("SENDER", sender);
             i.putExtra("MESSAGE", messageText);
             i.putExtra("CHATID", fromChatId);
+            i.putExtra("TYPE", typeOfMessage);
             i.putExtras(intent.getExtras());
 
             context.sendBroadcast(i);

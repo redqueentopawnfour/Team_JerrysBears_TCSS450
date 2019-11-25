@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,6 +30,7 @@ import java.security.spec.PSSParameterSpec;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.GetAsyncTask;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.PushReceiver;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
@@ -90,7 +92,6 @@ public class ChatFragment extends Fragment {
             mMessageOutputTextView.append(": ");
             mMessageOutputTextView.append(args.getMessage().getMessage());
             mMessageOutputTextView.append(System.lineSeparator());
-            mMessageOutputTextView.append(System.lineSeparator());
         }
     }
 
@@ -124,11 +125,10 @@ public class ChatFragment extends Fragment {
         String msg = mMessageInputEditText.getText().toString();
         mMessageInputEditText.onEditorAction(EditorInfo.IME_ACTION_DONE);
         mMessageInputEditText.setText("");
-        Log.d("this should be the chatid", mChatId + "");
         JSONObject messageJson = new JSONObject();
         try {
             messageJson.put("email", mEmail);
-            messageJson.put("username", "");
+            messageJson.put("username", "Can we not pass this?");
             messageJson.put("message", msg);
             messageJson.put("chatid", mChatId);
         } catch (JSONException e) {
@@ -147,7 +147,7 @@ public class ChatFragment extends Fragment {
             //This is the result from the web service
             JSONObject res = new JSONObject(result);
 
-            if(res.has("success")  && !res.getBoolean("success")) {
+            if(res.has(getString(R.string.keys_json_success))  && !res.getBoolean(getString(R.string.keys_json_success))) {
                 //The web service got our message. Time to clear out the input EditText
                 if(res.has(getString(R.string.keys_json_message))){
                     mMessageInputEditText.setError(res.getString(getString(R.string.keys_json_message)));
@@ -162,6 +162,44 @@ public class ChatFragment extends Fragment {
         }
     }
 
+    /**
+     * Method to load chat history
+     */
+    private void loadChatHistory() {
+        String getUrl = new Uri.Builder()
+                .scheme("https")
+                .appendPath(getString(R.string.ep_base_url))
+                .appendPath(getString(R.string.ep_messaging_base))
+                .appendPath(getString(R.string.ep_messaging_getall))
+                .build()
+                .toString();
+        new GetAsyncTask.Builder(getUrl).addHeaderField("chatid", Integer.toString(mChatId))
+                .addHeaderField("authorization", mJwToken)
+                .onCancelled(error -> Log.e("an error", error))
+                .onPostExecute(this::endOfLoadChatTask).build().execute();
+
+    }
+
+    private void endOfLoadChatTask(final String result) {
+        try {
+            JSONObject res = new JSONObject(result);
+            if (res.has(getString(R.string.keys_json_success))
+                    && !res.getBoolean(getString(R.string.keys_json_success))) {
+            } else {
+                JSONArray messages = (JSONArray) res.get(getString(R.string.keys_json_messages));
+                for(int i = 0; i < messages.length(); i++) {
+                    JSONObject message =  (JSONObject) messages.get(i);
+                    mMessageOutputTextView.append(message
+                            .get(getString(R.string.keys_json_contact_username)) + ":"
+                            + message.get(getString(R.string.keys_json_message)));
+                    mMessageOutputTextView.append(System.lineSeparator());
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     /**
      * A BroadcastReceiver that listens for messages sent from PushReceiver
@@ -175,9 +213,9 @@ public class ChatFragment extends Fragment {
                 String sender = intent.getStringExtra("SENDER");
                 String messageText = intent.getStringExtra("MESSAGE");
                 int fromChatId = intent.getIntExtra("CHATID", 0);
+                Log.d("from chat id", fromChatId + "");
                 if (fromChatId != 0 && fromChatId == mChatId) {
                     mMessageOutputTextView.append(sender + ":" + messageText);
-                    mMessageOutputTextView.append(System.lineSeparator());
                     mMessageOutputTextView.append(System.lineSeparator());
                 }
             }
@@ -192,6 +230,8 @@ public class ChatFragment extends Fragment {
         }
         IntentFilter iFilter = new IntentFilter(PushReceiver.RECEIVED_NEW_MESSAGE);
         getActivity().registerReceiver(mPushMessageReciever, iFilter);
+        Log.i("Resume", "Resume happened");
+        loadChatHistory();
     }
 
     @Override
@@ -200,5 +240,6 @@ public class ChatFragment extends Fragment {
         if (mPushMessageReciever != null){
             getActivity().unregisterReceiver(mPushMessageReciever);
         }
+        Log.i("Is this happening", "happened");
     }
 }
