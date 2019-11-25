@@ -125,7 +125,6 @@ public class ChatFragment extends Fragment {
         mMessageInputEditText.onEditorAction(EditorInfo.IME_ACTION_DONE);
         mMessageInputEditText.setText("");
         Log.d("this should be the chatid", mChatId + "");
-        Log.d("email? and then username?", mEmail);
         JSONObject messageJson = new JSONObject();
         try {
             messageJson.put("email", mEmail);
@@ -175,10 +174,12 @@ public class ChatFragment extends Fragment {
 
                 String sender = intent.getStringExtra("SENDER");
                 String messageText = intent.getStringExtra("MESSAGE");
-
-                mMessageOutputTextView.append(sender + ":" + messageText);
-                mMessageOutputTextView.append(System.lineSeparator());
-                mMessageOutputTextView.append(System.lineSeparator());
+                int fromChatId = intent.getIntExtra("CHATID", 0);
+                if (fromChatId != 0 && fromChatId == mChatId) {
+                    mMessageOutputTextView.append(sender + ":" + messageText);
+                    mMessageOutputTextView.append(System.lineSeparator());
+                    mMessageOutputTextView.append(System.lineSeparator());
+                }
             }
         }
     }
