@@ -2,31 +2,28 @@ package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragment.OnListFragmentInteractionListener;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatSearchFragment.OnListFragmentInteractionListener;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.Message.Message;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Message} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link } and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyChatViewRecyclerViewAdapter extends RecyclerView.Adapter<MyChatViewRecyclerViewAdapter.ViewHolder> {
+public class MyChatSearchRecyclerViewAdapter extends RecyclerView.Adapter<MyChatSearchRecyclerViewAdapter.ViewHolder> {
 
     private final List<Message> mValues;
-    private int mChatId;
-
     private final OnListFragmentInteractionListener mListener;
 
-    public MyChatViewRecyclerViewAdapter(List<Message> items, OnListFragmentInteractionListener listener) {
+    public MyChatSearchRecyclerViewAdapter(List<Message> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -34,17 +31,15 @@ public class MyChatViewRecyclerViewAdapter extends RecyclerView.Adapter<MyChatVi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_chatview, parent, false);
+                .inflate(R.layout.fragment_chatsearch, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mUsernameView.setText(mValues.get(position).getUsername());
-        Log.d("My Values:", mValues.get(position).getUsername());
-//        holder.mMessageView.setText(mValues.get(position).getMessage());
-//        Log.i("chat id: ", Integer.toString(mChatId));
+        holder.mIdView.setText(mValues.get(position).getUsername());
+        holder.mContentView.setText(mValues.get(position).getMessage());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,7 +47,7 @@ public class MyChatViewRecyclerViewAdapter extends RecyclerView.Adapter<MyChatVi
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+//                    mListener.onListFragmentInteraction(holder.mItem);
                 }
             }
         });
@@ -65,20 +60,20 @@ public class MyChatViewRecyclerViewAdapter extends RecyclerView.Adapter<MyChatVi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mUsernameView;
-        public final TextView mMessageView;
+        public final TextView mIdView;
+        public final TextView mContentView;
         public Message mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mUsernameView = (TextView) view.findViewById(R.id.text_chat_username);
-            mMessageView = (TextView) view.findViewById(R.id.text_chat_message_display);
+            mIdView = (TextView) view.findViewById(R.id.item_number);
+            mContentView = (TextView) view.findViewById(R.id.content);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mMessageView.getText() + "'";
+            return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
 }
