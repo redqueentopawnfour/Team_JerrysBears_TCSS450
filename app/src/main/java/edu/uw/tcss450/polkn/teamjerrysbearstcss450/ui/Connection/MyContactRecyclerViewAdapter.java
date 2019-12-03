@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragmentDirections;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.Message.Message;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragment.OnListFragmentInteractionListener;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
@@ -37,6 +38,9 @@ import java.util.List;
 public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContactRecyclerViewAdapter.ViewHolder> {
 
     private final List<Contact> mValues;
+//    private final List<Message> mMessage;
+
+
     private final HashMap<Integer, Drawable> mDrawableIds;
     private final OnListFragmentInteractionListener mListener;
     private Contact mMyProfile;
@@ -52,6 +56,8 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         mMyProfile = myProfile;
         mJwt = theJwt;
         mCount = items.size();
+
+
     }
 
     @Override

@@ -98,6 +98,10 @@ public class ChatViewFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
         mMessage = new ArrayList<Message>();
+//        mMessage = loadChatHistory();
+//        mMessage = (List) Arrays.asList(args.getMessage());
+
+//        mMessage = new ArrayList<Message>();
 
 
 //        mMessage = new ArrayList(Arrays.asList(args.getMessage()));
@@ -262,6 +266,7 @@ public class ChatViewFragment extends Fragment {
                 .addHeaderField("authorization", mJwToken)
                 .onCancelled(error -> Log.e("an error", error))
                 .onPostExecute(this::endOfLoadChatTask).build().execute();
+//        Log.d("TESTING MESSAGE:", mMessage.toString());
     }
 
     private void endOfLoadChatTask(final String result) {
@@ -282,6 +287,7 @@ public class ChatViewFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+//        Log.d("TESTING MESSAGE:", mMessage.toString());
 
     }
 
@@ -317,8 +323,8 @@ public class ChatViewFragment extends Fragment {
         getActivity().registerReceiver(mPushMessageReciever, iFilter);
         Log.i("Resume", "Resume happened");
         loadChatHistory();
-        final RecyclerView.Adapter adapter = recyclerView.getAdapter();
-        getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
+//        final RecyclerView.Adapter adapter = recyclerView.getAdapter();
+//        getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
     }
 
     @Override

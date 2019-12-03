@@ -87,6 +87,11 @@
             android:name="username"
             app:argType="string"
             android:defaultValue='""' />
+        <argument
+            android:name="Chat"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.Message.Message[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
    <action android:id="@+id/action_global_nav_chat" app:destination="@id/nav_chat"/>
 

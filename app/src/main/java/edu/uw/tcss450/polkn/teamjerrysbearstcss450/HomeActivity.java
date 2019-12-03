@@ -65,6 +65,8 @@ public class HomeActivity extends AppCompatActivity {
     private ContactNotification mContactNotification;
     private Contact[] mContacts;
 
+
+
     private ColorFilter mDefault;
     private HomePushMessageReceiver mPushMessageReciever;
 
