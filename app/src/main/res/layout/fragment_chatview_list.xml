@@ -11,10 +11,10 @@
         android:id="@+id/list"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragment"
         android:layout_width="match_parent"
-        android:layout_height="550dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_height="592dp"
         app:layoutManager="LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:context=".ui.Connection.ContactFragment"
         tools:listitem="@layout/fragment_contact" />
 
@@ -39,7 +39,7 @@
             android:layout_width="309dp"
             android:layout_height="51dp"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="30dp"
             android:ems="10"
             android:hint="@string/InputField"
             android:inputType="textPersonName"

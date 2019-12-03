@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.RecyclerView;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivityArgs;
@@ -21,6 +22,7 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
