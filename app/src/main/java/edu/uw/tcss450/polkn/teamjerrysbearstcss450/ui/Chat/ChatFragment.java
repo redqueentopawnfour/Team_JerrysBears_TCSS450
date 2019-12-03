@@ -86,7 +86,7 @@ public class ChatFragment extends Fragment {
         mMessageInputEditText = view.findViewById(R.id.edit_chat_message_input);
         view.findViewById(R.id.button_chat_send).setOnClickListener(this::handleSendClick);
 
-        ChatFragmentArgs args = ChatFragmentArgs.fromBundle(getArguments());
+        ChatViewFragmentArgs args = ChatViewFragmentArgs.fromBundle(getArguments());
         if (args.getMessage() != null) {
             mMessageOutputTextView.append(args.getMessage().getSender());
             mMessageOutputTextView.append(": ");
@@ -100,7 +100,7 @@ public class ChatFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        ChatFragmentArgs args = ChatFragmentArgs.fromBundle(getArguments());
+        ChatViewFragmentArgs args = ChatViewFragmentArgs.fromBundle(getArguments());
         mEmail = ((HomeActivity)getActivity()).getmEmail();
         mJwToken = args.getJwt();
         mChatId = args.getChatid();

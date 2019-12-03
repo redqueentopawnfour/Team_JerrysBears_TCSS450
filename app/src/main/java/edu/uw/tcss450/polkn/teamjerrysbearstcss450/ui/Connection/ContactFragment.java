@@ -11,7 +11,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -85,7 +84,7 @@ public class ContactFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_contact_list, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
         Context context = recyclerView.getContext();
-        viewNoContacts = view.findViewById(R.id.linear_contacts_noContacts);
+        viewNoContacts = view.findViewById(R.id.editView);
 
         if (recyclerView instanceof RecyclerView) {
             if (mContacts != null) {
@@ -96,6 +95,7 @@ public class ContactFragment extends Fragment {
                 viewNoContacts.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
             }
+
         }
 
         ((HomeActivity) getActivity()).showAddUser();

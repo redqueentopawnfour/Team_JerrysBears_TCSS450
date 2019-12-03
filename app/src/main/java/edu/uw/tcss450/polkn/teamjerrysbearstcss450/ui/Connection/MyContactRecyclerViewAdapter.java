@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragmentDirections;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragment.OnListFragmentInteractionListener;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
@@ -147,8 +147,8 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mUsernameView = view.findViewById(R.id.text_contact_displayString);
-            mNewContactView = view.findViewById(R.id.text_contact_newContact);
+            mUsernameView = view.findViewById(R.id.text_contact_displayMessage);
+            mNewContactView = view.findViewById(R.id.text_contact_username);
             mPendingContactView = view.findViewById(R.id.text_contact_pendingContact);
             mAcceptButton = view.findViewById(R.id.imageButton_contact_accept);
             mRejectButton = view.findViewById(R.id.imageButton_contact_reject);
@@ -264,7 +264,7 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
 
     private void openChat(int chatId) {
         MobileNavigationDirections.ActionGlobalNavChat directions
-                = ChatFragmentDirections.actionGlobalNavChat().setChatid(chatId).setJwt(mJwt);
+                = ChatViewFragmentDirections.actionGlobalNavChat().setChatid(chatId).setJwt(mJwt);
 
         Navigation.findNavController(mView).navigate(directions);
     }
@@ -287,7 +287,7 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
 
                 if (mCount == 0) {
                     FragmentManager manager = ((AppCompatActivity) mView.getContext()).getSupportFragmentManager();
-                    LinearLayout noContacts = (LinearLayout) ((AppCompatActivity) mView.getContext()).findViewById(R.id.linear_contacts_noContacts);
+                    LinearLayout noContacts = (LinearLayout) ((AppCompatActivity) mView.getContext()).findViewById(R.id.editView);
                     RecyclerView recyclerView = (RecyclerView) ((AppCompatActivity) mView.getContext()).findViewById(R.id.list);
                     noContacts.setVisibility(View.VISIBLE);
                     recyclerView.setVisibility(View.GONE);

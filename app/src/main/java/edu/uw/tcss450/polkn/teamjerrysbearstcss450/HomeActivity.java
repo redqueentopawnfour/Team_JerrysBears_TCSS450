@@ -35,8 +35,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragmentDirections;
+
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatMessageNotification;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragment;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactNotification;
@@ -104,8 +105,8 @@ public class HomeActivity extends AppCompatActivity {
                     public void run() {
                         if (args.getChatMessage() != null) {
                             MobileNavigationDirections.ActionGlobalNavChat directions =
-                                    ChatFragmentDirections.actionGlobalNavChat().setJwt(mJwToken).setEmail(mEmail);
-                            directions.setMessage(args.getChatMessage());
+                                    ChatViewFragmentDirections.actionGlobalNavChat().setJwt(mJwToken).setEmail(mEmail);
+//                            directions.setMessage(args.getChatMessage());
                             navController.navigate(directions);
                         } else if (args.getContactMessage() != null) {
                             loadContacts();
@@ -181,12 +182,12 @@ public class HomeActivity extends AppCompatActivity {
 
                     Log.d("Message", mChatMessage.getMessage());
 
-                    directions = ChatFragmentDirections.actionGlobalNavChat()
+                    directions = ChatViewFragmentDirections.actionGlobalNavChat()
                             .setEmail(mEmail)
-                            .setJwt(mJwToken)
-                            .setMessage(mChatMessage);
+                            .setJwt(mJwToken);
+//                            .setMessage(mChatMessage);
                 } else {
-                    directions = ChatFragmentDirections.actionGlobalNavChat()
+                    directions = ChatViewFragmentDirections.actionGlobalNavChat()
                             .setEmail(mEmail)
                             .setJwt(mJwToken);
                 }
@@ -194,7 +195,9 @@ public class HomeActivity extends AppCompatActivity {
                 Navigation.findNavController(this, R.id.nav_host_fragment)
                         .navigate(directions);
                 break;
+
         }
+
         //Close the drawer
         ((DrawerLayout) findViewById(R.id.drawer_layout)).closeDrawers();
         return true;
@@ -243,12 +246,13 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         } else if (id == R.id.action_chat) {
             MobileNavigationDirections.ActionGlobalNavChat directions
-                    = ChatFragmentDirections.actionGlobalNavChat();
+                    = ChatViewFragmentDirections.actionGlobalNavChat();
 
             Navigation.findNavController(this, R.id.nav_host_fragment)
                     .navigate(directions);
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -296,8 +300,8 @@ public class HomeActivity extends AppCompatActivity {
                 String message = resultsJSON.getString(getString(R.string.keys_json_message));
 
                 if (message.equals("no contacts found")) {
-                    int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
-                    mViewOwnProfile.setIcon(drawableId);
+//                    int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
+//                    mViewOwnProfile.setIcon(drawableId);
 
                     MobileNavigationDirections.ActionGlobalNavContactList directions
                             = ContactFragmentDirections.actionGlobalNavContactList(mMyProfile);
@@ -335,8 +339,8 @@ public class HomeActivity extends AppCompatActivity {
                                     .build();
                         }
 
-                        int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
-                        mViewOwnProfile.setIcon(drawableId);
+//                        int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
+//                        mViewOwnProfile.setIcon(drawableId);
 
                        /* MobileNavigationDirections.ActionGlobalNavContactList directions
                                 = ContactFragmentDirections.actionGlobalNavContactList(contacts, mMyProfile).setJwt(mJwToken);

@@ -12,33 +12,6 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_chat"
-        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatFragment"
-        android:label="@string/menu_chat"
-        tools:layout="@layout/fragment_chat" >
-        <argument android:name="jwt"
-            app:argType="string"
-            android:defaultValue='""' />
-        <argument
-            android:name="email"
-            app:argType="string"
-            android:defaultValue='""' />
-        <argument
-            android:name="username"
-            app:argType="string"
-            android:defaultValue='""' />
-        <argument
-            android:name="message"
-            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatMessageNotification"
-            app:nullable="true"
-            android:defaultValue="@null" />
-        <argument
-            android:name="chatid"
-            app:argType="integer"
-            android:defaultValue="0" />
-    </fragment>
-
-    <fragment
         android:id="@+id/nav_weather"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherFragment"
         android:label="@string/menu_weather"
@@ -78,14 +51,43 @@
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragment"
         android:label="View Profile"
         tools:layout="@layout/fragment_view_profile">
-        <action
-            android:id="@+id/action_viewProfileFragment_to_nav_chat"
-            app:destination="@id/nav_chat" />
         <argument
             android:name="contact"
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact" />
+        <action
+            android:id="@+id/action_nav_viewProfileFragment_to_nav_chat"
+            app:destination="@id/nav_chat" />
+
     </fragment>
     <action android:id="@+id/action_global_viewProfileFragment" app:destination="@id/nav_viewProfileFragment" />
-    <action android:id="@+id/action_global_nav_chat" app:destination="@id/nav_chat" />
+    <fragment
+        android:id="@+id/nav_chat"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_chatview_list" >
+
+        <argument
+            android:name="message"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatMessageNotification"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="chatid"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="email"
+            app:argType="string"
+            android:defaultValue='""' />
+        <argument
+            android:name="jwt"
+            app:argType="string"
+            android:defaultValue='""' />
+        <argument
+            android:name="username"
+            app:argType="string"
+            android:defaultValue='""' />
+    </fragment>
+   <action android:id="@+id/action_global_nav_chat" app:destination="@id/nav_chat"/>
 
 </navigation>

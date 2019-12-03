@@ -144,7 +144,7 @@ public class ContactSearchResultsRecyclerViewAdapter extends RecyclerView.Adapte
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mUsernameView = view.findViewById(R.id.text_contact_displayString);
+            mUsernameView = view.findViewById(R.id.text_contact_displayMessage);
             mSendRequestButton = view.findViewById(R.id.imageButton_contactResult_sendRequest);
         }
 

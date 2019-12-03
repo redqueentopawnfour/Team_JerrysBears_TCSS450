@@ -16,7 +16,7 @@
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/editView" />
 
     <EditText
         android:id="@+id/editText_login_pw"
@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editText_login_email" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/editView"
         android:layout_width="199dp"
         android:layout_height="55dp"
         android:layout_marginStart="8dp"
