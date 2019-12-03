@@ -242,6 +242,7 @@ public class ChatViewFragment extends Fragment {
                 mMessage.add(new Message(messageText,sender));
                 final RecyclerView.Adapter adapter = recyclerView.getAdapter();
                 getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
+                recyclerView.scrollToPosition(mMessage.size()-1); //it can load the latest message after sending
 //                if (fromChatId != 0 && fromChatId == mChatId) {
 //                    mMessageOutputTextView.append(sender + ":" + messageText);
 //                    mMessageOutputTextView.append(System.lineSeparator());
@@ -288,8 +289,8 @@ public class ChatViewFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        recyclerView.scrollToPosition(mMessage.size()-1);
-//        Log.d("TESTING MESSAGE:", mMessage.toString());
+        recyclerView.scrollToPosition(mMessage.size()-1); // updating all message from chat history
+        Log.d("TESTING MESSAGE:", mMessage.toString());
 
     }
 
