@@ -42,8 +42,8 @@ public class MyChatViewRecyclerViewAdapter extends RecyclerView.Adapter<MyChatVi
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mUsernameView.setText(mValues.get(position).getUsername());
-        Log.d("My Values:", mValues.get(position).getUsername());
-//        holder.mMessageView.setText(mValues.get(position).getMessage());
+//        Log.d("My Values", mValues.get(position).getMessage());
+        holder.mMessageView.setText(mValues.get(position).getMessage());
 //        Log.i("chat id: ", Integer.toString(mChatId));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +73,7 @@ public class MyChatViewRecyclerViewAdapter extends RecyclerView.Adapter<MyChatVi
             super(view);
             mView = view;
             mUsernameView = (TextView) view.findViewById(R.id.text_chat_username);
-            mMessageView = (TextView) view.findViewById(R.id.text_chat_message_display);
+            mMessageView = (TextView) view.findViewById(R.id.text_chat_displayMessage);
         }
 
         @Override

@@ -92,12 +92,14 @@ public class ChatViewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        ChatViewFragmentArgs args = ChatViewFragmentArgs.fromBundle(getArguments());
+        ChatViewFragmentArgs args = ChatViewFragmentArgs.fromBundle(getArguments());
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
         mMessage = new ArrayList<Message>();
+
+
 //        mMessage = new ArrayList(Arrays.asList(args.getMessage()));
         Log.d("My Length:", mMessage.size()+"");
 
@@ -116,10 +118,16 @@ public class ChatViewFragment extends Fragment {
 
 
         if (recyclerView instanceof RecyclerView) {
-            recyclerView.setLayoutManager(new GridLayoutManager(context, 1));
+            GridLayoutManager layoutManager = new GridLayoutManager(context, 1);
+
+//            layoutManager.setReverseLayout(true);
+//            recyclerView.setLayoutManager(layoutManager);
+
             Log.d("recycle view instance", recyclerView.toString());
+
         }
         recyclerView.setAdapter(new MyChatViewRecyclerViewAdapter(mMessage, this::displayMessage));
+//        recyclerView.smoothScrollToPosition(mMessage.size()-1);
 
         return view;
     }
@@ -227,7 +235,8 @@ public class ChatViewFragment extends Fragment {
                 Log.d("from chat id", fromChatId + "");
                 Log.d("get  chat id", mChatId+"");
                 mMessage.add(new Message(messageText,sender));
-
+                final RecyclerView.Adapter adapter = recyclerView.getAdapter();
+                getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
 //                if (fromChatId != 0 && fromChatId == mChatId) {
 //                    mMessageOutputTextView.append(sender + ":" + messageText);
 //                    mMessageOutputTextView.append(System.lineSeparator());
@@ -308,6 +317,8 @@ public class ChatViewFragment extends Fragment {
         getActivity().registerReceiver(mPushMessageReciever, iFilter);
         Log.i("Resume", "Resume happened");
         loadChatHistory();
+        final RecyclerView.Adapter adapter = recyclerView.getAdapter();
+        getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
     }
 
     @Override
