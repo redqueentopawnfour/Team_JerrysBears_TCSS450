@@ -85,7 +85,7 @@ public class HomeActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_contactList, R.id.nav_weather)
+                R.id.nav_home, R.id.nav_contactList, R.id.nav_groupChat,R.id.nav_weather)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -196,6 +196,28 @@ public class HomeActivity extends AppCompatActivity {
 
                 Navigation.findNavController(this, R.id.nav_host_fragment)
                         .navigate(directions);
+                break;
+            case R.id.nav_groupChat:
+                navController.navigate(R.id.nav_groupChat); // can remove if adding Global Action
+//                ((Toolbar) findViewById(R.id.toolbar)).getNavigationIcon().setColorFilter(mDefault);
+//
+//                MobileNavigationDirections.ActionGlobalNavChat directions;
+//                if (mChatMessage != null) {
+//
+//                    Log.d("Message", mChatMessage.getMessage());
+//
+//                    directions = ChatViewFragmentDirections.actionGlobalNavChat()
+//                            .setEmail(mEmail)
+//                            .setJwt(mJwToken);
+////                            .setMessage(mChatMessage);
+//                } else {
+//                    directions = ChatViewFragmentDirections.actionGlobalNavChat()
+//                            .setEmail(mEmail)
+//                            .setJwt(mJwToken);
+//                }
+//
+//                Navigation.findNavController(this, R.id.nav_host_fragment)
+//                        .navigate(directions);
                 break;
 
         }

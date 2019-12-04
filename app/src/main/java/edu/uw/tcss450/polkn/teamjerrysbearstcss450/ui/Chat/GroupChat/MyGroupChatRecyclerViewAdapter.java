@@ -23,6 +23,13 @@ public class MyGroupChatRecyclerViewAdapter extends RecyclerView.Adapter<MyGroup
     private final List<Message> mValues;
     private final OnListFragmentInteractionListener mListener;
 
+
+    private int mChatId;
+
+
+
+
+
     public MyGroupChatRecyclerViewAdapter(List<Message> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
@@ -38,8 +45,7 @@ public class MyGroupChatRecyclerViewAdapter extends RecyclerView.Adapter<MyGroup
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getUsername());
-        holder.mContentView.setText(mValues.get(position).getMessage());
+        holder.mGroupnameView.setText(mValues.get(position).getUsername());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,20 +66,18 @@ public class MyGroupChatRecyclerViewAdapter extends RecyclerView.Adapter<MyGroup
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView mGroupnameView;
         public Message mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mGroupnameView = (TextView) view.findViewById(R.id.text_groupchat_username);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mGroupnameView.getText() + "'";
         }
     }
 }

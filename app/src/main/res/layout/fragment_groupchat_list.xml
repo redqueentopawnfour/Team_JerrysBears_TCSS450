@@ -11,11 +11,56 @@
         android:id="@+id/list"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragment"
         android:layout_width="425dp"
-        android:layout_height="741dp"
+        android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:context=".ui.Connection.ContactFragment"
         tools:listitem="@layout/fragment_contact" />
+    <LinearLayout
+        android:id="@+id/editView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:textAlignment="center">
+
+        <TextView
+            android:id="@+id/text_contacts_noContactsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:text="@string/editText_recycle_noGroupChatTitle"
+            android:textColor="@color/colorPrimary"
+            android:textSize="40sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/image_home_bears"
+            android:layout_width="236dp"
+            android:layout_height="296dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/bears_color_image_transparent" />
+
+        <TextView
+            android:id="@+id/text_contacts_noContactsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingTop="20dp"
+            android:paddingRight="10dp"
+            android:text="@string/editText_recycle_noGroupChat"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18sp" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -54,6 +54,7 @@
     <string name="menu_weather">Weather</string>
     <string name="menu_share">Share</string>
     <string name="menu_notification">Notification</string>
+    <string name="menu_groupchat">Group</string>
 
 
     <!--    Web Service keys-->
@@ -83,11 +84,14 @@
     <string name="image_viewProfile_icon">User Icon</string>
 
 
-    <!--recycler view -->
+    <!--recycler view on contact -->
     <string name="editText_recycler_noContacts">You have no connections! Use the button above to find some.</string>
     <string name="editText_recycler_noSearchResults">No contacts were found with that criteria. Please try again!</string>
     <string name="editText_recycler_noContactsTitle">Uh oh!</string>
 
+<!--    recylce view on group chat-->
+    <string name="editText_recycle_noGroupChat">You have no groups! Use the button to create your group.</string>
+    <string name="editText_recycle_noGroupChatTitle">Uh oh!</string>
 
     <!-- key  -->
     <string name="key_chat">chat_key</string>
