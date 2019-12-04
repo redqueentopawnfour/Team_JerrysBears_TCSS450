@@ -36,6 +36,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.util.function.Consumer;
+
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatMessageNotification;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragment;
@@ -60,6 +62,7 @@ public class HomeActivity extends AppCompatActivity {
     private MenuItem mViewOwnProfile;
     private MenuItem mChat;
     private MenuItem mNavContactList;
+    private MenuItem mAddGroup;
     private Contact mMyProfile;
     private ChatMessageNotification mChatMessage;
     private ContactNotification mContactNotification;
@@ -85,7 +88,7 @@ public class HomeActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_contactList, R.id.nav_weather)
+                R.id.nav_home, R.id.nav_contactList, R.id.nav_groupChat,R.id.nav_weather)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -111,7 +114,7 @@ public class HomeActivity extends AppCompatActivity {
 //                            directions.setMessage(args.getChatMessage());
                             navController.navigate(directions);
                         } else if (args.getContactMessage() != null) {
-                            loadContacts();
+                            loadContacts(HomeActivity.this::handleContactsOnPostExecute);
                         }
                     }
                 },
@@ -151,6 +154,7 @@ public class HomeActivity extends AppCompatActivity {
                 mChat.setVisible(false);                        // NP 11/23/2019- Set icons to invisible from here when navigating to Home - all other icon handling done in individual fragments
                 mViewOwnProfile.setVisible(false);              // but since HomeFragment loads before the menu inflater, HomeFragment must be handled from HomeActivity
                 mAddContacts.setVisible(false);
+                mAddGroup.setVisible(false);
                 navController.navigate(R.id.nav_home, getIntent().getExtras());
                 break;
             case R.id.nav_contactList:
@@ -197,6 +201,28 @@ public class HomeActivity extends AppCompatActivity {
                 Navigation.findNavController(this, R.id.nav_host_fragment)
                         .navigate(directions);
                 break;
+            case R.id.nav_groupChat:
+                navController.navigate(R.id.nav_groupChat); // can remove if adding Global Action
+//                ((Toolbar) findViewById(R.id.toolbar)).getNavigationIcon().setColorFilter(mDefault);
+//
+//                MobileNavigationDirections.ActionGlobalNavChat directions;
+//                if (mChatMessage != null) {
+//
+//                    Log.d("Message", mChatMessage.getMessage());
+//
+//                    directions = ChatViewFragmentDirections.actionGlobalNavChat()
+//                            .setEmail(mEmail)
+//                            .setJwt(mJwToken);
+////                            .setMessage(mChatMessage);
+//                } else {
+//                    directions = ChatViewFragmentDirections.actionGlobalNavChat()
+//                            .setEmail(mEmail)
+//                            .setJwt(mJwToken);
+//                }
+//
+//                Navigation.findNavController(this, R.id.nav_host_fragment)
+//                        .navigate(directions);
+                break;
 
         }
 
@@ -211,6 +237,7 @@ public class HomeActivity extends AppCompatActivity {
         mAddContacts = menu.findItem(R.id.action_addContact);
         mViewOwnProfile = menu.findItem(R.id.action_viewOwnProfile);
         mChat = menu.findItem(R.id.action_chat);
+        mAddGroup = menu.findItem(R.id.action_addGroup);
         return true;
     }
 
@@ -234,9 +261,9 @@ public class HomeActivity extends AppCompatActivity {
                     Navigation.findNavController(this, R.id.nav_host_fragment);
             NavDestination nd = navController.getCurrentDestination();
             if (nd.getId() == R.id.nav_addContactFragment) {
-                loadContacts();
+                loadContacts(this::handleContactsOnPostExecute);
             } else if (nd.getId() == R.id.nav_viewProfileFragment) {
-                loadContacts();
+                loadContacts(this::handleContactsOnPostExecute);
             }
             return super.onOptionsItemSelected(item);
         } else if (id == R.id.action_viewOwnProfile) {
@@ -253,12 +280,16 @@ public class HomeActivity extends AppCompatActivity {
             Navigation.findNavController(this, R.id.nav_host_fragment)
                     .navigate(directions);
             return true;
+        } else if (id == R.id.action_addGroup) {
+            NavController navController =
+                    Navigation.findNavController(this, R.id.nav_host_fragment);
+            navController.navigate(R.id.nav_groupAdd, getIntent().getExtras());
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadContacts() {
+    private void loadContacts(Consumer<String> onPost) {
         Uri uri_contacts = new Uri.Builder()
                 .scheme("https")
                 .appendPath(getString(R.string.ep_base_url))
@@ -275,7 +306,7 @@ public class HomeActivity extends AppCompatActivity {
             Log.d("Email", jsonEmail.getString("email"));
 
             new SendPostAsyncTask.Builder(uri_contacts.toString(), jsonEmail)
-                    .onPostExecute(this::handleContactsOnPostExecute)
+                    .onPostExecute(onPost)
                     .build().execute();
 
         } catch (Throwable tx) {
@@ -493,6 +524,20 @@ public class HomeActivity extends AppCompatActivity {
             mAddContacts.setVisible(true);
         }
     }
+
+    public void showAddGroup() {
+        if(mAddGroup != null){
+            mAddGroup.setVisible(true);
+        }
+    }
+
+
+    public void hideAddGroup() {
+        if(mAddGroup != null){
+            mAddGroup.setVisible(false);
+        }
+    }
+
 
 
     // Deleting the Pushy device token must be done asynchronously. Good thing

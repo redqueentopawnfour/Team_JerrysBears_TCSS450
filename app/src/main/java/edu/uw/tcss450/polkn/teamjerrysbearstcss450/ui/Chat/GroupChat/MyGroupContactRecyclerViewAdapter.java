@@ -7,30 +7,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupContactFragment.OnListFragmentInteractionListener;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupChatFragment.OnListFragmentInteractionListener;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.Message.Message;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Message} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyGroupChatRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupChatRecyclerViewAdapter.ViewHolder> {
+public class MyGroupContactRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupContactRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Message> mValues;
+    private final List<DummyItem> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-
-    private int mChatId;
-
-
-
-
-
-    public MyGroupChatRecyclerViewAdapter(List<Message> items, OnListFragmentInteractionListener listener) {
+    public MyGroupContactRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -38,14 +31,15 @@ public class MyGroupChatRecyclerViewAdapter extends RecyclerView.Adapter<MyGroup
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_groupchat, parent, false);
+                .inflate(R.layout.fragment_groupcontact, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mGroupnameView.setText(mValues.get(position).getUsername());
+        holder.mIdView.setText(mValues.get(position).id);
+        holder.mContentView.setText(mValues.get(position).content);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,18 +60,20 @@ public class MyGroupChatRecyclerViewAdapter extends RecyclerView.Adapter<MyGroup
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mGroupnameView;
-        public Message mItem;
+        public final TextView mIdView;
+        public final TextView mContentView;
+        public DummyItem mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mGroupnameView = (TextView) view.findViewById(R.id.text_groupchat_username);
+            mIdView = (TextView) view.findViewById(R.id.item_number);
+            mContentView = (TextView) view.findViewById(R.id.content);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mGroupnameView.getText() + "'";
+            return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
 }

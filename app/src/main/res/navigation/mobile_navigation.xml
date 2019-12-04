@@ -94,5 +94,15 @@
             android:defaultValue="@null" />
     </fragment>
    <action android:id="@+id/action_global_nav_chat" app:destination="@id/nav_chat"/>
+    <fragment
+        android:id="@+id/nav_groupChat"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupChatFragment"
+        android:label="Group Chat"
+        tools:layout="@layout/fragment_groupchat_list" />
+    <fragment
+        android:id="@+id/nav_groupAdd"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupAddFragment"
+        android:label="fragment_group_add"
+        tools:layout="@layout/fragment_group_add" />
 
 </navigation>

@@ -9,13 +9,18 @@
             android:title="@string/menu_home" />
         <item
             android:id="@+id/nav_contactList"
-            android:icon="@drawable/ic_people_purple_24dp"
+            android:icon="@drawable/ic_chat_black_24dp"
             android:title="@string/menu_contacts" />
+
+        <item
+            android:id="@+id/nav_groupChat"
+            android:icon="@drawable/ic_people_purple_24dp"
+            android:title="@string/menu_groupchat"/>
         <item
             android:id="@+id/nav_weather"
             android:icon="@drawable/ic_cloud_black_24dp"
-            android:title="@string/menu_weather" />
-        
+            android:title="@string/menu_weather">
 
+        </item>
     </group>
 </menu>
