@@ -84,9 +84,9 @@ public class GroupChatFragment extends Fragment {
             }
         }
 
-        ((HomeActivity) getActivity()).showAddUser();
-        ((HomeActivity) getActivity()).showViewProfile();
-        ((HomeActivity) getActivity()).hideChatIcon();
+//        ((HomeActivity) getActivity()).showAddUser();
+//        ((HomeActivity) getActivity()).showViewProfile();
+//        ((HomeActivity) getActivity()).hideChatIcon();
 
         return view;
     }
