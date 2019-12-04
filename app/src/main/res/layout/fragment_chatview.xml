@@ -2,34 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_chat_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/chat_message_cardview"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="5dp"
-        app:cardElevation="0dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="5dp"
+        android:layout_weight=".7"
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:id="@+id/linearlayout_contact_contact"
-            android:layout_width="match_parent"
-            android:layout_height="67dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/customborder"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/text_chat_username"
-                android:layout_width="37dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="0.5"
                 android:drawablePadding="5dp"
-                android:gravity="left"
                 android:paddingTop="10dp"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textColor="@color/colorAccent"
@@ -44,13 +46,14 @@
 
             <TextView
                 android:id="@+id/text_chat_displayMessage"
-                android:layout_width="211dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_weight="0.5"
                 android:drawablePadding="5dp"
+                android:maxWidth="200dp"
                 android:maxLines="10"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
@@ -66,5 +69,7 @@
 
 
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
+
 </LinearLayout>
