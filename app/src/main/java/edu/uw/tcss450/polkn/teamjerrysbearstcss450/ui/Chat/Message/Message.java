@@ -131,8 +131,6 @@ public class Message implements Serializable, Parcelable {
         this.mUsername = builder.mUsername;
         this.mMessage  = builder.mMessage;
 //        this.mChatId = builder.mChatId;
-
-
     }
 
     public String getUsername() {

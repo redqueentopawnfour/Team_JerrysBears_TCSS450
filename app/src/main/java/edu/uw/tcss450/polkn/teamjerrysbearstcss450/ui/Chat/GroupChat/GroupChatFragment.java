@@ -12,8 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.Message.Message;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupContact.GroupContact;
 
 /**
  * A fragment representing a list of Items.
@@ -23,11 +26,14 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.Message.Message;
  */
 public class GroupChatFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
 
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+
+    private List<GroupContact> myGroupContacts;
+
+    private String mJwt;
 
     private RecyclerView recyclerView;
 
@@ -66,17 +72,22 @@ public class GroupChatFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_groupchat_list, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = recyclerView.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
+        recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        Context context = recyclerView.getContext();
+
+        if (recyclerView instanceof RecyclerView) {
+            if (myGroupContacts != null) {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+//                    recyclerView.setAdapter(new MyGroupChatRecyclerViewAdapter(mContacts, mJwt, iconDrawables, mProfile, this::displayContact));
+            } else {
+                recyclerView.setVisibility(View.GONE);
             }
-//            recyclerView.setAdapter(new MyGroupChatRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
+
+        ((HomeActivity) getActivity()).showAddUser();
+        ((HomeActivity) getActivity()).showViewProfile();
+        ((HomeActivity) getActivity()).hideChatIcon();
+
         return view;
     }
 
@@ -94,6 +105,6 @@ public class GroupChatFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(Message item);
+        void onListFragmentInteraction(GroupContact item);
     }
 }

@@ -517,6 +517,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+
+
     // Deleting the Pushy device token must be done asynchronously. Good thing
     // we have something that allows us to do that.
     class DeleteTokenAsyncTask extends AsyncTask<Void, Void, Void> {

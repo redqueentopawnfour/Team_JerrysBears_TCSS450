@@ -119,9 +119,6 @@ public class ChatViewFragment extends Fragment {
 //        Context context = view.getContext();
         Context context = recyclerView.getContext();
 
-
-
-
         if (recyclerView instanceof RecyclerView) {
             GridLayoutManager layoutManager = new GridLayoutManager(context, 1);
 

@@ -9,18 +9,18 @@ import android.widget.TextView;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupChatFragment.OnListFragmentInteractionListener;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.Message.Message;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupContact.GroupContact;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Message} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link GroupContact} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class MyGroupChatRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupChatRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Message> mValues;
+    private final List<GroupContact> mValues;
+
     private final OnListFragmentInteractionListener mListener;
 
 
@@ -30,7 +30,7 @@ public class MyGroupChatRecyclerViewAdapter extends RecyclerView.Adapter<MyGroup
 
 
 
-    public MyGroupChatRecyclerViewAdapter(List<Message> items, OnListFragmentInteractionListener listener) {
+    public MyGroupChatRecyclerViewAdapter(List<GroupContact> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -45,7 +45,7 @@ public class MyGroupChatRecyclerViewAdapter extends RecyclerView.Adapter<MyGroup
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mGroupnameView.setText(mValues.get(position).getUsername());
+        holder.mGroupnameView.setText(mValues.get(position).getGroupname());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,7 +67,7 @@ public class MyGroupChatRecyclerViewAdapter extends RecyclerView.Adapter<MyGroup
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public final TextView mGroupnameView;
-        public Message mItem;
+        public GroupContact mItem;
 
         public ViewHolder(View view) {
             super(view);
