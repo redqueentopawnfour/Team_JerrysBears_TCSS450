@@ -1,20 +1,33 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.dummy.DummyContent;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.dummy.DummyContent.DummyItem;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragmentArgs;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.MyContactRecyclerViewAdapter;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragmentDirections;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
 
 /**
  * A fragment representing a list of Items.
@@ -24,12 +37,16 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.dummy.DummyContent.DummyItem;
  */
 public class GroupContactFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-
+    private List<Contact> mContacts;
+    private HashMap iconDrawables;
+    private Contact mProfile;
+    private String mJwt;
+    private RecyclerView recyclerView;
+    private View viewNoContacts;
+    List<String> mUserNamesSelected;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -54,37 +71,70 @@ public class GroupContactFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-    }
 
+
+        ContactFragmentArgs args = ContactFragmentArgs.fromBundle(getArguments());
+
+        if (args.getContact() != null) {
+            mContacts = new ArrayList<>(Arrays.asList(args.getContact()));
+        }
+        mProfile = args.getProfile();
+        mJwt = args.getJwt();
+        iconDrawables = new HashMap<Integer, Drawable>();
+        mUserNamesSelected = new ArrayList<String>();
+    }
+    private void displayContact(final Contact theContact) {
+        final Bundle args = new Bundle();
+
+        MobileNavigationDirections.ActionGlobalViewProfileFragment directions
+                = ViewProfileFragmentDirections.actionGlobalViewProfileFragment(theContact);
+
+        Navigation.findNavController(getView())
+                .navigate(directions);
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_groupcontact_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_contact_list, container, false);
+        recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        Context context = recyclerView.getContext();
+        viewNoContacts = view.findViewById(R.id.editView);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
+        if (recyclerView instanceof RecyclerView) {
+            if (mContacts != null) {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                populateIconDrawables(context);
+                recyclerView.setAdapter(new MyContactRecyclerViewAdapter(mContacts, mJwt,
+                        iconDrawables, mProfile, this::displayContact));
+            } else {
+                viewNoContacts.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.GONE);
             }
-            recyclerView.setAdapter(new MyGroupContactRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+
         }
+
+        ((HomeActivity) getActivity()).hideAddUser();
+        ((HomeActivity) getActivity()).hideViewProfile();
+        ((HomeActivity) getActivity()).hideChatIcon();
+        ((HomeActivity) getActivity()).hideAddGroup();
         return view;
     }
+
+    private void populateIconDrawables(Context context) {
+        for (int i = 0; i < mContacts.size(); i++) {
+            String userIcon = mContacts.get(i).getUserIcon();
+            Log.i("usericon", userIcon);
+            int drawableId = context.getResources().getIdentifier(userIcon, "drawable", context.getPackageName());
+            Drawable drawableIcon = ResourcesCompat.getDrawable(getResources(), drawableId, null);
+            iconDrawables.put(i, drawableIcon);
+        }
+    }
+
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
     }
 
     @Override
@@ -105,6 +155,6 @@ public class GroupContactFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(Contact item);
     }
 }

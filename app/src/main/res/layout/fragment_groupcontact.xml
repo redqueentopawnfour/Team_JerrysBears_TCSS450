@@ -63,6 +63,12 @@
                 tools:layout_conversion_absoluteHeight="21dp"
                 tools:layout_conversion_absoluteWidth="0dp" />
 
+            <CheckBox
+                android:id="@+id/checkBox_groupContact_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:text="CheckBox" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

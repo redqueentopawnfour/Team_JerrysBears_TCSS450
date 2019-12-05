@@ -102,8 +102,30 @@
         android:id="@+id/nav_groupChat"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupChatFragment"
         android:label="Group Chat"
-        tools:layout="@layout/fragment_groupchat_list" />
+        tools:layout="@layout/fragment_groupchat_list" >
+        <action
+            android:id="@+id/action_nav_groupChat_to_groupContactFragment"
+            app:destination="@id/nav_groupContacts" />
+    </fragment>
     <fragment
+        android:id="@+id/nav_groupContacts"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupContactFragment"
+        android:label="fragment_groupcontact_list"
+        tools:layout="@layout/fragment_groupcontact_list" >
+        <argument
+            android:name="contacts"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="jwt"
+            app:argType="string"
+            android:defaultValue='""' />
+        <argument
+            android:name="profile"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact"
+            app:nullable="true" />
+    </fragment>
         android:id="@+id/nav_groupAdd"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupAddFragment"
         android:label="fragment_group_add"
