@@ -107,6 +107,9 @@ public class ChatViewFragment extends Fragment {
 //        mMessage = new ArrayList(Arrays.asList(args.getMessage()));
         Log.d("My Length:", mMessage.size()+"");
 
+        ((HomeActivity) getActivity()).hideAddUser();
+        ((HomeActivity) getActivity()).hideViewProfile();
+        ((HomeActivity) getActivity()).hideChatIcon();
     }
 
     @Override
@@ -235,24 +238,25 @@ public class ChatViewFragment extends Fragment {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(intent.hasExtra("SENDER") && intent.hasExtra("MESSAGE")) {
-
-                String sender = intent.getStringExtra("SENDER");
-                String messageText = intent.getStringExtra("MESSAGE");
-                int fromChatId = intent.getIntExtra("CHATID", 0);
-                Log.d("from chat id", fromChatId + "");
-                Log.d("get  chat id", mChatId+"");
-                mMessage.add(new Message(messageText,sender));
-                final RecyclerView.Adapter adapter = recyclerView.getAdapter();
-                getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
-                //it can load the latest message after sending
+            if(intent.hasExtra("SENDER") && intent.hasExtra("MESSAGE") && intent.hasExtra("TYPE")) {
+                String type = intent.getStringExtra("TYPE");
+                if (type.equals("msg")) {
+                    String sender = intent.getStringExtra("SENDER");
+                    String messageText = intent.getStringExtra("MESSAGE");
+                    int fromChatId = intent.getIntExtra("CHATID", 0);
+                    Log.d("from chat id", fromChatId + "");
+                    Log.d("get  chat id", mChatId + "");
+                    mMessage.add(new Message("HELLO", "MESSAGE"));
+                    final RecyclerView.Adapter adapter = recyclerView.getAdapter();
+                    getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
+                    //it can load the latest message after sending
 //                if (fromChatId != 0 && fromChatId == mChatId) {
 //                    mMessageOutputTextView.append(sender + ":" + messageText);
 //                    mMessageOutputTextView.append(System.lineSeparator());
 //                }
+                }
+                recyclerView.scrollToPosition(mMessage.size() - 1);
             }
-            recyclerView.scrollToPosition(mMessage.size()-1);
-
         }
     }
 
