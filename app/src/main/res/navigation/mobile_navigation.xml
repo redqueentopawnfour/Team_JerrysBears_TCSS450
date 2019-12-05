@@ -105,6 +105,9 @@
             app:argType="string"
             android:defaultValue='""'
             app:nullable="true" />
+        <action
+            android:id="@+id/action_nav_chat_to_contactDisplay"
+            app:destination="@id/contactDisplay" />
     </fragment>
    <action android:id="@+id/action_global_nav_chat" app:destination="@id/nav_chat"/>
     <fragment
@@ -165,6 +168,12 @@
         <argument
             android:name="WeatherObject"
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherObject" />
-    </fragment><action android:id="@+id/action_global_nav_groupChat" app:destination="@id/nav_groupChat"/>
+    </fragment>
+    <action android:id="@+id/action_global_nav_groupChat" app:destination="@id/nav_groupChat" />
+    <fragment
+        android:id="@+id/contactDisplay"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.contactDisplay.contactDisplay"
+        android:label="fragment_contact_display"
+        tools:layout="@layout/fragment_contact_display" />
 
 </navigation>

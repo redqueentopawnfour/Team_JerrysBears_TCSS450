@@ -100,10 +100,9 @@
     <string name="button_createGrou_create">Create</string>
 
 
-
-<!--    recycler view on group contact-->
+    <!--    recycler view on group contact-->
     <string name="text_groupChat_noConnections">You have no verified connections!</string>
-<!--    add group strings-->
+    <!--    add group strings-->
     <string name="text_addGroup_title">Group Name</string>
     <string name="editText_addGroup_hint">Enter the name of your group!</string>
     <string name="button_addGroup_create">Create</string>

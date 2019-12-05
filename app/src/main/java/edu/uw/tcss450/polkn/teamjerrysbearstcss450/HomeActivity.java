@@ -64,6 +64,7 @@ public class HomeActivity extends AppCompatActivity {
     private MenuItem mChat;
     private MenuItem mNavContactList;
     private MenuItem mAddGroup;
+    private MenuItem mDisplayMember;
     private Contact mMyProfile;
     private ChatMessageNotification mChatMessage;
     private ContactNotification mContactNotification;
@@ -156,6 +157,7 @@ public class HomeActivity extends AppCompatActivity {
                 mViewOwnProfile.setVisible(false);              // but since HomeFragment loads before the menu inflater, HomeFragment must be handled from HomeActivity
                 mAddContacts.setVisible(false);
                 mAddGroup.setVisible(false);
+                mDisplayMember.setVisible(false);               // display members button
                 navController.navigate(R.id.nav_home, getIntent().getExtras());
                 break;
             case R.id.nav_contactList:
@@ -240,6 +242,7 @@ public class HomeActivity extends AppCompatActivity {
         mViewOwnProfile = menu.findItem(R.id.action_viewOwnProfile);
         mChat = menu.findItem(R.id.action_chat);
         mAddGroup = menu.findItem(R.id.action_addGroup);
+        mDisplayMember= menu.findItem(R.id.action_contactDisplay);
         return true;
     }
 
@@ -618,6 +621,20 @@ public class HomeActivity extends AppCompatActivity {
             mAddGroup.setVisible(false);
         }
     }
+
+    public void showDisplayMember() {
+        if(mDisplayMember != null) {
+            mDisplayMember.setVisible(true);
+        }
+    }
+
+    public void hideDisplayMember() {
+        if(mDisplayMember != null) {
+            mDisplayMember.setVisible(false);
+        }
+    }
+
+
 
 
 

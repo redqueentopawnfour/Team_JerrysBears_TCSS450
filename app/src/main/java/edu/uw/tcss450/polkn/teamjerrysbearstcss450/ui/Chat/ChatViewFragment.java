@@ -10,9 +10,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -20,8 +19,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -29,7 +28,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
@@ -53,6 +51,7 @@ public class ChatViewFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
+    private List<String>  mNames;
     private List<Message> mMessage;
 
     private static final String TAG = "CHAT_FRAG";
@@ -70,6 +69,8 @@ public class ChatViewFragment extends Fragment {
     private String mSendUrl;
     private int mChatId;
     private String mUsername;
+
+    private View mDisplayButton;
 
 
     /**
@@ -110,6 +111,8 @@ public class ChatViewFragment extends Fragment {
         ((HomeActivity) getActivity()).hideAddUser();
         ((HomeActivity) getActivity()).hideViewProfile();
         ((HomeActivity) getActivity()).hideChatIcon();
+        ((HomeActivity) getActivity()).showDisplayMember();
+        ((HomeActivity) getActivity()).hideAddGroup();
     }
 
     @Override
@@ -117,29 +120,28 @@ public class ChatViewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chatview_list, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
-
-//        recyclerView.smoothScrollToPosition(mMessage.size()-1);
-//        getActivity().setTitle(mMessage.get(0).getUsername());
-//        Context context = view.getContext();
         Context context = recyclerView.getContext();
 
-
-
-
-//        if (recyclerView instanceof RecyclerView) {
-//            GridLayoutManager layoutManager = new GridLayoutManager(context, 1);
-//
-////            layoutManager.setReverseLayout(true);
-////            recyclerView.setLayoutManager(layoutManager);
-//
-//            Log.d("recycle view instance", recyclerView.toString());
-//
-//        }
         recyclerView.setAdapter(new MyChatViewRecyclerViewAdapter(mMessage, this::displayMessage, mUsername));
         ((HomeActivity)getActivity()).hideViewProfile();
         ((HomeActivity)getActivity()).hideAddUser();
 
+
+        mDisplayButton = getActivity().findViewById(R.id.action_contactDisplay);
+        mDisplayButton.setOnClickListener(b -> displayClicked(mNames));
+
         return view;
+    }
+
+    private void displayClicked(final List<String> theNames) {
+        Bundle args = new Bundle();
+        args.putSerializable("Intent key for creds", //set a key at here to open the door. "Intetnt key for creds"
+                new ArrayList<String>(theNames));
+
+        Navigation.findNavController(getView()).navigate(R.id.action_nav_chat_to_contactDisplay,args); //args
+
+
+
     }
 
 
@@ -169,6 +171,7 @@ public class ChatViewFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        mNames = new ArrayList<>();
         ChatViewFragmentArgs args = ChatViewFragmentArgs.fromBundle(getArguments());
         mEmail = ((HomeActivity)getActivity()).getmEmail();
 
@@ -310,12 +313,19 @@ public class ChatViewFragment extends Fragment {
                     && !res.getBoolean(getString(R.string.keys_json_success))) {
             } else {
                 JSONArray messages = (JSONArray) res.get(getString(R.string.keys_json_messages));
+                JSONArray names  = (JSONArray) res.get("usernames");
                 for(int i = 0; i < messages.length(); i++) {
                     JSONObject message =  (JSONObject) messages.get(i);
                     Message tempmessage = new Message(message.getString("message"), message.getString("username"));
+
                     Log.d(" loaded message", tempmessage.toString());
                     mMessage.add(tempmessage);
+                }
 
+                for (int i = 0; i < names.length();i++) {
+                    JSONObject name = (JSONObject) names.get(i);
+                    String tempName = name.getString("username");
+                    mNames.add(tempName);
                 }
             }
         } catch (JSONException e) {
@@ -323,6 +333,7 @@ public class ChatViewFragment extends Fragment {
         }
         recyclerView.scrollToPosition(mMessage.size()-1); // updating all message from chat history
         Log.d("TESTING MESSAGE:", mMessage.toString());
+        Log.d("TESTING NAMES:", mNames.toString());
 
     }
 

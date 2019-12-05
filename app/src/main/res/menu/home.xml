@@ -36,4 +36,13 @@
         app:showAsAction="always"
         android:visible="false" />
 
+    <item
+        android:id="@+id/action_contactDisplay"
+        android:orderInCategory="100"
+        android:title="Chat Members"
+        android:icon="@drawable/ic_displaymember"
+        app:showAsAction="always"
+        android:visible="false" />
+
+
 </menu>

@@ -1,7 +1,6 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +22,6 @@ import org.json.JSONObject;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragmentDirections;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.Message.Message;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragment.OnListFragmentInteractionListener;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;

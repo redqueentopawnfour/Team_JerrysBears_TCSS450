@@ -125,7 +125,7 @@ public class GroupChatFragment extends Fragment {
         ((HomeActivity) getActivity()).showAddGroup();
         ((HomeActivity) getActivity()).hideAddUser();
         ((HomeActivity) getActivity()).hideViewProfile();
-
+        ((HomeActivity) getActivity()).hideDisplayMember();
         ((HomeActivity) getActivity()).hideChatIcon();
         return view;
     }
@@ -221,8 +221,6 @@ public class GroupChatFragment extends Fragment {
                 String type = intent.getStringExtra("TYPE");
                 String sender = intent.getStringExtra("SENDER");
                 String messageText = intent.getStringExtra("MESSAGE");
-//                final RecyclerView.Adapter adapter = recyclerView.getAdapter();
-//                getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
 
 //                ((HomeActivity) getActivity()).reloadContactList();   // ????
 

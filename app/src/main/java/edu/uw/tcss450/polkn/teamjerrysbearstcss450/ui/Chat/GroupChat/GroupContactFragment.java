@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -35,8 +34,6 @@ import java.util.Set;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragmentArgs;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.MyContactRecyclerViewAdapter;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
@@ -95,6 +92,7 @@ public class GroupContactFragment extends Fragment {
         iconDrawables = new HashMap<Integer, Drawable>();
         mUserNamesSelected = new HashSet<String>();
     }
+
     private void displayContact(final Contact theContact) {
         final Bundle args = new Bundle();
 
@@ -131,6 +129,7 @@ public class GroupContactFragment extends Fragment {
         ((HomeActivity) getActivity()).hideViewProfile();
         ((HomeActivity) getActivity()).hideChatIcon();
         ((HomeActivity) getActivity()).hideAddGroup();
+        ((HomeActivity) getActivity()).hideDisplayMember();
         return view;
     }
 

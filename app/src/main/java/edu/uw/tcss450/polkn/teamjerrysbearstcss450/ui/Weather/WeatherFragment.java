@@ -7,15 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
@@ -30,11 +26,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragmentDirections;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.GetAsyncTask;
 
 public class WeatherFragment extends Fragment {
 
