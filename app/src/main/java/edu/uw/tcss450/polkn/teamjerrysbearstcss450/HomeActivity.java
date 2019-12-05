@@ -179,6 +179,8 @@ public class HomeActivity extends AppCompatActivity {
                 }
                 break;
             case R.id.nav_weather:
+
+
                 navController.navigate(R.id.nav_weather);
                 break;
             case R.id.nav_chat:

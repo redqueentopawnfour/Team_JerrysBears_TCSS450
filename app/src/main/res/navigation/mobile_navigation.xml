@@ -15,7 +15,11 @@
         android:id="@+id/nav_weather"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherFragment"
         android:label="@string/menu_weather"
-        tools:layout="@layout/fragment_weather" />
+        tools:layout="@layout/fragment_weather" >
+        <action
+            android:id="@+id/action_nav_weather_to_viewWeatherFragment"
+            app:destination="@id/viewWeatherFragment" />
+    </fragment>
     <fragment
         android:id="@+id/nav_contactList"
         android:tag="fragment_contactList"
@@ -121,6 +125,18 @@
             android:name="profile"
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact"
             app:nullable="true" />
+    </fragment>
+        android:id="@+id/nav_groupAdd"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupAddFragment"
+        android:label="fragment_group_add"
+        tools:layout="@layout/fragment_group_add" />
+    <fragment
+        android:id="@+id/viewWeatherFragment"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherForecastFragment"
+        android:label="ViewWeatherFragment" >
+        <argument
+            android:name="WeatherObject"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherObject" />
     </fragment>
 
 </navigation>
