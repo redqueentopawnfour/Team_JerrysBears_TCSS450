@@ -35,7 +35,7 @@ public class contactDisplay extends Fragment {
 
     private List<String> mContacts;
 
-    private TextView mMemeberOutput;
+//    private TextView mMemeberOutput;
 
 
     public contactDisplay() {
@@ -62,17 +62,21 @@ public class contactDisplay extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view,savedInstanceState);
 
-//        TextView test = view.findViewById(R.id.textView_email);
 
         Bundle args = getArguments();
 
 
         if (args != null) {
-            mContacts = (List) args.getSerializable("Intent key for creds"); //wrong key
-            mMemeberOutput = (TextView) view.findViewById(R.id.text_groupchat_username);
-            for (int i = 0; i < mContacts.size(); i++) {
-                mMemeberOutput.setText(mContacts.get(i)+"\n");
+            mContacts = (List) args.getSerializable("Intent key for creds");
+            TextView mMemeberOutput = view.findViewById(R.id.textView_displayContact);
+            Log.d("TESTING DISPLAY:", mContacts.toString());
+            Log.d("TESTING DISPLAY Index:", mContacts.get(0));
+
+            StringBuilder builder = new StringBuilder();
+            for (String details : mContacts) {
+                builder.append(details + "\n\n");
             }
+            mMemeberOutput.setText(builder.toString());
 
         }
     }

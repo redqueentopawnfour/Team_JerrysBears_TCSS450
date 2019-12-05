@@ -173,7 +173,7 @@
     <fragment
         android:id="@+id/contactDisplay"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.contactDisplay.contactDisplay"
-        android:label="fragment_contact_display"
+        android:label="Members"
         tools:layout="@layout/fragment_contact_display" />
 
 </navigation>
