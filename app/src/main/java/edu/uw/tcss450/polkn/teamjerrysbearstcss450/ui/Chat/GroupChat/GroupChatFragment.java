@@ -147,6 +147,7 @@ public class GroupChatFragment extends Fragment {
         if (mPushMessageReciever != null) {
             getActivity().unregisterReceiver(mPushMessageReciever);
         }
+        myGroupContacts = new ArrayList<>();
     }
 
     private void displayGroupContact(final GroupContact theGroupContact) {
@@ -184,6 +185,7 @@ public class GroupChatFragment extends Fragment {
                     && !res.getBoolean(getString(R.string.keys_json_success))) {
             } else {
                 JSONArray messages = (JSONArray) res.get(getString(R.string.key_groupchat_chat));
+
                 for(int i = 0; i < messages.length(); i++) {
                     JSONObject group =  (JSONObject) messages.get(i);
                     GroupContact tempGroup = new GroupContact(group.getString("name"),group.getInt("chatid"));
@@ -219,8 +221,8 @@ public class GroupChatFragment extends Fragment {
                 String type = intent.getStringExtra("TYPE");
                 String sender = intent.getStringExtra("SENDER");
                 String messageText = intent.getStringExtra("MESSAGE");
-                final RecyclerView.Adapter adapter = recyclerView.getAdapter();
-                getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
+//                final RecyclerView.Adapter adapter = recyclerView.getAdapter();
+//                getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
 
 //                ((HomeActivity) getActivity()).reloadContactList();   // ????
 
