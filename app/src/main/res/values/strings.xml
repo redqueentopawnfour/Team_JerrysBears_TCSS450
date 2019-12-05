@@ -54,7 +54,7 @@
     <string name="menu_weather">Weather</string>
     <string name="menu_share">Share</string>
     <string name="menu_notification">Notification</string>
-    <string name="menu_groupchat">Group</string>
+    <string name="menu_groupchat">Group Chat</string>
 
 
     <!--    Web Service keys-->

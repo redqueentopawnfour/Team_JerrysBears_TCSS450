@@ -138,6 +138,8 @@ public class LoginFragment extends Fragment {
         protected void onPreExecute() {
             super.onPreExecute();
             getActivity().findViewById(R.id.layout_login_wait).setVisibility(View.VISIBLE);
+            getActivity().findViewById(R.id.button_login_login).setEnabled(false);
+            getActivity().findViewById(R.id.button_login_register).setEnabled(false);
         }
 
         @Override
@@ -206,6 +208,8 @@ public class LoginFragment extends Fragment {
         protected void onCancelled(String s) {
             super.onCancelled(s);
             getActivity().findViewById(R.id.layout_login_wait).setVisibility(View.GONE);
+            getActivity().findViewById(R.id.button_login_login).setEnabled(false);
+            getActivity().findViewById(R.id.button_login_register).setEnabled(false);
             Log.e("LOGIN_ERROR", "Error in Login Async Task: " + s);
         }
 
@@ -255,6 +259,8 @@ public class LoginFragment extends Fragment {
                     return;
                 } else {
                     getActivity().findViewById(R.id.layout_login_wait).setVisibility(View.GONE);
+                    getActivity().findViewById(R.id.button_login_login).setEnabled(true);
+                    getActivity().findViewById(R.id.button_login_register).setEnabled(true);
                     //Saving the token wrong. Don’t switch fragments and inform the user
                     ((TextView) getView().findViewById(R.id.editText_login_email))
                             .setError("Login Unsuccessful");
