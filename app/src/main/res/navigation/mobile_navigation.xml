@@ -115,6 +115,22 @@
         <action
             android:id="@+id/action_nav_groupChat_to_groupContactFragment"
             app:destination="@id/nav_groupContacts" />
+        <argument
+            android:name="jwt"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue='""' />
+        <argument
+            android:name="groupContact"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupContact.GroupContact[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="profile"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact" />
+        <action
+            android:id="@+id/action_nav_groupChat_to_nav_chat"
+            app:destination="@id/nav_chat" />
     </fragment>
     <fragment
         android:id="@+id/nav_groupContacts"
@@ -149,6 +165,6 @@
         <argument
             android:name="WeatherObject"
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherObject" />
-    </fragment>
+    </fragment><action android:id="@+id/action_global_nav_groupChat" app:destination="@id/nav_groupChat"/>
 
 </navigation>

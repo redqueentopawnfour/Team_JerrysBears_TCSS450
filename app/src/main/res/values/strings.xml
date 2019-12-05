@@ -77,6 +77,7 @@
     <string name="keys_chat_myemail">myemail</string>
     <string name="keys_chat_theiremail">theiremail</string>
     <string name="keys_chat_id">chatid</string>
+    <string name="key_groupchat_chat">chats</string>
     <string name="textMessage">Text Message</string>
     <string name="MessageSend">SEND</string>
 
@@ -92,6 +93,14 @@
     <!--    recylce view on group chat-->
     <string name="editText_recycle_noGroupChat">You have no groups! Use the button to create your group.</string>
     <string name="editText_recycle_noGroupChatTitle">Uh oh!</string>
+
+    <string name="editText_createGroup_title">Create Groups</string>
+    <string name="editText__createGroup_hint">Enter your group name</string>
+    <string name="button_createGroup_add">Add</string>
+    <string name="button_createGrou_create">Create</string>
+
+
+
 <!--    recycler view on group contact-->
     <string name="text_groupChat_noConnections">You have no verified connections!</string>
 <!--    add group strings-->

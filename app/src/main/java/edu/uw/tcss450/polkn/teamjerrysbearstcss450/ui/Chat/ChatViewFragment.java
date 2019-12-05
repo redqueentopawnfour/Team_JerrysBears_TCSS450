@@ -116,12 +116,12 @@ public class ChatViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chatview_list, container, false);
-        recyclerView = view.findViewById(R.id.list);
+        recyclerView = (RecyclerView) view.findViewById(R.id.list);
 
 //        recyclerView.smoothScrollToPosition(mMessage.size()-1);
 //        getActivity().setTitle(mMessage.get(0).getUsername());
 //        Context context = view.getContext();
-//        Context context = recyclerView.getContext();
+        Context context = recyclerView.getContext();
 
 
 
@@ -136,7 +136,8 @@ public class ChatViewFragment extends Fragment {
 //
 //        }
         recyclerView.setAdapter(new MyChatViewRecyclerViewAdapter(mMessage, this::displayMessage, mUsername));
-//        recyclerView.smoothScrollToPosition(mMessage.size()-1);
+        ((HomeActivity)getActivity()).hideViewProfile();
+        ((HomeActivity)getActivity()).hideAddUser();
 
         return view;
     }
@@ -235,30 +236,53 @@ public class ChatViewFragment extends Fragment {
      * A BroadcastReceiver that listens for messages sent from PushReceiver
      */
     private class PushMessageReceiver extends BroadcastReceiver {
+//
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            if(intent.hasExtra("SENDER") && intent.hasExtra("MESSAGE") && intent.hasExtra("TYPE")) {
+//                String type = intent.getStringExtra("TYPE");
+//                if (type.equals("msg")) {
+//                    String sender = intent.getStringExtra("SENDER");
+//                    String messageText = intent.getStringExtra("MESSAGE");
+//                    int fromChatId = intent.getIntExtra("CHATID", 0);
+//                    Log.d("from chat id", fromChatId + "");
+//                    Log.d("get  chat id", mChatId + "");
+//                    mMessage.add(new Message("HELLO", "MESSAGE"));
+//                    final RecyclerView.Adapter adapter = recyclerView.getAdapter();
+//                    getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
+//                    //it can load the latest message after sending
+////                if (fromChatId != 0 && fromChatId == mChatId) {
+////                    mMessageOutputTextView.append(sender + ":" + messageText);
+////                    mMessageOutputTextView.append(System.lineSeparator());
+////                }
+//                }
+//                recyclerView.scrollToPosition(mMessage.size() - 1);
+//            }
+//        }
+//    }
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if(intent.hasExtra("SENDER") && intent.hasExtra("MESSAGE") && intent.hasExtra("TYPE")) {
-                String type = intent.getStringExtra("TYPE");
-                if (type.equals("msg")) {
-                    String sender = intent.getStringExtra("SENDER");
-                    String messageText = intent.getStringExtra("MESSAGE");
-                    int fromChatId = intent.getIntExtra("CHATID", 0);
-                    Log.d("from chat id", fromChatId + "");
-                    Log.d("get  chat id", mChatId + "");
-                    mMessage.add(new Message("HELLO", "MESSAGE"));
-                    final RecyclerView.Adapter adapter = recyclerView.getAdapter();
-                    getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
-                    //it can load the latest message after sending
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if(intent.hasExtra("SENDER") && intent.hasExtra("MESSAGE")) {
+
+            String sender = intent.getStringExtra("SENDER");
+            String messageText = intent.getStringExtra("MESSAGE");
+            int fromChatId = intent.getIntExtra("CHATID", 0);
+            Log.d("from chat id", fromChatId + "");
+            Log.d("get  chat id", mChatId+"");
+            mMessage.add(new Message(messageText,sender));
+            final RecyclerView.Adapter adapter = recyclerView.getAdapter();
+            getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
+            //it can load the latest message after sending
 //                if (fromChatId != 0 && fromChatId == mChatId) {
 //                    mMessageOutputTextView.append(sender + ":" + messageText);
 //                    mMessageOutputTextView.append(System.lineSeparator());
 //                }
-                }
-                recyclerView.scrollToPosition(mMessage.size() - 1);
-            }
         }
+        recyclerView.scrollToPosition(mMessage.size()-1);
+
     }
+}
 
     /**
      * Method to load chat history

@@ -21,9 +21,6 @@ public class GroupContact implements Serializable, Parcelable{
 
     private final Integer mChatId;
 
-//    private final String mSender;
-//
-//    private final Integer mChatId;
 
     protected GroupContact(Parcel in) {
         mGroupname = in.readString();
@@ -33,7 +30,12 @@ public class GroupContact implements Serializable, Parcelable{
         mChatId = in.readInt();
 
     }
+    public GroupContact(String groupname, Integer chatId) {
+        mGroupname = groupname;
+        mContacts = new ArrayList<Contact>();
+        mChatId  =   chatId;
 
+    }
 
 
     public GroupContact(String groupname, List<Contact> contacts, Integer chatId) {
@@ -56,6 +58,8 @@ public class GroupContact implements Serializable, Parcelable{
             return new GroupContact[size];
         }
     };
+
+
 
     @Override
     public int describeContents() {
@@ -150,6 +154,6 @@ public class GroupContact implements Serializable, Parcelable{
     @NonNull
     @Override
     public String toString() {
-        return mGroupname + ": " + mContacts.toString();
+        return mGroupname;
     }
 }

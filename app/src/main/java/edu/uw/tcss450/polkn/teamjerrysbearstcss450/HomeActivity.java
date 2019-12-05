@@ -204,27 +204,26 @@ public class HomeActivity extends AppCompatActivity {
                 Navigation.findNavController(this, R.id.nav_host_fragment)
                         .navigate(directions);
                 break;
+
             case R.id.nav_groupChat:
-                navController.navigate(R.id.nav_groupChat); // can remove if adding Global Action
-//                ((Toolbar) findViewById(R.id.toolbar)).getNavigationIcon().setColorFilter(mDefault);
-//
-//                MobileNavigationDirections.ActionGlobalNavChat directions;
-//                if (mChatMessage != null) {
-//
+
+                ((Toolbar) findViewById(R.id.toolbar)).getNavigationIcon().setColorFilter(mDefault);
+
+                MobileNavigationDirections.ActionGlobalNavGroupChat direction;
+                if (mChatMessage != null) {
+
 //                    Log.d("Message", mChatMessage.getMessage());
-//
-//                    directions = ChatViewFragmentDirections.actionGlobalNavChat()
-//                            .setEmail(mEmail)
-//                            .setJwt(mJwToken);
-////                            .setMessage(mChatMessage);
-//                } else {
-//                    directions = ChatViewFragmentDirections.actionGlobalNavChat()
-//                            .setEmail(mEmail)
-//                            .setJwt(mJwToken);
-//                }
-//
-//                Navigation.findNavController(this, R.id.nav_host_fragment)
-//                        .navigate(directions);
+
+                    direction = GroupChatFragmentDirections.actionGlobalNavGroupChat(mMyProfile)
+                                .setJwt(mJwToken);
+//                            .setMessage(mChatMessage);
+                } else {
+                    direction = GroupChatFragmentDirections.actionGlobalNavGroupChat(mMyProfile)
+                            .setJwt(mJwToken);
+                }
+
+                Navigation.findNavController(this, R.id.nav_host_fragment)
+                        .navigate(direction);
                 break;
 
         }

@@ -13,6 +13,7 @@
         android:orderInCategory="100"
         android:title="@string/action_logout"
         app:showAsAction="never" />
+
 <!--<<<<<<< Updated upstream-->
     <item
         android:id="@+id/action_addContact"
@@ -34,9 +35,5 @@
         android:icon="@drawable/ic_chat_bubble_grey_24dp"
         app:showAsAction="always"
         android:visible="false" />
-=======
 
-
-
->>>>>>> Stashed changes
 </menu>
