@@ -146,6 +146,7 @@ public class GroupContactFragment extends Fragment {
         JSONObject createChatJSON = new JSONObject();
         try {
             createChatJSON.put("name", mChatName);
+            createChatJSON.put("email", ((HomeActivity)getActivity()).getmEmail());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -193,7 +194,7 @@ public class GroupContactFragment extends Fragment {
             JSONObject res = new JSONObject(result);
             if (res.has("success")) {
                 if(res.getBoolean("success")) {
-                    Log.d("members added successfully", "ahoghagih");
+                    Log.d("members added successfully", mUserNamesSelected.toString());
                     GroupContactFragmentDirections.ActionNavGroupContactsToNavChat directions
                             = GroupContactFragmentDirections.actionNavGroupContactsToNavChat();
                     directions.setJwt(mJwt);
