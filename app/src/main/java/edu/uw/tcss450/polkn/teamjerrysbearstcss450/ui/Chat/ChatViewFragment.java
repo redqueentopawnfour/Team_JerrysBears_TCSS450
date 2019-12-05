@@ -107,6 +107,9 @@ public class ChatViewFragment extends Fragment {
 //        mMessage = new ArrayList(Arrays.asList(args.getMessage()));
         Log.d("My Length:", mMessage.size()+"");
 
+        ((HomeActivity) getActivity()).hideAddUser();
+        ((HomeActivity) getActivity()).hideViewProfile();
+        ((HomeActivity) getActivity()).hideChatIcon();
     }
 
     @Override

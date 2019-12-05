@@ -251,7 +251,7 @@ public class HomeActivity extends AppCompatActivity {
         } else if (id == R.id.action_logout) {
             logout();
             return true;
-        } else if (id == 16908332) {
+        } else if (id == 16908332) {    // Reloads contact list if the current fragment is add contacts or view profile
             NavController navController =
                     Navigation.findNavController(this, R.id.nav_host_fragment);
             NavDestination nd = navController.getCurrentDestination();
@@ -264,6 +264,8 @@ public class HomeActivity extends AppCompatActivity {
         } else if (id == R.id.action_viewOwnProfile) {
             MobileNavigationDirections.ActionGlobalViewProfileFragment directions
                     = ViewProfileFragmentDirections.actionGlobalViewProfileFragment(mMyProfile);
+
+            directions.setIsOwnProfile(true);
 
             Navigation.findNavController(this, R.id.nav_host_fragment)
                     .navigate(directions);
@@ -324,8 +326,8 @@ public class HomeActivity extends AppCompatActivity {
                 String message = resultsJSON.getString(getString(R.string.keys_json_message));
 
                 if (message.equals("no contacts found")) {
-//                    int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
-//                    mViewOwnProfile.setIcon(drawableId);
+                    int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
+                    mViewOwnProfile.setIcon(drawableId);
 
                     MobileNavigationDirections.ActionGlobalNavContactList directions
                             = ContactFragmentDirections.actionGlobalNavContactList(mMyProfile);
@@ -363,8 +365,8 @@ public class HomeActivity extends AppCompatActivity {
                                     .build();
                         }
 
-//                        int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
-//                        mViewOwnProfile.setIcon(drawableId);
+                        int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
+                        mViewOwnProfile.setIcon(drawableId);
 
                        /* MobileNavigationDirections.ActionGlobalNavContactList directions
                                 = ContactFragmentDirections.actionGlobalNavContactList(contacts, mMyProfile).setJwt(mJwToken);

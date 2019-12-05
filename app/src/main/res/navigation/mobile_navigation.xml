@@ -57,6 +57,10 @@
         <action
             android:id="@+id/action_nav_viewProfileFragment_to_nav_chat"
             app:destination="@id/nav_chat" />
+        <argument
+            android:name="isOwnProfile"
+            app:argType="boolean"
+            android:defaultValue="false" />
 
     </fragment>
     <action android:id="@+id/action_global_viewProfileFragment" app:destination="@id/nav_viewProfileFragment" />
