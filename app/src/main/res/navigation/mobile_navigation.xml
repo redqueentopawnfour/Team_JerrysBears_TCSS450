@@ -100,6 +100,11 @@
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.Message.Message[]"
             app:nullable="true"
             android:defaultValue="@null" />
+        <argument
+            android:name="chatname"
+            app:argType="string"
+            android:defaultValue='""'
+            app:nullable="true" />
     </fragment>
    <action android:id="@+id/action_global_nav_chat" app:destination="@id/nav_chat"/>
     <fragment
@@ -129,6 +134,9 @@
             android:name="profile"
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_nav_groupContacts_to_nav_chat"
+            app:destination="@id/nav_chat" />
     </fragment>
         android:id="@+id/nav_groupAdd"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupAddFragment"
