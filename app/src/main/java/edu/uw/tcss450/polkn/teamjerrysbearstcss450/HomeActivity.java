@@ -383,9 +383,11 @@ public class HomeActivity extends AppCompatActivity {
                             }
                         }
 
-                        GroupChatFragmentDirections.ActionNavGroupChatToGroupContactFragment directions = GroupChatFragmentDirections.actionNavGroupChatToGroupContactFragment(mMyProfile);
+                        GroupChatFragmentDirections.ActionNavGroupChatToGroupContactFragment directions
+                                = GroupChatFragmentDirections.actionNavGroupChatToGroupContactFragment(mMyProfile);
                         directions.setJwt(mJwToken);
                         directions.setContacts(mContacts);
+//                        directions.
                         NavController nc = Navigation.findNavController(this, R.id.nav_host_fragment);
                         nc.navigate(directions);
                     } else {

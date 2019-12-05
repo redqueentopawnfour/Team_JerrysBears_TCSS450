@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,7 +60,9 @@ public class GroupContactFragment extends Fragment {
     private View viewNoContacts;
     private Button mCreateChat;
     private EditText mGroupNameInput;
-    Set<String> mUserNamesSelected;
+    private Set<String> mUserNamesSelected;
+    private int mChatId; //only used when navigating away to pass between chained async tasks
+    private String mChatName;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -124,7 +127,6 @@ public class GroupContactFragment extends Fragment {
             }
 
         }
-
         ((HomeActivity) getActivity()).hideAddUser();
         ((HomeActivity) getActivity()).hideViewProfile();
         ((HomeActivity) getActivity()).hideChatIcon();
@@ -138,12 +140,13 @@ public class GroupContactFragment extends Fragment {
             return;
         }
 
-        String myGroupName = mGroupNameInput.getText().toString();
+        String mChatName = mGroupNameInput.getText().toString();
         mGroupNameInput.onEditorAction(EditorInfo.IME_ACTION_DONE);
         mGroupNameInput.setText("");
         JSONObject createChatJSON = new JSONObject();
         try {
-            createChatJSON.put("name", myGroupName);
+            createChatJSON.put("name", mChatName);
+            createChatJSON.put("email", ((HomeActivity)getActivity()).getmEmail());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -162,7 +165,7 @@ public class GroupContactFragment extends Fragment {
             JSONObject res = new JSONObject(result);
             if(res.has(getString(R.string.keys_json_success))) {
                 if(res.getBoolean(getString(R.string.keys_json_success))) {
-                    int chatId = res.getInt(getString(R.string.keys_chat_id));
+                    mChatId = res.getInt(getString(R.string.keys_chat_id));
                     String url = new Uri.Builder()
                             .scheme("https")
                             .appendPath(getString(R.string.ep_base_url))
@@ -173,7 +176,7 @@ public class GroupContactFragment extends Fragment {
                     JSONObject toSend = new JSONObject();
                     JSONArray usernamesSelected = new JSONArray(mUserNamesSelected.toArray());
                     toSend.put("usernames", usernamesSelected);
-                    toSend.put("chatid", chatId);
+                    toSend.put("chatid", mChatId);
                     new SendPostAsyncTask.Builder(url, toSend).
                             onPostExecute(this::endOfAddMembersTask).
                             addHeaderField("authorization", mJwt).build().execute();
@@ -191,7 +194,14 @@ public class GroupContactFragment extends Fragment {
             JSONObject res = new JSONObject(result);
             if (res.has("success")) {
                 if(res.getBoolean("success")) {
-                    Log.d("members added successfully", "ahoghagih");
+                    Log.d("members added successfully", mUserNamesSelected.toString());
+                    GroupContactFragmentDirections.ActionNavGroupContactsToNavChat directions
+                            = GroupContactFragmentDirections.actionNavGroupContactsToNavChat();
+                    directions.setJwt(mJwt);
+                    directions.setChatid(mChatId);
+                    directions.setChatname(mChatName);
+                    NavController nc = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+                    nc.navigate(directions);
                 } else {
                     Log.d("didn't add members successfully", "or dummy dumb dumb error");
                 }
@@ -210,7 +220,6 @@ public class GroupContactFragment extends Fragment {
             iconDrawables.put(i, drawableIcon);
         }
     }
-
 
 
     @Override

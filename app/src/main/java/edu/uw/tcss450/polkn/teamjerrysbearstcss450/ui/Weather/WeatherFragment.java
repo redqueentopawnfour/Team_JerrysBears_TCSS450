@@ -29,6 +29,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragmentDirections;
@@ -55,6 +56,10 @@ public class WeatherFragment extends Fragment {
 //                textView.setText(s);
 //            }
 //        });
+        ((HomeActivity) getActivity()).hideAddGroup();
+        ((HomeActivity) getActivity()).hideAddUser();
+        ((HomeActivity) getActivity()).hideViewProfile();
+        ((HomeActivity) getActivity()).hideChatIcon();
         return root;
     }
 

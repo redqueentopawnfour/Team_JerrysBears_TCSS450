@@ -83,13 +83,12 @@ public class GroupChatFragment extends Fragment {
             } else {
                 recyclerView.setVisibility(View.GONE);
             }
+//            recyclerView.setAdapter(new MyGroupChatRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
         ((HomeActivity) getActivity()).showAddGroup();
-
         ((HomeActivity) getActivity()).hideAddUser();
         ((HomeActivity) getActivity()).hideViewProfile();
-//        ((HomeActivity) getActivity()).hideChatIcon();
-
+        ((HomeActivity) getActivity()).hideChatIcon();
         return view;
     }
 

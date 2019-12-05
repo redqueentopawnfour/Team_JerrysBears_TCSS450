@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MainActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 
@@ -52,6 +53,10 @@ public class WeatherForecastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        ((HomeActivity) getActivity()).hideAddGroup();
+        ((HomeActivity) getActivity()).hideAddUser();
+        ((HomeActivity) getActivity()).hideViewProfile();
+        ((HomeActivity) getActivity()).hideChatIcon();
         return inflater.inflate(R.layout.fragment_weather_forecast, container, false);
     }
 
