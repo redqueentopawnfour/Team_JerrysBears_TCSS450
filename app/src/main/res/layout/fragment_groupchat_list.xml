@@ -10,9 +10,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragment"
-        android:layout_width="425dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:context=".ui.Connection.ContactFragment"

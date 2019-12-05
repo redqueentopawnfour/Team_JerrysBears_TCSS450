@@ -118,6 +118,7 @@ public class ChatViewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chatview_list, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
 
+
 //        recyclerView.smoothScrollToPosition(mMessage.size()-1);
 //        getActivity().setTitle(mMessage.get(0).getUsername());
 //        Context context = view.getContext();

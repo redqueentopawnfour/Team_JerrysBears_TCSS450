@@ -67,8 +67,8 @@
                 android:id="@+id/checkBox_groupcontact_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
-                android:text="CheckBox" />
+                android:layout_gravity="end"
+                android:layout_weight="0.5" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

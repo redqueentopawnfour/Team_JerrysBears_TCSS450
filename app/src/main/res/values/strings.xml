@@ -98,7 +98,7 @@
     <string name="editText__createGroup_hint">Enter your group name</string>
     <string name="button_createGroup_add">Add</string>
     <string name="button_createGrou_create">Create</string>
-
+    <string name="text_createGroup_title">Select the users to add</string>
 
 
 <!--    recycler view on group contact-->

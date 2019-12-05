@@ -351,15 +351,16 @@ public class HomeActivity extends AppCompatActivity {
                         int verifiedCount = 0;
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject jsonContact = data.getJSONObject(i);
-                            if (jsonContact.getBoolean(getString(R.string.keys_json_contacts_isEmailVerified))) {
+                            if (jsonContact.getBoolean(getString(R.string.keys_json_contacts_isContactVerified))) {
                                 verifiedCount++;
                             }
                         }
                         mContacts = new Contact[verifiedCount];
+                        int j = 0;
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject jsonContact = data.getJSONObject(i);
-                            if(jsonContact.getBoolean(getString(R.string.keys_json_contacts_isEmailVerified))) {
-                                mContacts[i] = new Contact.Builder(
+                            if(jsonContact.getBoolean(getString(R.string.keys_json_contacts_isContactVerified))) {
+                                mContacts[j++] = new Contact.Builder(
                                         jsonContact.getString(
                                                 getString(R.string.keys_json_contact_username)),
                                         jsonContact.getString(

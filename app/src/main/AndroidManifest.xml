@@ -31,6 +31,7 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppThemeLight.NoActionBar"></activity>
 
         <!-- Pushy Declarations -->
