@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <string name="keys_json_weather_coord">coord</string>
+    <string name="keys_json_weather_lat">lat</string>
+    <string name="keys_json_weather_lon">lon</string>
+    <string name="keys_json_weather_details">weather</string>
+    <string name="keys_json_weather_temp">temp</string>
+    <string name="keys_json_weather_main">main</string>
+    <string name="keys_json_weather_city">name</string>
+
+    <string name="keys_json_weather_forecast_lat">lat</string>
+    <string name="keys_json_weather_forecast_lon">lon</string>
+    <string name="keys_json_weather_forecast_details">weather</string>
+    <string name="keys_json_weather_forecast_temp">temp</string>
+    <string name="keys_json_weather_forecast_description">description</string>
+    <string name="keys_json_weather_forecast_city">city_name</string>
+    <string name="keys_json_weather_forecast_date">valid_date</string>
+
+    <string name="weather_degrees_symbol">°</string>
+
+    <string name="text_forecast_temp_notnumbered">textView_forecast_temp</string>
+    <string name="text_forecast_date_notnumbered">textView_forecast_day</string>
+    <string name="text_forecast_description_notnumbered">textView_forecast_descrip</string>
+
+
+</resources>

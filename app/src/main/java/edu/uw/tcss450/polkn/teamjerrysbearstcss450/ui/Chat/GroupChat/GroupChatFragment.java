@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.Message.Message;
 
@@ -77,6 +78,7 @@ public class GroupChatFragment extends Fragment {
             }
 //            recyclerView.setAdapter(new MyGroupChatRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
+        ((HomeActivity) getActivity()).showAddGroup();
         return view;
     }
 

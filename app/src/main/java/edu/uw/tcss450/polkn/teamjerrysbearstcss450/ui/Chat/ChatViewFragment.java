@@ -69,7 +69,7 @@ public class ChatViewFragment extends Fragment {
     private String mJwToken;
     private String mSendUrl;
     private int mChatId;
-
+    private String mUsername;
 
 
     /**
@@ -93,7 +93,7 @@ public class ChatViewFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         ChatViewFragmentArgs args = ChatViewFragmentArgs.fromBundle(getArguments());
-
+        mUsername = args.getUsername();
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -117,6 +117,7 @@ public class ChatViewFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chatview_list, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
+
 //        recyclerView.smoothScrollToPosition(mMessage.size()-1);
 //        getActivity().setTitle(mMessage.get(0).getUsername());
 //        Context context = view.getContext();
@@ -125,16 +126,16 @@ public class ChatViewFragment extends Fragment {
 
 
 
-        if (recyclerView instanceof RecyclerView) {
-            GridLayoutManager layoutManager = new GridLayoutManager(context, 1);
-
-//            layoutManager.setReverseLayout(true);
-//            recyclerView.setLayoutManager(layoutManager);
-
-            Log.d("recycle view instance", recyclerView.toString());
-
-        }
-        recyclerView.setAdapter(new MyChatViewRecyclerViewAdapter(mMessage, this::displayMessage));
+//        if (recyclerView instanceof RecyclerView) {
+//            GridLayoutManager layoutManager = new GridLayoutManager(context, 1);
+//
+////            layoutManager.setReverseLayout(true);
+////            recyclerView.setLayoutManager(layoutManager);
+//
+//            Log.d("recycle view instance", recyclerView.toString());
+//
+//        }
+        recyclerView.setAdapter(new MyChatViewRecyclerViewAdapter(mMessage, this::displayMessage, mUsername));
 //        recyclerView.smoothScrollToPosition(mMessage.size()-1);
 
         return view;
@@ -169,9 +170,11 @@ public class ChatViewFragment extends Fragment {
 
         ChatViewFragmentArgs args = ChatViewFragmentArgs.fromBundle(getArguments());
         mEmail = ((HomeActivity)getActivity()).getmEmail();
+
         mJwToken = args.getJwt();
         mChatId = args.getChatid();
         Log.i("chat id: ", Integer.toString(mChatId));
+        Log.i("username: ", mUsername);
 
 //        if (mChatId > 0) { // 0 is the default value which means no chat id has been passed
 //            mMessageOutputTextView.append("CHAT ID: " + mChatId + '\n');
