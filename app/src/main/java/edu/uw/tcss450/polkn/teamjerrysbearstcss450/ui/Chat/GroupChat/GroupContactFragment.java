@@ -2,6 +2,7 @@ package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -15,11 +16,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.EditText;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
@@ -28,6 +38,7 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragment
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.MyContactRecyclerViewAdapter;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
 
 /**
  * A fragment representing a list of Items.
@@ -46,7 +57,9 @@ public class GroupContactFragment extends Fragment {
     private String mJwt;
     private RecyclerView recyclerView;
     private View viewNoContacts;
-    List<String> mUserNamesSelected;
+    private Button mCreateChat;
+    private EditText mGroupNameInput;
+    Set<String> mUserNamesSelected;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -68,20 +81,16 @@ public class GroupContactFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
 
+        GroupContactFragmentArgs args = GroupContactFragmentArgs.fromBundle(getArguments());
 
-        ContactFragmentArgs args = ContactFragmentArgs.fromBundle(getArguments());
-
-        if (args.getContact() != null) {
-            mContacts = new ArrayList<>(Arrays.asList(args.getContact()));
+        if (args.getContacts() != null) {
+            mContacts = new ArrayList<>(Arrays.asList(args.getContacts()));
         }
         mProfile = args.getProfile();
         mJwt = args.getJwt();
         iconDrawables = new HashMap<Integer, Drawable>();
-        mUserNamesSelected = new ArrayList<String>();
+        mUserNamesSelected = new HashSet<String>();
     }
     private void displayContact(final Contact theContact) {
         final Bundle args = new Bundle();
@@ -95,17 +104,20 @@ public class GroupContactFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_contact_list, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        View view = inflater.inflate(R.layout.fragment_groupcontact_list, container, false);
+        recyclerView = view.findViewById(R.id.list_groupcontacts_contacts);
         Context context = recyclerView.getContext();
-        viewNoContacts = view.findViewById(R.id.editView);
-
-        if (recyclerView instanceof RecyclerView) {
+        mCreateChat = view.findViewById(R.id.button_createGroup_createButton);
+        mGroupNameInput = view.findViewById(R.id.editText_createGroup);
+        mCreateChat.setOnClickListener(b -> createClicked());
+        viewNoContacts = view.findViewById(R.id.layout_groupcontacts_noconnections);
+        Log.d("the contacts on load groupcontact", Arrays.deepToString(mContacts.toArray()));
+        if (recyclerView != null) {
             if (mContacts != null) {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
                 populateIconDrawables(context);
-                recyclerView.setAdapter(new MyContactRecyclerViewAdapter(mContacts, mJwt,
-                        iconDrawables, mProfile, this::displayContact));
+                recyclerView.setAdapter(new MyGroupContactRecyclerViewAdapter(mContacts, mJwt,
+                        iconDrawables, mProfile, this::displayContact, mUserNamesSelected));
             } else {
                 viewNoContacts.setVisibility(View.VISIBLE);
                 recyclerView.setVisibility(View.GONE);
@@ -118,6 +130,75 @@ public class GroupContactFragment extends Fragment {
         ((HomeActivity) getActivity()).hideChatIcon();
         ((HomeActivity) getActivity()).hideAddGroup();
         return view;
+    }
+
+    private void createClicked() {
+        if (mGroupNameInput.getText().length() == 0) {
+            mGroupNameInput.setError("Please enter a name for your group!");
+            return;
+        }
+
+        String myGroupName = mGroupNameInput.getText().toString();
+        mGroupNameInput.onEditorAction(EditorInfo.IME_ACTION_DONE);
+        mGroupNameInput.setText("");
+        JSONObject createChatJSON = new JSONObject();
+        try {
+            createChatJSON.put("name", myGroupName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String url = new Uri.Builder()
+                .scheme("https")
+                .appendPath(getString(R.string.ep_base_url))
+                .appendPath(getString(R.string.ep_messaging_base))
+                .appendPath(getString(R.string.ep_messaging_creategroup))
+                .build()
+                .toString();
+        new SendPostAsyncTask.Builder(url, createChatJSON).onPostExecute(this::endOfCreateChatTask).addHeaderField("authorization", mJwt).build().execute();
+    }
+
+    private void endOfCreateChatTask(final String result) {
+        try {
+            JSONObject res = new JSONObject(result);
+            if(res.has(getString(R.string.keys_json_success))) {
+                if(res.getBoolean(getString(R.string.keys_json_success))) {
+                    int chatId = res.getInt(getString(R.string.keys_chat_id));
+                    String url = new Uri.Builder()
+                            .scheme("https")
+                            .appendPath(getString(R.string.ep_base_url))
+                            .appendPath(getString(R.string.ep_messaging_base))
+                            .appendPath(getString(R.string.ep_messaging_addgroupmembers))
+                            .build()
+                            .toString();
+                    JSONObject toSend = new JSONObject();
+                    JSONArray usernamesSelected = new JSONArray(mUserNamesSelected.toArray());
+                    toSend.put("usernames", usernamesSelected);
+                    toSend.put("chatid", chatId);
+                    new SendPostAsyncTask.Builder(url, toSend).
+                            onPostExecute(this::endOfAddMembersTask).
+                            addHeaderField("authorization", mJwt).build().execute();
+                } else {
+                    Log.d("error on chat build", res.get("error").toString());
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void endOfAddMembersTask(final String result) {
+        try {
+            JSONObject res = new JSONObject(result);
+            if (res.has("success")) {
+                if(res.getBoolean("success")) {
+                    Log.d("members added successfully", "ahoghagih");
+                } else {
+                    Log.d("didn't add members successfully", "or dummy dumb dumb error");
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void populateIconDrawables(Context context) {

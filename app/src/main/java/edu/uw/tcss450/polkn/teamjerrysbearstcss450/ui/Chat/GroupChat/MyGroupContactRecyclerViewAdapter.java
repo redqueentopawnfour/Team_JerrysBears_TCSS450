@@ -18,8 +18,10 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragment
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
 
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class MyGroupContactRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupContactRecyclerViewAdapter.ViewHolder> {
 
@@ -32,10 +34,10 @@ public class MyGroupContactRecyclerViewAdapter extends RecyclerView.Adapter<MyGr
     private View mView;
     private String mJwt;
     private int mCount;
-    private List<String> mUsernamesSelected;
+    private Set<String> mUsernamesSelected;
 
     public MyGroupContactRecyclerViewAdapter(List<Contact> items, String theJwt, HashMap drawableIds,
-                                             Contact myProfile, OnListFragmentInteractionListener listener, List<String> usernames) {
+                                             Contact myProfile, OnListFragmentInteractionListener listener, Set<String> usernames) {
         mValues = items;
         mDrawableIds = drawableIds;
         mListener = listener;
@@ -69,8 +71,7 @@ public class MyGroupContactRecyclerViewAdapter extends RecyclerView.Adapter<MyGr
         Drawable drawableIcon = mDrawableIds.get(pos);
         drawableIcon.setBounds(0, 0, 120, 120);
         holder.mUsernameView.setCompoundDrawables(drawableIcon, null, null, null);
-//        holder.mCheckBox.setOnClickListener(b -> contactSelected(username));
-
+        holder.mCheckBox.setOnClickListener(b -> contactSelected(b, username));
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,10 +84,16 @@ public class MyGroupContactRecyclerViewAdapter extends RecyclerView.Adapter<MyGr
         });
     }
 
-//    private void contactSelected(View view, String username) {
-//        if
-//        mUsernamesSelected.add
-//    }
+    private void contactSelected(View view, String username) {
+        CheckBox cb = (CheckBox) view;
+        if (cb.isChecked()) {
+            mUsernamesSelected.add(username);
+            Log.i("usernames selected on select", Arrays.deepToString(mUsernamesSelected.toArray()));
+        } else {
+            mUsernamesSelected.remove(username);
+            Log.i("usernames selected on deselect", Arrays.deepToString(mUsernamesSelected.toArray()));
+        }
+    }
 
     @Override
     public int getItemCount() {
@@ -105,10 +112,10 @@ public class MyGroupContactRecyclerViewAdapter extends RecyclerView.Adapter<MyGr
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mUsernameView = view.findViewById(R.id.text_contact_displayMessage);
-            mNewContactView = view.findViewById(R.id.text_contact_username);
-            mCheckBox = view.findViewById(R.id.checkBox_groupContact_select);
-            mLinearLayoutContact = view.findViewById(R.id.linearlayout_contact_contact);
+            mUsernameView = view.findViewById(R.id.text_groupcontact_displayMessage);
+            mNewContactView = view.findViewById(R.id.text_groupcontact_username);
+            mCheckBox = view.findViewById(R.id.checkBox_groupcontact_select);
+            mLinearLayoutContact = view.findViewById(R.id.linearlayout_groupcontact_contact);
         }
 
         @Override

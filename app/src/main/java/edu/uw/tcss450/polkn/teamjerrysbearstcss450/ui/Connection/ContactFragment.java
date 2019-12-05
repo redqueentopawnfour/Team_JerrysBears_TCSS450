@@ -101,6 +101,7 @@ public class ContactFragment extends Fragment {
         ((HomeActivity) getActivity()).showAddUser();
         ((HomeActivity) getActivity()).showViewProfile();
         ((HomeActivity) getActivity()).hideChatIcon();
+        ((HomeActivity) getActivity()).hideAddGroup();
 
         return view;
     }

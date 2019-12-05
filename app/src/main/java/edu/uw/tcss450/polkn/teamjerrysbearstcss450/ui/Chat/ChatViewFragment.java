@@ -116,12 +116,12 @@ public class ChatViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chatview_list, container, false);
-        recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        recyclerView = view.findViewById(R.id.list);
 
 //        recyclerView.smoothScrollToPosition(mMessage.size()-1);
 //        getActivity().setTitle(mMessage.get(0).getUsername());
 //        Context context = view.getContext();
-        Context context = recyclerView.getContext();
+//        Context context = recyclerView.getContext();
 
 
 
@@ -271,6 +271,7 @@ public class ChatViewFragment extends Fragment {
                 .appendPath(getString(R.string.ep_messaging_getall))
                 .build()
                 .toString();
+        Log.d("chatid at load", mChatId +"");
         new GetAsyncTask.Builder(getUrl).addHeaderField("chatid", Integer.toString(mChatId))
                 .addHeaderField("authorization", mJwToken)
                 .onCancelled(error -> Log.e("an error", error))

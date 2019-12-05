@@ -92,9 +92,12 @@
     <!--    recylce view on group chat-->
     <string name="editText_recycle_noGroupChat">You have no groups! Use the button to create your group.</string>
     <string name="editText_recycle_noGroupChatTitle">Uh oh!</string>
+<!--    recycler view on group contact-->
+    <string name="text_groupChat_noConnections">You have no verified connections!</string>
 <!--    add group strings-->
     <string name="text_addGroup_title">Group Name</string>
     <string name="editText_addGroup_hint">Enter the name of your group!</string>
+    <string name="button_addGroup_create">Create</string>
 
     <!-- key  -->
     <string name="key_chat">chat_key</string>
