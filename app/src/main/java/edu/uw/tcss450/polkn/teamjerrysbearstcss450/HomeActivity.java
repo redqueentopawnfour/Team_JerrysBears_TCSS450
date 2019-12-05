@@ -40,6 +40,7 @@ import java.util.function.Consumer;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatMessageNotification;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragmentDirections;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupChatFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragment;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactNotification;
@@ -281,9 +282,9 @@ public class HomeActivity extends AppCompatActivity {
                     .navigate(directions);
             return true;
         } else if (id == R.id.action_addGroup) {
-            NavController navController =
-                    Navigation.findNavController(this, R.id.nav_host_fragment);
-            navController.navigate(R.id.nav_groupAdd, getIntent().getExtras());
+            loadContacts(this::handleAddGroupOnPostExecute);
+
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -319,6 +320,74 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+
+    private void handleAddGroupOnPostExecute(final String result) {
+        try {
+            JSONObject resultsJSON = new JSONObject(result);
+
+            boolean success =
+                    resultsJSON.getBoolean(
+                            getString(R.string.keys_json_success));
+
+            if (success) {
+                String message = resultsJSON.getString(getString(R.string.keys_json_message));
+
+                if (message.equals("no contacts found")) {
+//                    int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
+//                    mViewOwnProfile.setIcon(drawableId);
+
+                    NavController navController =
+                            Navigation.findNavController(this, R.id.nav_host_fragment);
+                    navController.navigate(R.id.nav_groupContacts, getIntent().getExtras());
+                } else {
+                    if (resultsJSON.has(getString(R.string.keys_json_message))) {
+                        JSONArray data = resultsJSON.getJSONArray(
+                                getString(R.string.keys_json_message));
+                        mContacts = new Contact[data.length()];
+
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject jsonContact = data.getJSONObject(i);
+
+                            mContacts[i] = new Contact.Builder(
+                                    jsonContact.getString(
+                                            getString(R.string.keys_json_contact_username)),
+                                    jsonContact.getString(
+                                            getString(R.string.keys_json_contact_usericon)))
+                                    .addFirstName(jsonContact.getString(
+                                            getString(R.string.keys_json_contact_firstname)))
+                                    .addLastName(jsonContact.getString(
+                                            getString(R.string.keys_json_contact_lastname)))
+                                    .addEmail(jsonContact.getString(
+                                            getString(R.string.keys_json_contact_email)))
+                                    .addIsEmailVerified(jsonContact.getBoolean(
+                                            getString(R.string.keys_json_contacts_isEmailVerified)))
+                                    .addRequestNumber(jsonContact.getInt(
+                                            getString(R.string.keys_json_contacts_requestNumber)))
+                                    .addIsContactVerified(jsonContact.getBoolean(
+                                            getString(R.string.keys_json_contacts_isContactVerified)))
+                                    .addChatId(jsonContact.getInt(
+                                            getString(R.string.keys_json_contacts_chatId)))
+                                    .build();
+                        }
+
+                        GroupChatFragmentDirections.ActionNavGroupChatToGroupContactFragment directions = GroupChatFragmentDirections.actionNavGroupChatToGroupContactFragment(mMyProfile);
+                        directions.setJwt(mJwToken);
+                        directions.setContacts(mContacts);
+                        NavController nc = Navigation.findNavController(this, R.id.nav_host_fragment);
+                        nc.navigate(directions);
+                    } else {
+                        Log.e("ERROR!", "No response");
+                    }
+                }
+            } else {
+                // failure
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e("ERROR!", e.getMessage());
+        }
     }
 
     private void handleContactsOnPostExecute(final String result) {
