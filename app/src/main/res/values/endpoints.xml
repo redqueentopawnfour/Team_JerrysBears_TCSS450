@@ -18,7 +18,8 @@
     <string name="ep_messaging_base">messaging</string>
     <string name="ep_messaging_send">send</string>
     <string name="ep_messaging_getall">getall</string>
-
+    <string name="ep_messaging_creategroup">creategroup</string>
+    <string name="ep_messaging_addgroupmembers">addgroupmembers</string>
     <!--    pushy endpoint-->
     <string name="ep_pushy">pushy</string>
 

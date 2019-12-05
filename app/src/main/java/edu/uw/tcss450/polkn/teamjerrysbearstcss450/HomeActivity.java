@@ -339,7 +339,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (message.equals("no contacts found")) {
 //                    int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
 //                    mViewOwnProfile.setIcon(drawableId);
-
+                    Log.d("no contacts found", resultsJSON.toString());
                     NavController navController =
                             Navigation.findNavController(this, R.id.nav_host_fragment);
                     navController.navigate(R.id.nav_groupContacts, getIntent().getExtras());
@@ -347,31 +347,38 @@ public class HomeActivity extends AppCompatActivity {
                     if (resultsJSON.has(getString(R.string.keys_json_message))) {
                         JSONArray data = resultsJSON.getJSONArray(
                                 getString(R.string.keys_json_message));
-                        mContacts = new Contact[data.length()];
-
+                        int verifiedCount = 0;
                         for (int i = 0; i < data.length(); i++) {
                             JSONObject jsonContact = data.getJSONObject(i);
-
-                            mContacts[i] = new Contact.Builder(
-                                    jsonContact.getString(
-                                            getString(R.string.keys_json_contact_username)),
-                                    jsonContact.getString(
-                                            getString(R.string.keys_json_contact_usericon)))
-                                    .addFirstName(jsonContact.getString(
-                                            getString(R.string.keys_json_contact_firstname)))
-                                    .addLastName(jsonContact.getString(
-                                            getString(R.string.keys_json_contact_lastname)))
-                                    .addEmail(jsonContact.getString(
-                                            getString(R.string.keys_json_contact_email)))
-                                    .addIsEmailVerified(jsonContact.getBoolean(
-                                            getString(R.string.keys_json_contacts_isEmailVerified)))
-                                    .addRequestNumber(jsonContact.getInt(
-                                            getString(R.string.keys_json_contacts_requestNumber)))
-                                    .addIsContactVerified(jsonContact.getBoolean(
-                                            getString(R.string.keys_json_contacts_isContactVerified)))
-                                    .addChatId(jsonContact.getInt(
-                                            getString(R.string.keys_json_contacts_chatId)))
-                                    .build();
+                            if (jsonContact.getBoolean(getString(R.string.keys_json_contacts_isEmailVerified))) {
+                                verifiedCount++;
+                            }
+                        }
+                        mContacts = new Contact[verifiedCount];
+                        for (int i = 0; i < data.length(); i++) {
+                            JSONObject jsonContact = data.getJSONObject(i);
+                            if(jsonContact.getBoolean(getString(R.string.keys_json_contacts_isEmailVerified))) {
+                                mContacts[i] = new Contact.Builder(
+                                        jsonContact.getString(
+                                                getString(R.string.keys_json_contact_username)),
+                                        jsonContact.getString(
+                                                getString(R.string.keys_json_contact_usericon)))
+                                        .addFirstName(jsonContact.getString(
+                                                getString(R.string.keys_json_contact_firstname)))
+                                        .addLastName(jsonContact.getString(
+                                                getString(R.string.keys_json_contact_lastname)))
+                                        .addEmail(jsonContact.getString(
+                                                getString(R.string.keys_json_contact_email)))
+                                        .addIsEmailVerified(jsonContact.getBoolean(
+                                                getString(R.string.keys_json_contacts_isEmailVerified)))
+                                        .addRequestNumber(jsonContact.getInt(
+                                                getString(R.string.keys_json_contacts_requestNumber)))
+                                        .addIsContactVerified(jsonContact.getBoolean(
+                                                getString(R.string.keys_json_contacts_isContactVerified)))
+                                        .addChatId(jsonContact.getInt(
+                                                getString(R.string.keys_json_contacts_chatId)))
+                                        .build();
+                            }
                         }
 
                         GroupChatFragmentDirections.ActionNavGroupChatToGroupContactFragment directions = GroupChatFragmentDirections.actionNavGroupChatToGroupContactFragment(mMyProfile);

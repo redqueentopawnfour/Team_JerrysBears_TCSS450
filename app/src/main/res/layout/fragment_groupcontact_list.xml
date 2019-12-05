@@ -2,31 +2,87 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout_contacts_container"
+    android:id="@+id/linearLayout_groupcontacts_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/layout_groupcontact_inner"
+    android:layout_width="398dp"
+    android:layout_height="222dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:background="@drawable/customborder"
+    android:clickable="true"
+    android:focusable="true"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <EditText
+        android:id="@+id/editText_createGroup"
+        android:layout_width="242dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:ems="10"
+        android:hint="@string/editText_addGroup_hint"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/button_addContact_searchContacts"
+        app:layout_constraintHorizontal_bias="0.538"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editText_createGroup_title" />
+
+    <TextView
+        android:id="@+id/editText_createGroup_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/text_addGroup_title"
+        android:textColor="@color/colorPrimary"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/button_createGroup_createButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/customborder_goldblack"
+        android:clickable="true"
+        android:drawableLeft="@drawable/ic_group_addgroup"
+        android:focusable="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/button_addGroup_create"
+        app:layout_constraintBaseline_toBaselineOf="@+id/editText_createGroup"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list"
+        android:id="@+id/list_groupcontacts_contacts"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.GroupChat.GroupContactFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         app:layoutManager="LinearLayoutManager"
-        tools:context=".ui.Connection.ContactFragment"
-        tools:listitem="@layout/fragment_contact" />
+        tools:context=".ui.GroupChat.GroupContactFragment"
+        tools:listitem="@layout/fragment_groupcontact"/>
 
     <LinearLayout
-        android:id="@+id/editView"
+        android:id="@+id/layout_groupcontacts_noconnections"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:textAlignment="center">
 
         <TextView
-            android:id="@+id/text_contacts_noContactsTitle"
+            android:id="@+id/text_groupcontacts_noContactsTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -48,7 +104,7 @@
             android:src="@drawable/bears_color_image_transparent" />
 
         <TextView
-            android:id="@+id/text_contacts_noContactsText"
+            android:id="@+id/text_groupcontacts_nocontacts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -58,7 +114,7 @@
             android:paddingLeft="10dp"
             android:paddingTop="20dp"
             android:paddingRight="10dp"
-            android:text="@string/editText_recycler_noContacts"
+            android:text="@string/text_groupChat_noConnections"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textColor="@color/colorPrimary"
             android:textSize="18sp" />
