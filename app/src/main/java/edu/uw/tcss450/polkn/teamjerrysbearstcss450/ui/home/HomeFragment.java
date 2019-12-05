@@ -1,27 +1,44 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.home;
 
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivityArgs;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherObject;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+    private WeatherObject mWeather;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -54,5 +71,212 @@ public class HomeFragment extends Fragment {
                 setText(credentials.getEmail());
         String jwt = args.getJwt();
         Log.d("JWT", jwt);
+
+        ConstraintLayout constraint = getActivity().findViewById(R.id.constraintLayout_home_location1);
+        constraint.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                new ForecastWeatherTask().execute();
+            }
+        });
+    }
+
+    //fills in weather panel with current weather
+    @Override
+    public void onStart() {
+        super.onStart();
+        new CurrentWeatherTask().execute();
+        Log.e("onStart", "calling onStart");
+    }
+
+    private class CurrentWeatherTask extends AsyncTask<String, Void, WeatherObject> {
+        protected WeatherObject doInBackground(String... strings) {
+            Log.e("CurrentWeatherTask", "CurrentWeatherTask");
+
+            Uri uri_weather = new Uri.Builder()
+                    .scheme("https")
+                    .appendPath(getString(R.string.ep_base_url))
+                    .appendPath(getString(R.string.ep_weather))
+                    .appendPath(getString(R.string.ep_weather_params))
+                    .appendQueryParameter("lat", "47.2446")
+                    .appendQueryParameter("lon", "-122.4376")
+                    .build();
+
+            String resultString = "";
+            HttpURLConnection urlConnection = null;
+
+            try {
+                URL urlObject = new URL(uri_weather.toString());
+                urlConnection = (HttpURLConnection) urlObject.openConnection();
+                InputStream content = urlConnection.getInputStream();
+                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                String s = "";
+                while ((s = buffer.readLine()) != null) {
+                    resultString += s;
+                }
+            } catch (Exception e) {
+                Log.e("ERROR CONNECTING", "Unable to connect, Reason: " + e.getMessage());
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+
+            try {
+                String lat = "", lon = "", temp = "", mainDescript = "", location ="", country ="";
+                JSONObject weather = new JSONObject(resultString);
+                Log.e("weather json", weather.toString());
+                if (weather.has(getString(R.string.keys_json_weather_coord))) {
+                    JSONObject coords = weather.getJSONObject(getString(R.string.keys_json_weather_coord));
+                    lat = coords.getString(getString(R.string.keys_json_weather_lat));
+                    lon = coords.getString(getString(R.string.keys_json_weather_lon));
+                }
+                if (weather.has(getString(R.string.keys_json_weather_main))) {
+                    JSONObject main = weather.getJSONObject(getString(R.string.keys_json_weather_main));
+                    temp = main.getString(getString(R.string.keys_json_weather_temp));
+                }
+                if (weather.has(getString(R.string.keys_json_weather_details))) {
+                    JSONArray detailsArray = weather.getJSONArray(getString(R.string.keys_json_weather_details));
+                    JSONObject detailsObject = (JSONObject) detailsArray.get(0); // lol will this casting even work?
+                    mainDescript = detailsObject.getString(getString(R.string.keys_json_weather_main));
+                }
+                if (weather.has("sys")) {
+                    JSONObject sys = weather.getJSONObject("sys");
+                    country = sys.getString("country");
+                }
+
+                location = weather.optString(getString(R.string.keys_json_weather_city));
+
+                mWeather = new WeatherObject.Builder(
+                        temp, lat, lon).addDescription(mainDescript).addLocation(location + ", " + country).build();
+                return mWeather;
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("ERROR!", e.getMessage());
+                Log.e("WEATHER ERROR!", "null pointer in WeatherFragment.java bad json stuff");
+            }
+            return null; //oof this is about to break some stuff ^ log it for sure
+        }
+
+        protected void onPostExecute(WeatherObject result) {
+            updateInfo(result);
+        }
+    }
+
+    private void updateInfo(WeatherObject weather) {
+        TextView temp = getActivity().findViewById(R.id.textView_home_temp1);
+        TextView coordinates = getActivity().findViewById(R.id.textView_home_location1);
+        TextView deets = getActivity().findViewById(R.id.textView_home_descrip1);
+        ImageView image = getActivity().findViewById(R.id.imageView_home1);
+
+        // if the city field is not empty, fill with city info instead of coordinates
+        // else fill this text view with coordinates
+        if (!weather.getLocation().equals("") && !weather.getLocation().isEmpty()) {
+            coordinates.setText(weather.getLocation());
+        } else {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Lat: ");
+            sb.append(weather.getLat());
+            sb.append((" Long: "));
+            sb.append(weather.getLon());
+            coordinates.setText(sb.toString());
+        }
+
+        // Set the temperature and weather description without other logic
+        temp.setText(weather.getTemp() + "°");
+        deets.setText(weather.getDesciption());
+
+        temp.setVisibility(View.VISIBLE);
+        coordinates.setVisibility(View.VISIBLE);
+        deets.setVisibility(View.VISIBLE);
+        image.setVisibility(View.VISIBLE);
+
+    }
+
+    private class ForecastWeatherTask extends AsyncTask<String, Void, WeatherObject[]> {
+        protected WeatherObject[] doInBackground(String... strings) {
+
+            Uri uri_weather = new Uri.Builder()
+                    .scheme("https")
+                    .appendPath(getString(R.string.ep_base_url))
+                    .appendPath(getString(R.string.ep_weather))
+                    .appendPath(getString(R.string.ep_weather_forecast))
+                    .appendQueryParameter("lat", mWeather.getLat())
+                    .appendQueryParameter("lon", mWeather.getLon())
+                    .build();
+
+            String resultString = "";
+            HttpURLConnection urlConnection = null;
+
+            try {
+                URL urlObject = new URL(uri_weather.toString());
+                urlConnection = (HttpURLConnection) urlObject.openConnection();
+                InputStream content = urlConnection.getInputStream();
+                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
+                String s = "";
+                while ((s = buffer.readLine()) != null) {
+                    resultString += s;
+                }
+            } catch (Exception e) {
+                Log.e("ERROR CONNECTING", "Unable to connect, Reason: " + e.getMessage());
+            } finally {
+                if (urlConnection != null)
+                    urlConnection.disconnect();
+            }
+
+            try {
+                String lat = "", lon = "", temp = "", mainDescript = "", location ="", country ="", date ="";
+                WeatherObject[] weathers = new WeatherObject[10];
+
+                // Retrieve JSON objects according to api docs
+                JSONObject arrayOfForecastsObject = new JSONObject(resultString);
+                JSONArray arrayOfForecasts = arrayOfForecastsObject.getJSONArray("data");
+
+                // Set information not dependant on time
+                lat = arrayOfForecastsObject.getString(getString(R.string.keys_json_weather_forecast_lat));
+                lon = arrayOfForecastsObject.getString(getString(R.string.keys_json_weather_forecast_lon));
+                location = arrayOfForecastsObject.getString(getString(R.string.keys_json_weather_forecast_city)); //city
+                country = arrayOfForecastsObject.getString("country_code");
+
+
+                // Build 10 days of forecasts to analyse time based forecasting
+                for (int i = 0; i < 10; i++) {
+                    // Get the ith forecast
+                    JSONObject forecast = arrayOfForecasts.getJSONObject(i);
+
+                    // Grab temperate and date information
+                    temp = forecast.getString(getString(R.string.keys_json_weather_forecast_temp));
+                    date = forecast.getString(getString(R.string.keys_json_weather_forecast_date));
+
+                    // Description information is one JSON Object deeper
+                    JSONObject weatherDetails = forecast.getJSONObject(getString(R.string.keys_json_weather_forecast_details));
+                    mainDescript = weatherDetails.getString(getString(R.string.keys_json_weather_forecast_description));
+
+                    // Build and store this WeatherObject
+                    WeatherObject weather = new WeatherObject.Builder(
+                            temp, lat, lon).addDescription(mainDescript).addLocation(location + ", " + country).addDate(date).build();
+                    weathers[i] = weather;
+                }
+
+
+                return weathers;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("ERROR!", e.getMessage());
+                Log.e("WEATHER ERROR!", "null pointer in WeatherFragment.java bad json stuff");
+            }
+            return null; //oof this is about to break some stuff ^ log it for sure
+        }
+
+        protected void onPostExecute(WeatherObject[] result) {
+            //updateInfo(result);
+            final Bundle args = new Bundle();
+            args.putSerializable("weather", result);
+            Navigation.findNavController(getView())
+                    .navigate(R.id.action_global_viewWeatherFragment, args);
+        }
+
+//        private void updateIcon(ImageView imageView) {
+//
+//        }
     }
 }

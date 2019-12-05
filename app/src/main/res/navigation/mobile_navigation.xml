@@ -135,17 +135,17 @@
     <fragment
         android:id="@+id/nav_groupContacts"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupContactFragment"
-        android:label="fragment_groupcontact_list"
-        tools:layout="@layout/fragment_groupcontact_list" >
+        android:label="Create a Group Chat"
+        tools:layout="@layout/fragment_groupcontact_list">
         <argument
             android:name="contacts"
+            android:defaultValue="@null"
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact[]"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:nullable="true" />
         <argument
             android:name="jwt"
-            app:argType="string"
-            android:defaultValue='""' />
+            android:defaultValue='""'
+            app:argType="string" />
         <argument
             android:name="profile"
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact"
@@ -166,5 +166,8 @@
             android:name="WeatherObject"
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherObject" />
     </fragment><action android:id="@+id/action_global_nav_groupChat" app:destination="@id/nav_groupChat"/>
+    <action
+        android:id="@+id/action_global_viewWeatherFragment"
+        app:destination="@id/viewWeatherFragment" />
 
 </navigation>

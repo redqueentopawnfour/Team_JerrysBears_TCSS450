@@ -31,7 +31,12 @@
 
     <!--    weather endpoint-->
     <string name="ep_weather">weather</string>
-    <string name="ep_weather_params">params</string>
+    <string name="ep_weather_params">weatherParams</string>
     <string name="ep_weather_forecast">weatherForecast</string>
+    <string name="ep_weather_getCordsFromZipCode">zipCode</string>
+    <string name="ep_weather_getlocations">getlocations</string>
+    <string name="ep_weather_addlocation">addlocation</string>
+    <string name="ep_weather_deletelocation">deletelocation</string>
+
 
 </resources>

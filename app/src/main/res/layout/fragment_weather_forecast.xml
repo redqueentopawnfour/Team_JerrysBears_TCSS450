@@ -10,9 +10,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout4"
         android:layout_width="385dp"
-        android:layout_height="640dp"
+        android:layout_height="645dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/customborder"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,39 +41,49 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView_forecast_location">
 
-            <TextView
-                android:id="@+id/textView_forecast_descrip1"
-                android:layout_width="208dp"
-                android:layout_height="35dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Loading..."
-                app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toEndOf="@+id/textView_forecast_temp1"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/textView_forecast_day1"
+                    android:layout_width="50dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Loading..."
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView_forecast_day1"
-                android:layout_width="61dp"
-                android:layout_height="36dp"
-                android:layout_marginTop="8dp"
-                android:text="Loading..."
-                app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/textView_forecast_temp1"
+                    android:layout_width="50dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Loading..."
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintStart_toEndOf="@+id/imageView_forecast1"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView_forecast_temp1"
-                android:layout_width="61dp"
-                android:layout_height="36dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:text="Loading..."
-                app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toEndOf="@+id/textView_forecast_day1"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/textView_forecast_descrip1"
+                    android:layout_width="205dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Loading..."
+                    app:autoSizeTextType="uniform"
+                    app:layout_constraintStart_toEndOf="@+id/textView_forecast_temp1"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/imageView_forecast1"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/ic_usericon6"
+                    app:layout_constraintStart_toEndOf="@+id/textView_forecast_day1"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -87,7 +97,7 @@
 
             <TextView
                 android:id="@+id/textView_forecast_day2"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
@@ -97,24 +107,34 @@
 
             <TextView
                 android:id="@+id/textView_forecast_temp2"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toEndOf="@+id/textView_forecast_day2"
+                app:layout_constraintStart_toEndOf="@+id/imageView_forecast2"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView_forecast_descrip2"
-                android:layout_width="208dp"
-                android:layout_height="35dp"
+                android:layout_width="205dp"
+                android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
                 app:layout_constraintStart_toEndOf="@+id/textView_forecast_temp2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView_forecast2"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_usericon6"
+                app:layout_constraintStart_toEndOf="@+id/textView_forecast_day2"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -130,7 +150,7 @@
 
             <TextView
                 android:id="@+id/textView_forecast_day3"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
@@ -140,24 +160,34 @@
 
             <TextView
                 android:id="@+id/textView_forecast_temp3"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toEndOf="@+id/textView_forecast_day3"
+                app:layout_constraintStart_toEndOf="@+id/imageView_forecast3"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView_forecast_descrip3"
-                android:layout_width="208dp"
-                android:layout_height="35dp"
+                android:layout_width="205dp"
+                android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
                 app:layout_constraintStart_toEndOf="@+id/textView_forecast_temp3"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView_forecast3"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_usericon6"
+                app:layout_constraintStart_toEndOf="@+id/textView_forecast_day3"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -173,8 +203,8 @@
 
             <TextView
                 android:id="@+id/textView_forecast_descrip4"
-                android:layout_width="208dp"
-                android:layout_height="35dp"
+                android:layout_width="205dp"
+                android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
@@ -184,7 +214,7 @@
 
             <TextView
                 android:id="@+id/textView_forecast_day4"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
@@ -194,12 +224,22 @@
 
             <TextView
                 android:id="@+id/textView_forecast_temp4"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
+                app:layout_constraintStart_toEndOf="@+id/imageView_forecast4"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView_forecast4"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_usericon6"
                 app:layout_constraintStart_toEndOf="@+id/textView_forecast_day4"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -217,7 +257,7 @@
 
             <TextView
                 android:id="@+id/textView_forecast_day5"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
@@ -227,24 +267,34 @@
 
             <TextView
                 android:id="@+id/textView_forecast_temp5"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toEndOf="@+id/textView_forecast_day5"
+                app:layout_constraintStart_toEndOf="@+id/imageView_forecast5"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView_forecast_descrip5"
-                android:layout_width="208dp"
-                android:layout_height="35dp"
+                android:layout_width="205dp"
+                android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
                 app:layout_constraintStart_toEndOf="@+id/textView_forecast_temp5"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView_forecast5"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_usericon6"
+                app:layout_constraintStart_toEndOf="@+id/textView_forecast_day5"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -260,7 +310,7 @@
 
             <TextView
                 android:id="@+id/textView_forecast_day6"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
@@ -270,24 +320,34 @@
 
             <TextView
                 android:id="@+id/textView_forecast_temp6"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toEndOf="@+id/textView_forecast_day6"
+                app:layout_constraintStart_toEndOf="@+id/imageView_forecast6"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView_forecast_descrip6"
-                android:layout_width="208dp"
-                android:layout_height="35dp"
+                android:layout_width="205dp"
+                android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
                 app:layout_constraintStart_toEndOf="@+id/textView_forecast_temp6"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView_forecast6"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_usericon6"
+                app:layout_constraintStart_toEndOf="@+id/textView_forecast_day6"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -303,8 +363,8 @@
 
             <TextView
                 android:id="@+id/textView_forecast_descrip7"
-                android:layout_width="208dp"
-                android:layout_height="35dp"
+                android:layout_width="205dp"
+                android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
@@ -314,7 +374,7 @@
 
             <TextView
                 android:id="@+id/textView_forecast_day7"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
@@ -324,12 +384,22 @@
 
             <TextView
                 android:id="@+id/textView_forecast_temp7"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
+                app:layout_constraintStart_toEndOf="@+id/imageView_forecast7"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView_forecast7"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_usericon6"
                 app:layout_constraintStart_toEndOf="@+id/textView_forecast_day7"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -347,7 +417,7 @@
 
             <TextView
                 android:id="@+id/textView_forecast_day8"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
@@ -357,24 +427,34 @@
 
             <TextView
                 android:id="@+id/textView_forecast_temp8"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toEndOf="@+id/textView_forecast_day8"
+                app:layout_constraintStart_toEndOf="@+id/imageView_forecast8"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView_forecast_descrip8"
-                android:layout_width="208dp"
-                android:layout_height="35dp"
+                android:layout_width="205dp"
+                android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
                 app:layout_constraintStart_toEndOf="@+id/textView_forecast_temp8"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView_forecast8"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_usericon6"
+                app:layout_constraintStart_toEndOf="@+id/textView_forecast_day8"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -390,7 +470,7 @@
 
             <TextView
                 android:id="@+id/textView_forecast_day9"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
@@ -400,24 +480,34 @@
 
             <TextView
                 android:id="@+id/textView_forecast_temp9"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
-                app:layout_constraintStart_toEndOf="@+id/textView_forecast_day9"
+                app:layout_constraintStart_toEndOf="@+id/imageView_forecast9"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView_forecast_descrip9"
-                android:layout_width="208dp"
-                android:layout_height="35dp"
+                android:layout_width="205dp"
+                android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
                 app:layout_constraintStart_toEndOf="@+id/textView_forecast_temp9"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView_forecast9"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_usericon6"
+                app:layout_constraintStart_toEndOf="@+id/textView_forecast_day9"
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -433,8 +523,8 @@
 
             <TextView
                 android:id="@+id/textView_forecast_descrip10"
-                android:layout_width="208dp"
-                android:layout_height="35dp"
+                android:layout_width="205dp"
+                android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
@@ -444,7 +534,7 @@
 
             <TextView
                 android:id="@+id/textView_forecast_day10"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
@@ -454,12 +544,22 @@
 
             <TextView
                 android:id="@+id/textView_forecast_temp10"
-                android:layout_width="61dp"
+                android:layout_width="50dp"
                 android:layout_height="36dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="Loading..."
                 app:autoSizeTextType="uniform"
+                app:layout_constraintStart_toEndOf="@+id/imageView_forecast10"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/imageView_forecast10"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/ic_usericon6"
                 app:layout_constraintStart_toEndOf="@+id/textView_forecast_day10"
                 app:layout_constraintTop_toTopOf="parent" />
 

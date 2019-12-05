@@ -24,5 +24,11 @@
     <string name="text_forecast_date_notnumbered">textView_forecast_day</string>
     <string name="text_forecast_description_notnumbered">textView_forecast_descrip</string>
 
+    <string name="text_current_temp_notnumbered">textView_current_temp</string>
+    <string name="text_current_location_notnumbered">textView_current_location</string>
+    <string name="text_current_description_notnumbered">textView_current_descrip</string>
+    <string name="constraint_current_background_notnumbered">constraintLayout_weatherFragment_location</string>
+    <string name="image_current_notnumbered">imageView_current</string>
+
 
 </resources>
