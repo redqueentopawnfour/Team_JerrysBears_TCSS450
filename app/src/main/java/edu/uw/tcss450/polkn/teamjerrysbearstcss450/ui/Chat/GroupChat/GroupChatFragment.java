@@ -156,6 +156,7 @@ public class GroupChatFragment extends Fragment {
         directions.setChatid(theGroupContact.getChatId());
         directions.setJwt(mJwToken);
         directions.setChatname(theGroupContact.getGroupname());
+        directions.setUsername(mUsername);
         Navigation.findNavController(getView())
                 .navigate(directions);
     }

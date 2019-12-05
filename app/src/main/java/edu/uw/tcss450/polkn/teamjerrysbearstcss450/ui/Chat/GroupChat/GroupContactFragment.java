@@ -200,6 +200,7 @@ public class GroupContactFragment extends Fragment {
                     directions.setJwt(mJwt);
                     directions.setChatid(mChatId);
                     directions.setChatname(mChatName);
+                    directions.setUsername(mProfile.getUsername());
                     NavController nc = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
                     nc.navigate(directions);
                 } else {

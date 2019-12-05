@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
                 android:drawablePadding="5dp"
                 android:paddingTop="10dp"
                 android:layout_gravity="center_horizontal"
@@ -67,8 +67,8 @@
                 android:id="@+id/checkBox_groupcontact_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_weight="0.5" />
+                android:layout_gravity="center_vertical|end"
+                android:layout_weight="0" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -210,18 +210,8 @@ public class HomeActivity extends AppCompatActivity {
                 ((Toolbar) findViewById(R.id.toolbar)).getNavigationIcon().setColorFilter(mDefault);
 
                 MobileNavigationDirections.ActionGlobalNavGroupChat direction;
-                if (mChatMessage != null) {
 
-//                    Log.d("Message", mChatMessage.getMessage());
-
-                    direction = GroupChatFragmentDirections.actionGlobalNavGroupChat(mMyProfile)
-                                .setJwt(mJwToken);
-//                            .setMessage(mChatMessage);
-                } else {
-                    direction = GroupChatFragmentDirections.actionGlobalNavGroupChat(mMyProfile)
-                            .setJwt(mJwToken);
-                }
-
+                direction = GroupChatFragmentDirections.actionGlobalNavGroupChat(mMyProfile).setJwt(mJwToken);
                 Navigation.findNavController(this, R.id.nav_host_fragment)
                         .navigate(direction);
                 break;
