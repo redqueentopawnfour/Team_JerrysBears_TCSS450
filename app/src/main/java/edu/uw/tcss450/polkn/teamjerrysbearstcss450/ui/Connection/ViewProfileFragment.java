@@ -34,6 +34,7 @@ public class ViewProfileFragment extends Fragment {
 
     private Contact mUser;
     private Context mContext;
+    private boolean mIsOwnProfile;
 
     public ViewProfileFragment() {
         // Required empty public constructor
@@ -69,12 +70,21 @@ public class ViewProfileFragment extends Fragment {
 
         ViewProfileFragmentArgs args = ViewProfileFragmentArgs.fromBundle(getArguments());
         mUser = args.getContact();
+        mIsOwnProfile = args.getIsOwnProfile();
+
         Log.i("user", mUser.toString());
     }
 
     private void updateProfile() {
+        Boolean isContactVerified = mUser.getIsContactVerified();
+
+        if (mIsOwnProfile || isContactVerified) {
+            TextView emailView = getActivity().findViewById(R.id.textView_viewProfile_email);
+            emailView.setText(mUser.getEmail());
+            emailView.setVisibility(View.VISIBLE);
+        }
+
         TextView firstLastView = getActivity().findViewById(R.id.textView_viewProfile_firstLast);
-        TextView emailView = getActivity().findViewById(R.id.textView_viewProfile_email);
         TextView usernameView = getActivity().findViewById(R.id.textView_viewProfile_username);
         ImageView userIconView = getActivity().findViewById(R.id.image_viewProfile_usericon);
         ImageView isEmailVerifiedView = getActivity().findViewById(R.id.imageView_viewProfile_isVerified);
@@ -82,12 +92,7 @@ public class ViewProfileFragment extends Fragment {
         Boolean isEmailVerified = mUser.getIsEmailVerified();
 
         firstLastView.setText(mUser.getFirstName() + " " + mUser.getLastName());
-        emailView.setText(mUser.getEmail());
         usernameView.setText(mUser.getUsername());
         userIconView.setImageResource(drawableId);
-
-       /* if (isEmailVerified == true) {
-            isEmailVerifiedView.setVisibility(View.VISIBLE);
-        }*/
     }
 }

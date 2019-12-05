@@ -73,7 +73,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             android:ems="10"
-            android:text="email@email.com"
+            android:visibility="gone"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="16sp"
