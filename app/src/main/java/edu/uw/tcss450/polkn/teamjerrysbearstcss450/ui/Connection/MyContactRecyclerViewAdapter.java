@@ -1,6 +1,7 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
@@ -270,7 +271,7 @@ public class MyContactRecyclerViewAdapter extends RecyclerView.Adapter<MyContact
 
     private void openChat(int chatId) {
         MobileNavigationDirections.ActionGlobalNavChat directions
-                = ChatViewFragmentDirections.actionGlobalNavChat().setChatid(chatId).setJwt(mJwt);
+                = ChatViewFragmentDirections.actionGlobalNavChat().setChatid(chatId).setJwt(mJwt).setUsername(mMyProfile.getUsername());
 
         Navigation.findNavController(mView).navigate(directions);
     }

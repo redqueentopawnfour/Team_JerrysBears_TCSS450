@@ -10,6 +10,8 @@ import me.pushy.sdk.Pushy;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static String PACKAGE_NAME;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,6 +24,10 @@ public class MainActivity extends AppCompatActivity {
                         .setGraph(R.navigation.nav_graph, getIntent().getExtras());
             }
         }
+
+        // Used in "WeatherForecastFragment" to be able to find textview ids easily in a loop
+        PACKAGE_NAME = getApplicationContext().getPackageName();
+
 
     }
     protected static boolean validatePassword(EditText password) {

@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_addGroup"
+        android:icon="@drawable/ic_group_addgroup"
+        android:title="action_addGroup"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_logout"
         android:orderInCategory="100"
         android:title="@string/action_logout"

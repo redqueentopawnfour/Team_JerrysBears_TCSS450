@@ -113,7 +113,7 @@ public class RegisterFragment extends Fragment {
             nickname.setError("Nickname must be at least 5 characters.");
         }  else if (nickname.getText().length() > 12) {
             nickname.setError("Nickname must be less than 12 characters.");
-        }  {
+        }  else {
             isValid = true;
         }
 

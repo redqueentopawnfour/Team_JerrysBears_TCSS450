@@ -89,9 +89,12 @@
     <string name="editText_recycler_noSearchResults">No contacts were found with that criteria. Please try again!</string>
     <string name="editText_recycler_noContactsTitle">Uh oh!</string>
 
-<!--    recylce view on group chat-->
+    <!--    recylce view on group chat-->
     <string name="editText_recycle_noGroupChat">You have no groups! Use the button to create your group.</string>
     <string name="editText_recycle_noGroupChatTitle">Uh oh!</string>
+<!--    add group strings-->
+    <string name="text_addGroup_title">Group Name</string>
+    <string name="editText_addGroup_hint">Enter the name of your group!</string>
 
     <!-- key  -->
     <string name="key_chat">chat_key</string>

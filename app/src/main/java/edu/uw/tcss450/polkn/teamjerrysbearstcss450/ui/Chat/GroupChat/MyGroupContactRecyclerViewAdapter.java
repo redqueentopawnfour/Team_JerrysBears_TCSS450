@@ -1,30 +1,29 @@
-package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat;
+package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupContactFragment.OnListFragmentInteractionListener;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatSearchFragment.OnListFragmentInteractionListener;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.Message.Message;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link } and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyChatSearchRecyclerViewAdapter extends RecyclerView.Adapter<MyChatSearchRecyclerViewAdapter.ViewHolder> {
+public class MyGroupContactRecyclerViewAdapter extends RecyclerView.Adapter<MyGroupContactRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Message> mValues;
+    private final List<DummyItem> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MyChatSearchRecyclerViewAdapter(List<Message> items, OnListFragmentInteractionListener listener) {
+    public MyGroupContactRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -32,15 +31,15 @@ public class MyChatSearchRecyclerViewAdapter extends RecyclerView.Adapter<MyChat
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_chatsearch, parent, false);
+                .inflate(R.layout.fragment_groupcontact, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getUsername());
-        holder.mContentView.setText(mValues.get(position).getMessage());
+        holder.mIdView.setText(mValues.get(position).id);
+        holder.mContentView.setText(mValues.get(position).content);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +47,7 @@ public class MyChatSearchRecyclerViewAdapter extends RecyclerView.Adapter<MyChat
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-//                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onListFragmentInteraction(holder.mItem);
                 }
             }
         });
@@ -63,7 +62,7 @@ public class MyChatSearchRecyclerViewAdapter extends RecyclerView.Adapter<MyChat
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public Message mItem;
+        public DummyItem mItem;
 
         public ViewHolder(View view) {
             super(view);

@@ -12,12 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
-import java.util.List;
-
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupContact.GroupContact;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.dummy.DummyContent;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.dummy.DummyContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.
@@ -25,34 +22,25 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupContac
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class GroupChatFragment extends Fragment {
+public class GroupContactFragment extends Fragment {
 
+    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-
+    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-
-    private List<GroupContact> myGroupContacts;
-
-    private String mJwt;
-
-    private RecyclerView recyclerView;
-
-
-
-
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public GroupChatFragment() {
+    public GroupContactFragment() {
     }
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static GroupChatFragment newInstance(int columnCount) {
-        GroupChatFragment fragment = new GroupChatFragment();
+    public static GroupContactFragment newInstance(int columnCount) {
+        GroupContactFragment fragment = new GroupContactFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -71,29 +59,39 @@ public class GroupChatFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_groupchat_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_groupcontact_list, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.list);
-        Context context = recyclerView.getContext();
-
-        if (recyclerView instanceof RecyclerView) {
-            if (myGroupContacts != null) {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-//                    recyclerView.setAdapter(new MyGroupChatRecyclerViewAdapter(mContacts, mJwt, iconDrawables, mProfile, this::displayContact));
+        // Set the adapter
+        if (view instanceof RecyclerView) {
+            Context context = view.getContext();
+            RecyclerView recyclerView = (RecyclerView) view;
+            if (mColumnCount <= 1) {
+                recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
-                recyclerView.setVisibility(View.GONE);
+                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
+            recyclerView.setAdapter(new MyGroupContactRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
-        ((HomeActivity) getActivity()).showAddGroup();
-
-        ((HomeActivity) getActivity()).hideAddUser();
-        ((HomeActivity) getActivity()).hideViewProfile();
-//        ((HomeActivity) getActivity()).hideChatIcon();
-
         return view;
     }
 
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnListFragmentInteractionListener) {
+            mListener = (OnListFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnListFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
 
     /**
      * This interface must be implemented by activities that contain this
@@ -107,6 +105,6 @@ public class GroupChatFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(GroupContact item);
+        void onListFragmentInteraction(DummyItem item);
     }
 }
