@@ -16,13 +16,13 @@
         <LinearLayout
             android:id="@+id/linearlayout_contact_contact"
             android:layout_width="match_parent"
-            android:layout_height="67dp"
+            android:layout_height="match_parent"
             android:background="@drawable/customborder"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/text_groupchat_username"
-                android:layout_width="211dp"
+                android:layout_width="159dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="8dp"
@@ -46,7 +46,7 @@
                 android:id="@+id/button_leavegroup"
                 android:layout_width="1dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_weight="0.4"
                 android:background="@color/leaveGroup"
                 android:text="@string/leaveGroup"
                 android:textColor="@color/text_leave" />
