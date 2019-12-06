@@ -118,6 +118,10 @@
     <string name="keys_prefs_password">see_the_city_see_the_zoo</string>
     <string name="InputField">Text Message</string>
 
+    <string name="editText_weather_save_location_text">Save location via search...</string>
+    <string name="button_weather_save_location_text">Save</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="leaveGroup">LEAVE</string>

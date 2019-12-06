@@ -38,6 +38,7 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivityArgs;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherFragment;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherObject;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.GetAsyncTask;
 
@@ -209,6 +210,7 @@ public class HomeFragment extends Fragment {
         TextView coordinates = getActivity().findViewById(R.id.textView_home_location1);
         TextView deets = getActivity().findViewById(R.id.textView_home_descrip1);
         ImageView image = getActivity().findViewById(R.id.imageView_home1);
+        ConstraintLayout lay = getActivity().findViewById(R.id.constraintLayout_home_location1);
 
         // if the city field is not empty, fill with city info instead of coordinates
         // else fill this text view with coordinates
@@ -227,10 +229,13 @@ public class HomeFragment extends Fragment {
         temp.setText(weather.getTemp() + "°");
         deets.setText(weather.getDesciption());
 
+        WeatherFragment.setCorrectIcon(image, weather);
+
         temp.setVisibility(View.VISIBLE);
         coordinates.setVisibility(View.VISIBLE);
         deets.setVisibility(View.VISIBLE);
         image.setVisibility(View.VISIBLE);
+        lay.setVisibility(View.VISIBLE);
 
     }
 

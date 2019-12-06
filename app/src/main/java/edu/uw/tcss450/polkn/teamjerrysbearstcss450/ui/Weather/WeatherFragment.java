@@ -2,6 +2,8 @@ package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAssignedNumbers;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -35,6 +37,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MainActivity;
@@ -48,12 +51,11 @@ public class WeatherFragment extends Fragment {
 
     private WeatherObject mWeather;
     private WeatherObject mNextWeather;
-
     private boolean isUserDumbRightNow = false;
-
     private int mNextLocation = 1;
     private ArrayList<String[]> mSavedLocations = new ArrayList<>();
     private ArrayList<WeatherObject> mCurrentLocations = new ArrayList<>();
+    private AsyncTask mForecastWeatherTask = null;
 
     private WeatherViewModel weatherViewModel;
 
@@ -62,6 +64,15 @@ public class WeatherFragment extends Fragment {
         weatherViewModel =
                 ViewModelProviders.of(this).get(WeatherViewModel.class);
         View root = inflater.inflate(R.layout.fragment_weather, container, false);
+
+        Date c = Calendar.getInstance().getTime();
+//        System.out.println("Current time => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy");
+        String formattedDate = df.format(c);
+
+
+        ((HomeActivity) getActivity()).setActionBarTitle("Weather " + formattedDate);
         //final TextView textView = root.findViewById(R.id.somethingelse);
 //        weatherViewModel.getText().observe(this, new Observer<String>() {
 //            @Override
@@ -110,7 +121,8 @@ public class WeatherFragment extends Fragment {
         lay.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ForecastWeatherTask().execute();
+                // hold the reference so we can cancel it!
+                new ForecastWeatherTask().execute(mWeather);
             }
         });
 
@@ -221,6 +233,14 @@ public class WeatherFragment extends Fragment {
             Log.e("mSavedLocations", result.toString());
             Log.e("mSavedLocations", ""+result.size());
 
+            // display 4 most recently saved locations
+            for (int i=result.size(); i > 0; i--) {
+                if (i >= result.size() - 4) {
+                    // if in the last 4 of the saved list
+                    new DifferentLocationWeatherTask().execute(result.get(i - 1));
+                }
+            }
+            /*
             for (int i=0; i<result.size(); i++) {
                 if (i < 4) {
                     Log.e("mSavedLocations", "i=" + i);
@@ -229,7 +249,7 @@ public class WeatherFragment extends Fragment {
                     Log.e("mSavedLocations", result.get(i).toString());
                     new DifferentLocationWeatherTask().execute(result.get(i));
                 }
-            }
+            }*/
         }
 
 
@@ -307,6 +327,8 @@ public class WeatherFragment extends Fragment {
         TextView temp = getActivity().findViewById(R.id.textView_current_temp1);
         TextView coordinates = getActivity().findViewById(R.id.textView_current_location1);
         TextView deets = getActivity().findViewById(R.id.textView_current_descrip1);
+        ImageView image = getActivity().findViewById(R.id.imageView_current1);
+        ConstraintLayout layout = getActivity().findViewById(R.id.constraintLayout_weatherFragment_location1);
 
         // if the city field is not empty, fill with city info instead of coordinates
         // else fill this text view with coordinates
@@ -324,18 +346,54 @@ public class WeatherFragment extends Fragment {
         // Set the temperature and weather description without other logic
         temp.setText(weather.getTemp() + "°");
         deets.setText(weather.getDesciption());
+
+        setCorrectIcon(image, weather);
+
+        temp.setVisibility(View.VISIBLE);
+        coordinates.setVisibility(View.VISIBLE);
+        deets.setVisibility(View.VISIBLE);
+        image.setVisibility(View.VISIBLE);
+        layout.setVisibility(View.VISIBLE);
     }
 
-    private class ForecastWeatherTask extends AsyncTask<String, Void, WeatherObject[]> {
-        protected WeatherObject[] doInBackground(String... strings) {
+    private void stopClickable(ConstraintLayout theLayout) {
+        theLayout.setClickable(false);
+    }
+
+
+    private class ForecastWeatherTask extends AsyncTask<WeatherObject, Void, WeatherObject[]> {
+        protected WeatherObject[] doInBackground(WeatherObject... weatherIncoming) {
+
+            // Instead of the commented approach, let's just only let them click a single fragment to navigate to
+            // (instead of letting them click 2 but cancelling the 1st and replacing navigation with the 2nd)
+            // This approach is easier to test, mostly- although I like the other's functionality better.
+            String layoutName = getString(R.string.constraint_current_background_notnumbered);
+            int id;
+            for (int i = 1; i <= 5 ; i++) {
+                String tempNameWithI = layoutName + (i);
+                id = getResources().getIdentifier(tempNameWithI, "id", MainActivity.PACKAGE_NAME);
+//                Log.e("ForecastWeatherTask", tempNameWithI);
+                ConstraintLayout clickable = getActivity().findViewById(id);
+                stopClickable(clickable);
+            }
+
+            /*
+            // if there is an existing ForecastWeatherTask running, cancel it because we want to do this one.
+            if (mForecastWeatherTask != null) {
+                mForecastWeatherTask.cancel(true);
+                Log.e("ForecastWeatherTask", "Just cancelled a running ForecastWeatherTask");
+            }
+            // We are the currently running ForecastWeatherTask, so let the next one cancel us if applicable
+            mForecastWeatherTask = this;
+            */
 
             Uri uri_weather = new Uri.Builder()
                     .scheme("https")
                     .appendPath(getString(R.string.ep_base_url))
                     .appendPath(getString(R.string.ep_weather))
                     .appendPath(getString(R.string.ep_weather_forecast))
-                    .appendQueryParameter("lat", mWeather.getLat())
-                    .appendQueryParameter("lon", mWeather.getLon())
+                    .appendQueryParameter("lat", weatherIncoming[0].getLat())
+                    .appendQueryParameter("lon", weatherIncoming[0].getLon())
                     .build();
 
             String resultString = "";
@@ -405,6 +463,7 @@ public class WeatherFragment extends Fragment {
             //updateInfo(result);
             final Bundle args = new Bundle();
             args.putSerializable("weather", result);
+            mForecastWeatherTask = null; // reset this holder for the currently running task.. probably not needed.
             Navigation.findNavController(getView())
                     .navigate(R.id.action_nav_weather_to_viewWeatherFragment, args);
         }
@@ -692,14 +751,24 @@ public class WeatherFragment extends Fragment {
         ConstraintLayout background = getActivity().findViewById(backgroundId);
         ImageView image = getActivity().findViewById(imageId);
 
-        temp.setText(theWeather.getTemp());
+        temp.setText(theWeather.getTemp() + getString(R.string.weather_degrees_symbol));
         desciption.setText(theWeather.getDesciption());
         location.setText(theWeather.getLocation());
+
+        background.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // set this view to navigate to the forecast fragment if the user selects it
+                new ForecastWeatherTask().execute(theWeather);
+            }
+        });
 
         temp.setVisibility(View.VISIBLE);
         desciption.setVisibility((View.VISIBLE));
         location.setVisibility(View.VISIBLE);
         background.setVisibility(View.VISIBLE);
+        setCorrectIcon(image, theWeather);
+//        image.setImageResource(R.drawable.bear_snow_icon);
         image.setVisibility(View.VISIBLE);
 
         /*
@@ -729,6 +798,27 @@ public class WeatherFragment extends Fragment {
          */
     }
 
+    public static void setCorrectIcon(ImageView image, WeatherObject theWeather) {
+        String descrip = theWeather.getDesciption().toLowerCase();
+//thunder lightning ice
+        if (descrip.contains("clear")) {
+            image.setImageResource(R.drawable.bear_clear_icon);
+        } else if (descrip.contains("cloud") || descrip.contains("overcast")) {
+            image.setImageResource(R.drawable.bear_cloud_icon);
+        } else if (descrip.contains("rain") || descrip.contains("shower") || descrip.contains("hail") || descrip.contains("drizzle")) {
+            image.setImageResource(R.drawable.bear_rain_icon);
+        } else if (descrip.contains("sun") || descrip.contains("bright")) {
+            image.setImageResource(R.drawable.bear_sun_icon);
+        } else if (descrip.contains("snow")) { //blizzard
+            image.setImageResource(R.drawable.bear_snow_icon);
+        } else if (descrip.contains("wind") || descrip.contains("gale") || descrip.contains("gust")) { //gale //gust
+            image.setImageResource(R.drawable.bear_wind_icon);
+        } else if (descrip.contains("fog")) {
+            image.setImageResource((R.drawable.bear_fog_icon2));
+        } else {
+            image.setImageResource(R.drawable.bears_color_image_transparent);
+        }
+    }
 
 /*
  @Override
