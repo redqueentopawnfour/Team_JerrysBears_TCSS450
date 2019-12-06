@@ -71,7 +71,7 @@
     <fragment
         android:id="@+id/nav_chat"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragment"
-        android:label="Chat"
+        android:label=""
         tools:layout="@layout/fragment_chatview_list" >
 
         <argument

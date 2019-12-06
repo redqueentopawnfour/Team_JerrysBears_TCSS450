@@ -39,4 +39,8 @@
     <string name="ep_weather_deletelocation">deletelocation</string>
 
 
+
+<!--     home endpoint-->
+    <string name="ep_home_getrecent">getrecent</string>
+
 </resources>
