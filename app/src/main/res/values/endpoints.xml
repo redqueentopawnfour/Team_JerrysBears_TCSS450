@@ -26,6 +26,9 @@
 
     <string name="ep_messaging_creategroup">creategroup</string>
     <string name="ep_messaging_addgroupmembers">addgroupmembers</string>
+
+    <string name="ep_messaging_leavegroup">leavegroup</string>
+
     <!--    pushy endpoint-->
     <string name="ep_pushy">pushy</string>
 
@@ -38,5 +41,9 @@
     <string name="ep_weather_addlocation">addlocation</string>
     <string name="ep_weather_deletelocation">deletelocation</string>
 
+
+
+<!--     home endpoint-->
+    <string name="ep_home_getfavorite">getfavorite</string>
 
 </resources>

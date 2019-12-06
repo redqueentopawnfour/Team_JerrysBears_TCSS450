@@ -34,14 +34,14 @@
 
     <ImageView
         android:id="@+id/image_home_bears"
-        android:layout_width="236dp"
-        android:layout_height="296dp"
-        android:layout_marginTop="230dp"
+        android:layout_width="170dp"
+        android:layout_height="158dp"
+        android:layout_marginTop="20dp"
         android:src="@drawable/bears_color_image2_transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_home_location1" />
+        app:layout_constraintTop_toBottomOf="@+id/layout3" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout_home_location1"
@@ -97,4 +97,76 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout1"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="60dp"
+        android:background="@drawable/customborder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_home_location1">
+
+        <Button
+            android:id="@+id/button_chat1"
+            android:layout_width="360dp"
+            android:layout_height="54dp"
+            android:background="@color/colorPrimaryAlpha"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.313"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout2"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/customborder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout1">
+
+        <Button
+            android:id="@+id/button_chat2"
+            android:layout_width="360dp"
+            android:layout_height="54dp"
+            android:background="@color/colorPrimaryAlpha"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.313"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout3"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/customborder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout2">
+
+        <Button
+            android:id="@+id/button_chat3"
+            android:layout_width="360dp"
+            android:layout_height="54dp"
+            android:background="@color/colorPrimaryAlpha"
+            android:textAllCaps="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.313"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

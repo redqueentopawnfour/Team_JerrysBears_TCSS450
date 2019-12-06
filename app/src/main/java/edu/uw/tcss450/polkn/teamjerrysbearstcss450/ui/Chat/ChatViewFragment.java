@@ -97,6 +97,7 @@ public class ChatViewFragment extends Fragment {
 
         ChatViewFragmentArgs args = ChatViewFragmentArgs.fromBundle(getArguments());
         mUsername = args.getUsername();
+
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -136,8 +137,6 @@ public class ChatViewFragment extends Fragment {
                 new ArrayList<String>(theNames));
 
         Navigation.findNavController(getView()).navigate(R.id.action_nav_chat_to_contactDisplay,args); //args
-
-
 
     }
 
@@ -325,7 +324,23 @@ public class ChatViewFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        String nameChat = "";
+            if (mNames.size() > 2) {
+//                nameChat = "Group Chat";
+                ChatViewFragmentArgs args = ChatViewFragmentArgs.fromBundle(getArguments());
+                nameChat = args.getChatname();
+            }
+            else {
+                for (int i = 0; i < mNames.size(); i++) {
+                    if (!mNames.get(i).equals(mUsername)) {
+                        nameChat = mNames.get(i);
+                    }
+                }
+
+            }
         recyclerView.scrollToPosition(mMessage.size()-1); // updating all message from chat history
+        ((HomeActivity) getActivity())
+                .setActionBarTitle(nameChat);
         Log.d("TESTING MESSAGE:", mMessage.toString());
         Log.d("TESTING NAMES:", mNames.toString());
 

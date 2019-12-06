@@ -112,11 +112,10 @@ public class GroupChatFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_groupchat_list, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
         Context context = recyclerView.getContext();
-
         if (recyclerView instanceof RecyclerView) {
             if (myGroupContacts != null) {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-                recyclerView.setAdapter(new MyGroupChatRecyclerViewAdapter(myGroupContacts,this::displayGroupContact));
+                recyclerView.setAdapter(new MyGroupChatRecyclerViewAdapter(myGroupContacts,mProfile,mJwToken,this::displayGroupContact));
             } else {
                 recyclerView.setVisibility(View.GONE);
             }
@@ -230,13 +229,6 @@ public class GroupChatFragment extends Fragment {
             }
         }
     }
-
-
-
-
-
-
-
 
 
     /**

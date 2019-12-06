@@ -16,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,17 +29,34 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivityArgs;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherObject;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.GetAsyncTask;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private WeatherObject mWeather;
+
+    private List<String> mNames;
+    private List<Integer> mChatIds;
+
+//    private HashMap<Integer, String> mContacts; // for the most recent
+
+    private String mEmail;
+    private String mJwToken;
+
+    private TextView view1;
+    private TextView view2;
+    private TextView view3;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -46,6 +64,10 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+
+        mNames = new ArrayList<>();
+        mChatIds = new ArrayList<>();
+
 
 
         final TextView textView = root.findViewById(R.id.text_home);
@@ -69,8 +91,10 @@ public class HomeFragment extends Fragment {
         Credentials credentials = args.getCredentials();
         ((TextView) getActivity().findViewById(R.id.text_email)).
                 setText(credentials.getEmail());
-        String jwt = args.getJwt();
-        Log.d("JWT", jwt);
+        mJwToken = args.getJwt();
+        mEmail = credentials.getEmail();
+        Log.d("JWT", mJwToken);
+        Log.d("Email", mEmail);
 
         ConstraintLayout constraint = getActivity().findViewById(R.id.constraintLayout_home_location1);
         constraint.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +102,24 @@ public class HomeFragment extends Fragment {
                 new ForecastWeatherTask().execute();
             }
         });
+
+        //        TextView test = view.findViewById(R.id.textView_email);
+
+        view1 = view.findViewById(R.id.button_chat1);
+        view1.setOnClickListener(b -> chatClicked(mChatIds.get(0)));
+
+
+        view2 = view.findViewById(R.id.button_chat2);
+        view2.setOnClickListener(b -> chatClicked(mChatIds.get(1)));
+
+
+        view3 = view.findViewById(R.id.button_chat3);
+        view3.setOnClickListener(b -> chatClicked(mChatIds.get(2)));
+
+    }
+
+    private void chatClicked(Integer integer) {
+
     }
 
     //fills in weather panel with current weather
@@ -275,8 +317,48 @@ public class HomeFragment extends Fragment {
                     .navigate(R.id.action_global_viewWeatherFragment, args);
         }
 
-//        private void updateIcon(ImageView imageView) {
-//
-//        }
+    }
+
+
+    /**
+     * Method to load chat history
+     */
+    private void loadRecentChatHistory() {
+        String getUrl = new Uri.Builder()
+                .scheme("https")
+                .appendPath(getString(R.string.ep_base_url))
+                .appendPath(getString(R.string.ep_messaging_base))
+                .appendPath(getString(R.string.ep_home_getfavorite))
+                .build()
+                .toString();
+        new GetAsyncTask.Builder(getUrl).addHeaderField("email", mEmail)
+                .addHeaderField("authorization", mJwToken)
+                .onCancelled(error -> Log.e("an error", error))
+                .onPostExecute(this::endOfLoadChatTask).build().execute();
+//        Log.d("TESTING MESSAGE:", mMessage.toString());
+    }
+
+    private void endOfLoadChatTask(final String result) {
+        try {
+            JSONObject res = new JSONObject(result);
+            if (res.has(getString(R.string.keys_json_success))
+                    && !res.getBoolean(getString(R.string.keys_json_success))) {
+            } else {
+//                JSONArray chats = (JSONArray) res.get(getString(R.string.keys_json_messages));
+                JSONArray details = (JSONArray) res.get("details");
+                for (int i = 0; i < details.length(); i++) {
+                    JSONObject temp = (JSONObject) details.get(i);
+                    String tempName = temp.getString("chatname");
+                    int tempChatId = temp.getInt("chatid");
+                    mNames.add(tempName);
+                    mChatIds.add(tempChatId);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+
+            Log.d("TESTING Names:", mNames.toString());
+            Log.d("TESTING Chat ID:", mChatIds.toString());
+        }
     }
 }
