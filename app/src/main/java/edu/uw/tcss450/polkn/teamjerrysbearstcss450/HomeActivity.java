@@ -124,6 +124,10 @@ public class HomeActivity extends AppCompatActivity {
                             MobileNavigationDirections.ActionGlobalNavChat directions =
                                     ChatViewFragmentDirections.actionGlobalNavChat().setJwt(mJwToken).setEmail(mEmail);
 //                            directions.setMessage(args.getChatMessage());
+                            int chatId = args.getChatId();
+                            if (chatId != 0) {
+                                directions.setChatid(chatId);
+                            }
                             navController.navigate(directions);
                         } else if (args.getContactMessage() != null) {
                             loadContacts(HomeActivity.this::handleContactsOnPostExecute);

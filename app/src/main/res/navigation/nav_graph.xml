@@ -60,6 +60,10 @@
             app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactNotification"
             app:nullable="true"
             android:defaultValue="@null" />
+        <argument
+            android:name="chatId"
+            app:argType="integer"
+            android:defaultValue="0" />
     </activity>
 
 
