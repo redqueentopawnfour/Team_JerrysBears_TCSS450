@@ -45,6 +45,7 @@
     <string name="settings_addContact">Add Contact</string>
     <string name="settings_viewProfile">View Profile</string>
     <string name="settings_chat">Chat</string>
+    <string name="settings_members">Members</string>
 
     <!-- Menu button string resource -->
     <string name="menu_home">Home</string>
@@ -101,9 +102,9 @@
     <string name="text_createGroup_title">Select the users to add</string>
 
 
-<!--    recycler view on group contact-->
+    <!--    recycler view on group contact-->
     <string name="text_groupChat_noConnections">You have no verified connections!</string>
-<!--    add group strings-->
+    <!--    add group strings-->
     <string name="text_addGroup_title">Group Name</string>
     <string name="editText_addGroup_hint">Enter the name of your group!</string>
     <string name="button_addGroup_create">Create</string>

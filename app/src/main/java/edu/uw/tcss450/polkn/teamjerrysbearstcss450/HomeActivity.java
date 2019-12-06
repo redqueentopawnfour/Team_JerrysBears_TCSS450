@@ -29,6 +29,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -36,6 +38,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.function.Consumer;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatMessageNotification;
@@ -46,6 +53,8 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragment
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactNotification;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherFragment;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherObject;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.PushReceiver;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
@@ -64,6 +73,8 @@ public class HomeActivity extends AppCompatActivity {
     private MenuItem mChat;
     private MenuItem mNavContactList;
     private MenuItem mAddGroup;
+    private MenuItem mDisplayGroup;
+
     private Contact mMyProfile;
     private ChatMessageNotification mChatMessage;
     private ContactNotification mContactNotification;
@@ -156,6 +167,8 @@ public class HomeActivity extends AppCompatActivity {
                 mViewOwnProfile.setVisible(false);              // but since HomeFragment loads before the menu inflater, HomeFragment must be handled from HomeActivity
                 mAddContacts.setVisible(false);
                 mAddGroup.setVisible(false);
+                mDisplayGroup.setVisible(false);
+
                 navController.navigate(R.id.nav_home, getIntent().getExtras());
                 break;
             case R.id.nav_contactList:
@@ -230,6 +243,7 @@ public class HomeActivity extends AppCompatActivity {
         mViewOwnProfile = menu.findItem(R.id.action_viewOwnProfile);
         mChat = menu.findItem(R.id.action_chat);
         mAddGroup = menu.findItem(R.id.action_addGroup);
+        mDisplayGroup = menu.findItem(R.id.action_display);
         return true;
     }
 
@@ -277,8 +291,10 @@ public class HomeActivity extends AppCompatActivity {
         } else if (id == R.id.action_addGroup) {
             loadContacts(this::handleAddGroupOnPostExecute);
 
-
         }
+//        } else if (id  == R.id.action_display) {
+//            MobileNavigationDirections.
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -314,6 +330,7 @@ public class HomeActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }
+
 
 
     private void handleAddGroupOnPostExecute(final String result) {
@@ -611,6 +628,23 @@ public class HomeActivity extends AppCompatActivity {
     }
 
 
+    public void showDisplayMember() {
+        if(mDisplayGroup != null) {
+            mDisplayGroup.setVisible(true);
+        }
+    }
+
+    public void hideDisplayMember() {
+        if(mDisplayGroup != null ) {
+            mDisplayGroup.setVisible(false);
+        }
+    }
+
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
+
 
 
 
@@ -736,4 +770,6 @@ public class HomeActivity extends AppCompatActivity {
     public String getmEmail() {
         return mEmail;
     }
+
+    public String getmUsername() { return mMyProfile.getUsername(); }
 }

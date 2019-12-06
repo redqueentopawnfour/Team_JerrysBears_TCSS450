@@ -36,4 +36,12 @@
         app:showAsAction="always"
         android:visible="false" />
 
+
+    <item
+        android:id="@+id/action_display"
+        android:orderInCategory="100"
+        android:title="@string/settings_members"
+        android:icon="@drawable/ic_group_display"
+        app:showAsAction="always"
+        android:visible="false" />
 </menu>

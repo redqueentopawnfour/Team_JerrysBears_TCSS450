@@ -43,8 +43,10 @@ public class WeatherForecastFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("issue here in weather", "ABOUT TO LOG MWEATHERS FROM WEATHERFORECAST");
         if (getArguments() != null) {
             mWeathers = (WeatherObject[]) getArguments().getSerializable("weather");
+            Log.e("here", mWeathers.toString());
         }
 
     }
