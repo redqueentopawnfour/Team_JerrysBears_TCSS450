@@ -228,7 +228,9 @@ public class HomeActivity extends AppCompatActivity {
 
                 MobileNavigationDirections.ActionGlobalNavGroupChat direction;
 
-                direction = GroupChatFragmentDirections.actionGlobalNavGroupChat(mMyProfile).setJwt(mJwToken);
+                direction = GroupChatFragmentDirections.actionGlobalNavGroupChat(mMyProfile)
+                        .setJwt(mJwToken)
+                        .setContact(mContacts);
                 Navigation.findNavController(this, R.id.nav_host_fragment)
                         .navigate(direction);
                 break;
@@ -352,9 +354,8 @@ public class HomeActivity extends AppCompatActivity {
 //                    int drawableId = getResources().getIdentifier(mMyProfile.getUserIcon(), "drawable", getPackageName());
 //                    mViewOwnProfile.setIcon(drawableId);
                     Log.d("no contacts found", resultsJSON.toString());
-                    NavController navController =
-                            Navigation.findNavController(this, R.id.nav_host_fragment);
-                    navController.navigate(R.id.nav_groupContacts, getIntent().getExtras());
+                    MobileNavigationDirections.ActionGlobalNavGroupChat directions
+                            = GroupChatFragmentDirections.actionGlobalNavGroupChat(mMyProfile);
                 } else {
                     if (resultsJSON.has(getString(R.string.keys_json_message))) {
                         JSONArray data = resultsJSON.getJSONArray(
@@ -398,7 +399,7 @@ public class HomeActivity extends AppCompatActivity {
                                 = GroupChatFragmentDirections.actionNavGroupChatToGroupContactFragment(mMyProfile);
                         directions.setJwt(mJwToken);
                         directions.setContacts(mContacts);
-//                        directions.
+
                         NavController nc = Navigation.findNavController(this, R.id.nav_host_fragment);
                         nc.navigate(directions);
                     } else {
@@ -474,7 +475,6 @@ public class HomeActivity extends AppCompatActivity {
 
                         MobileNavigationDirections.ActionGlobalNavContactList directions
                                 = ContactFragmentDirections.actionGlobalNavContactList(mMyProfile).setJwt(mJwToken);
-                        ;
 
                         directions.setContact(mContacts);
 
@@ -650,8 +650,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-
-
     // Deleting the Pushy device token must be done asynchronously. Good thing
     // we have something that allows us to do that.
     class DeleteTokenAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -768,6 +766,7 @@ public class HomeActivity extends AppCompatActivity {
         if (nd.getId() == R.id.nav_viewProfileFragment || nd.getId() == R.id.nav_addContactFragment) {
             reloadContactList();                                                    // NP 11/23/2019 -ONLY show View Profile and Add Contact icons in Contacts so that this Back press works as expected
         }                                                                           // , otherwise contact list doesn't load properly on back pressed
+
         super.onBackPressed();  // optional depending on your needs
     }
 
@@ -777,5 +776,5 @@ public class HomeActivity extends AppCompatActivity {
 
     public String getmUsername() { return mMyProfile.getUsername(); }
 
-    public Contact[] getContacts() { return mContacts;}
+//    public Contact[] getContacts() { return mContacts;}
 }

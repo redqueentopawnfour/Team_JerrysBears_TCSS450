@@ -26,13 +26,10 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
+
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupContact.GroupContact;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.GetAsyncTask;
@@ -96,17 +93,20 @@ public class GroupChatFragment extends Fragment {
         GroupChatFragmentArgs args = GroupChatFragmentArgs.fromBundle(getArguments());
         myGroupContacts = new ArrayList<>();
         mContacts = new ArrayList<>();
-//        Contact[] temp = ((HomeActivity)getActivity()).getContacts();
-//        for (int i = 0; i < temp.length; i++) {
-//            mContacts.add(temp[i]);
-//        }
+        Contact[] temp = args.getContact();
+        if (args.getContact() != null){
+            for (int i = 0; i<temp.length; i++) {
+                mContacts.add(temp[i]);
+            }
+        }
+
+        Log.d("Contact List in Group", mContacts.size() +"");
+
         if (args.getGroupContact() != null) {
             myGroupContacts = new ArrayList<>(Arrays.asList(args.getGroupContact()));
         }
-//        if (args.getContact() != null) {
-//            mContacts = new ArrayList<>(Arrays.asList(args.getContact()));
-//        }
-        Log.d("Contact List in Group", mContacts.size() +"");
+
+
 
 
         mProfile = args.getProfile();
@@ -135,14 +135,13 @@ public class GroupChatFragment extends Fragment {
 
         ((HomeActivity) getActivity()).hideAddUser();
         ((HomeActivity) getActivity()).hideViewProfile();
-        ((HomeActivity) getActivity()).showAddGroup();
         ((HomeActivity) getActivity()).hideChatIcon();
-//        if () {
-//            ((HomeActivity) getActivity()).showAddGroup();
-//        }
-//        else {
-//            ((HomeActivity) getActivity()).hideAddGroup();
-//        }
+        if (mContacts.size() == 0) {
+            ((HomeActivity) getActivity()).showAddGroup();
+        }
+        else {
+            ((HomeActivity) getActivity()).hideAddGroup();
+        }
 
         return view;
     }
