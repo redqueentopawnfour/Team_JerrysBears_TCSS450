@@ -4,12 +4,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -59,6 +61,9 @@ public class WeatherForecastFragment extends Fragment {
         ((HomeActivity) getActivity()).hideAddUser();
         ((HomeActivity) getActivity()).hideViewProfile();
         ((HomeActivity) getActivity()).hideChatIcon();
+
+        ((HomeActivity) getActivity()).setActionBarTitle("10 Day Forecast");
+
         return inflater.inflate(R.layout.fragment_weather_forecast, container, false);
     }
 
@@ -67,101 +72,21 @@ public class WeatherForecastFragment extends Fragment {
         super.onStart();
 
         updateInfo(mWeathers);
-
-//        Uri uri_weather = new Uri.Builder()
-//                .scheme("https")
-//                .appendPath(getString(R.string.ep_base_url))
-//                .appendPath(getString(R.string.ep_weather))
-//                .appendPath(getString(R.string.ep_weather_forecast))
-//                .build();
-//
-//        new ForecastWeatherTask().execute(uri_weather.toString());
     }
 
-/*
-    private class ForecastWeatherTask extends AsyncTask<String, Void, WeatherObject[]> {
-        protected WeatherObject[] doInBackground(String... strings) {
-
-            String resultString = "";
-            HttpURLConnection urlConnection = null;
-
-            try {
-                URL urlObject = new URL(strings[0]);
-                urlConnection = (HttpURLConnection) urlObject.openConnection();
-                InputStream content = urlConnection.getInputStream();
-                BufferedReader buffer = new BufferedReader(new InputStreamReader(content));
-                String s = "";
-                while ((s = buffer.readLine()) != null) {
-                    resultString += s;
-                }
-            } catch (Exception e) {
-                Log.e("ERROR CONNECTING", "Unable to connect, Reason: " + e.getMessage());
-            } finally {
-                if (urlConnection != null)
-                    urlConnection.disconnect();
-            }
-
-            try {
-                String lat = "", lon = "", temp = "", mainDescript = "", location ="", date ="";
-                WeatherObject[] weathers = new WeatherObject[10];
-
-                // Retrieve JSON objects according to api docs
-                JSONObject arrayOfForecastsObject = new JSONObject(resultString);
-                JSONArray arrayOfForecasts = arrayOfForecastsObject.getJSONArray("data");
-
-                // Set information not dependant on time
-                lat = arrayOfForecastsObject.getString(getString(R.string.keys_json_weather_forecast_lat));
-                lon = arrayOfForecastsObject.getString(getString(R.string.keys_json_weather_forecast_lon));
-                location = arrayOfForecastsObject.getString(getString(R.string.keys_json_weather_forecast_city)); //city
-
-                // Build 10 days of forecasts to analyse time based forecasting
-                for (int i = 0; i < 10; i++) {
-                    // Get the ith forecast
-                    JSONObject forecast = arrayOfForecasts.getJSONObject(i);
-
-                    // Grab temperate and date information
-                    temp = forecast.getString(getString(R.string.keys_json_weather_forecast_temp));
-                    date = forecast.getString(getString(R.string.keys_json_weather_forecast_date));
-
-                    // Description information is one JSON Object deeper
-                    JSONObject weatherDetails = forecast.getJSONObject(getString(R.string.keys_json_weather_forecast_details));
-                    mainDescript = weatherDetails.getString(getString(R.string.keys_json_weather_forecast_description));
-
-                    // Build and store this WeatherObject
-                    WeatherObject weather = new WeatherObject.Builder(
-                            temp, lat, lon).addDescription(mainDescript).addLocation(location).addDate(date).build();
-                    weathers[i] = weather;
-                }
-
-
-                return weathers;
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Log.e("ERROR!", e.getMessage());
-                Log.e("WEATHER ERROR!", "null pointer in WeatherFragment.java bad json stuff");
-            }
-            return null; //oof this is about to break some stuff ^ log it for sure
-        }
-
-        protected void onPostExecute(WeatherObject[] result) {
-            updateInfo(result);
-        }
-    }
-*/
     private void updateInfo(WeatherObject[] weathers) {
-        // Oh my god I thought I could loop through the TextViews but I can't figure it out...
-        // Can't even write a loop in onPostExecute and pass in which TextView level I'll need becuase
-        // can't dynamically retrieve id of the TextView.......
+        // This strategy for iterating the text views was taken from Stack Overflow
+        // https://stackoverflow.com/questions/17218229/looping-through-textview-and-setting-the-text
+        // 2 Year old strategy so there's probably something better but it works like a charm :)
 
-        // Wait does this work
-
-        // Hold the similar beginning of each TextView id
+        // Hold the similar beginnings of each TextView id
         String tempName = getString(R.string.text_forecast_temp_notnumbered);
         String dateName = getString(R.string.text_forecast_date_notnumbered);
         String deetsName = getString(R.string.text_forecast_description_notnumbered);
+        String imageName = getString(R.string.image_forecast_notnumbered);
         int id;
 
-        // Iterate through the TextViews by finding then with that similar beginning + their index number
+        // Iterate through the TextViews by finding them with their similar id beginnings + their index number
         // Set the temperature/ description/ date for each of the WeatherObjects we're writing to the screen
         for (int i = 0; i <= 9 ; i++) {
             String tempNameWithI = tempName + (i+1);
@@ -178,6 +103,11 @@ public class WeatherForecastFragment extends Fragment {
             id = getResources().getIdentifier(deetsNameWithI, "id", MainActivity.PACKAGE_NAME);
             TextView deets = getActivity().findViewById(id);
             deets.setText(weathers[i].getDesciption());
+
+            String imageWithI = imageName + (i+1);
+            id = getResources().getIdentifier(imageWithI, "id", MainActivity.PACKAGE_NAME);
+            ImageView image = getActivity().findViewById(id);
+            WeatherFragment.setCorrectIcon(image, weathers[i]);
         }
 
         TextView location = getActivity().findViewById(R.id.textView_forecast_location);

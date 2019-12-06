@@ -237,10 +237,13 @@ public class LoginFragment extends Fragment {
                             if (getArguments().getString("type").equals("msg")) {
                                 String msg = getArguments().getString("message");
                                 String sender = getArguments().getString("sender");
+                                int chatId = getArguments().getInt("chatid");
 
                                 ChatMessageNotification chat =
                                         new ChatMessageNotification.Builder(sender, msg).build();
                                 homeActivity.setChatMessage(chat);
+                                homeActivity.setChatId(chatId);
+                                
                             } else if (getArguments().getString("type").equals("connectionReq") ||
                                     getArguments().getString("type").equals("connectionAccepted") ||
                                     getArguments().getString("type").equals("connectionRejected")) {

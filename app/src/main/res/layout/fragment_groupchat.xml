@@ -22,7 +22,7 @@
 
             <TextView
                 android:id="@+id/text_groupchat_username"
-                android:layout_width="wrap_content"
+                android:layout_width="211dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginStart="8dp"
@@ -41,6 +41,15 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_conversion_absoluteHeight="21dp"
                 tools:layout_conversion_absoluteWidth="0dp" />
+
+            <Button
+                android:id="@+id/button_leavegroup"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:background="@color/leaveGroup"
+                android:text="@string/leaveGroup"
+                android:textColor="@color/text_leave" />
 
 
         </LinearLayout>

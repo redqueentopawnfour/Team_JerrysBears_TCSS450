@@ -11,7 +11,6 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -54,11 +53,14 @@ public class GroupChatFragment extends Fragment {
 
     private List<GroupContact> myGroupContacts;
 
+    private List<Contact> mContacts;
 
     private RecyclerView recyclerView;
 
     private String mGroupname;
     private PushMessageReceiver mPushMessageReciever;
+
+
 
 
     private String mJwToken;
@@ -93,14 +95,22 @@ public class GroupChatFragment extends Fragment {
 
         GroupChatFragmentArgs args = GroupChatFragmentArgs.fromBundle(getArguments());
         myGroupContacts = new ArrayList<>();
-//        if (getArguments() != null) {
-//            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+        mContacts = new ArrayList<>();
+//        Contact[] temp = ((HomeActivity)getActivity()).getContacts();
+//        for (int i = 0; i < temp.length; i++) {
+//            mContacts.add(temp[i]);
 //        }
         if (args.getGroupContact() != null) {
             myGroupContacts = new ArrayList<>(Arrays.asList(args.getGroupContact()));
         }
+//        if (args.getContact() != null) {
+//            mContacts = new ArrayList<>(Arrays.asList(args.getContact()));
+//        }
+        Log.d("Contact List in Group", mContacts.size() +"");
+
 
         mProfile = args.getProfile();
+        Log.d("my Profile in Group", mProfile.getUsername().toString());
         mJwToken = args.getJwt();
         mUsername = mProfile.getUsername();
         mEmail = mProfile.getEmail();
@@ -112,21 +122,28 @@ public class GroupChatFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_groupchat_list, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
         Context context = recyclerView.getContext();
-
         if (recyclerView instanceof RecyclerView) {
             if (myGroupContacts != null) {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-                recyclerView.setAdapter(new MyGroupChatRecyclerViewAdapter(myGroupContacts,this::displayGroupContact));
+                recyclerView.setAdapter(new MyGroupChatRecyclerViewAdapter(myGroupContacts,mProfile,mJwToken,this::displayGroupContact));
             } else {
                 recyclerView.setVisibility(View.GONE);
             }
 //            recyclerView.setAdapter(new MyGroupChatRecyclerViewAdapter(DummyContent.ITEMS, mListener));
         }
-        ((HomeActivity) getActivity()).showAddGroup();
+
+
         ((HomeActivity) getActivity()).hideAddUser();
         ((HomeActivity) getActivity()).hideViewProfile();
-
+        ((HomeActivity) getActivity()).showAddGroup();
         ((HomeActivity) getActivity()).hideChatIcon();
+//        if () {
+//            ((HomeActivity) getActivity()).showAddGroup();
+//        }
+//        else {
+//            ((HomeActivity) getActivity()).hideAddGroup();
+//        }
+
         return view;
     }
 
@@ -230,13 +247,6 @@ public class GroupChatFragment extends Fragment {
             }
         }
     }
-
-
-
-
-
-
-
 
 
     /**

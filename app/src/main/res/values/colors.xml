@@ -20,4 +20,7 @@
     <color name="text">#1C3D1F</color>
     <color name="teaserText">#214418</color>
 
+    <color name="leaveGroup">#D50000</color>
+    <color name="text_leave">#FFFFFF</color>
+
 </resources>

@@ -72,6 +72,7 @@ public class ChatViewFragment extends Fragment {
     private int mChatId;
     private String mUsername;
 
+    private String mChatname;
     private View mDisplayButton;
 
 
@@ -97,6 +98,11 @@ public class ChatViewFragment extends Fragment {
 
         ChatViewFragmentArgs args = ChatViewFragmentArgs.fromBundle(getArguments());
         mUsername = args.getUsername();
+
+        mChatname = args.getChatname();
+
+        ((HomeActivity) getActivity())
+                .setActionBarTitle(mChatname);
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -137,8 +143,6 @@ public class ChatViewFragment extends Fragment {
                 new ArrayList<String>(theNames));
 
         Navigation.findNavController(getView()).navigate(R.id.action_nav_chat_to_contactDisplay,args); //args
-
-
 
     }
 

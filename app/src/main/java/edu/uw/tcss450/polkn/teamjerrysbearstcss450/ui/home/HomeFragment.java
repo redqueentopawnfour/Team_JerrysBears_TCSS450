@@ -16,6 +16,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,12 +30,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivityArgs;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherFragment;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherObject;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.GetAsyncTask;
 
@@ -45,6 +49,8 @@ public class HomeFragment extends Fragment {
 
     private List<String> mNames;
     private List<Integer> mChatIds;
+
+//    private HashMap<Integer, String> mContacts; // for the most recent
 
     private String mEmail;
     private String mJwToken;
@@ -62,6 +68,8 @@ public class HomeFragment extends Fragment {
 
         mNames = new ArrayList<>();
         mChatIds = new ArrayList<>();
+
+
 
         final TextView textView = root.findViewById(R.id.text_home);
         homeViewModel.getText().observe(this, new Observer<String>() {
@@ -99,24 +107,20 @@ public class HomeFragment extends Fragment {
         //        TextView test = view.findViewById(R.id.textView_email);
 
         view1 = view.findViewById(R.id.button_chat1);
-        StringBuilder builder1 = new StringBuilder();
-        builder1.append("Chat With: Jerry");
-//        builder1.append(mChatIds.get(0));
-        view1.setText(builder1.toString());
+        view1.setOnClickListener(b -> chatClicked(mChatIds.get(0)));
+
 
         view2 = view.findViewById(R.id.button_chat2);
-        StringBuilder builder2 = new StringBuilder();
-        builder2.append("Chat With: polkn");
-//        builder2.append(mNames.get(1));
-//        builder2.append(mChatIds.get(1));
-        view2.setText(builder2.toString());
+        view2.setOnClickListener(b -> chatClicked(mChatIds.get(1)));
+
 
         view3 = view.findViewById(R.id.button_chat3);
-        StringBuilder builder3 = new StringBuilder();
-//        builder3.append(mNames.get(2));
-        builder3.append("Chat With stelrq");
-//        builder3.append(mChatIds.get(2));
-        view3.setText(builder3.toString());
+        view3.setOnClickListener(b -> chatClicked(mChatIds.get(2)));
+
+    }
+
+    private void chatClicked(Integer integer) {
+
     }
 
     //fills in weather panel with current weather
@@ -206,6 +210,7 @@ public class HomeFragment extends Fragment {
         TextView coordinates = getActivity().findViewById(R.id.textView_home_location1);
         TextView deets = getActivity().findViewById(R.id.textView_home_descrip1);
         ImageView image = getActivity().findViewById(R.id.imageView_home1);
+        ConstraintLayout lay = getActivity().findViewById(R.id.constraintLayout_home_location1);
 
         // if the city field is not empty, fill with city info instead of coordinates
         // else fill this text view with coordinates
@@ -224,10 +229,13 @@ public class HomeFragment extends Fragment {
         temp.setText(weather.getTemp() + "°");
         deets.setText(weather.getDesciption());
 
+        WeatherFragment.setCorrectIcon(image, weather);
+
         temp.setVisibility(View.VISIBLE);
         coordinates.setVisibility(View.VISIBLE);
         deets.setVisibility(View.VISIBLE);
         image.setVisibility(View.VISIBLE);
+        lay.setVisibility(View.VISIBLE);
 
     }
 
@@ -325,7 +333,7 @@ public class HomeFragment extends Fragment {
                 .scheme("https")
                 .appendPath(getString(R.string.ep_base_url))
                 .appendPath(getString(R.string.ep_messaging_base))
-                .appendPath(getString(R.string.ep_home_getrecent))
+                .appendPath(getString(R.string.ep_home_getfavorite))
                 .build()
                 .toString();
         new GetAsyncTask.Builder(getUrl).addHeaderField("email", mEmail)

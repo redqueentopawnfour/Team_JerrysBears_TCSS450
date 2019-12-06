@@ -140,7 +140,8 @@ public class GroupContactFragment extends Fragment {
             return;
         }
 
-        String mChatName = mGroupNameInput.getText().toString();
+//        String mChatName = mGroupNameInput.getText().toString();
+        mChatName = mGroupNameInput.getText().toString();
         mGroupNameInput.onEditorAction(EditorInfo.IME_ACTION_DONE);
         mGroupNameInput.setText("");
         JSONObject createChatJSON = new JSONObject();

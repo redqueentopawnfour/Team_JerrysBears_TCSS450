@@ -25,10 +25,12 @@
         <EditText
             android:id="@+id/editText_weatherFragment_zipSearch"
             android:layout_width="0dp"
-            android:layout_height="41dp"
+            android:layout_height="50dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
             android:ems="10"
+            android:hint="@string/editText_weather_save_location_text"
             android:inputType="textEmailAddress"
             app:layout_constraintEnd_toStartOf="@+id/button_weatherFragment_zipSearch"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,10 +39,11 @@
         <Button
             android:id="@+id/button_weatherFragment_zipSearch"
             android:layout_width="81dp"
-            android:layout_height="39dp"
+            android:layout_height="50dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:text="Add Weather Location"
+            android:hint="@string/button_weather_save_location_text"
+            android:text="@string/button_weather_save_location_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,6 +53,7 @@
             android:layout_height="100dp"
             android:layout_marginTop="32dp"
             android:background="@drawable/customborder"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,9 +62,10 @@
             <TextView
                 android:id="@+id/textView_current_location1"
                 android:layout_width="0dp"
-                android:layout_height="37dp"
+                android:layout_height="35dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
+                android:visibility="invisible"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -71,6 +76,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="16dp"
+                android:visibility="invisible"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -80,6 +86,7 @@
                 android:layout_width="242dp"
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"
+                android:visibility="invisible"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintStart_toEndOf="@+id/imageView_current1"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -90,6 +97,7 @@
                 android:layout_height="50dp"
                 android:layout_marginStart="8dp"
                 android:src="@drawable/ic_usericon6"
+                android:visibility="invisible"
                 app:layout_constraintStart_toEndOf="@+id/textView_current_temp1"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -110,7 +118,7 @@
             <TextView
                 android:id="@+id/textView_current_location2"
                 android:layout_width="0dp"
-                android:layout_height="37dp"
+                android:layout_height="35dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="32dp"
                 android:visibility="invisible"
@@ -172,7 +180,7 @@
             <TextView
                 android:id="@+id/textView_current_location3"
                 android:layout_width="0dp"
-                android:layout_height="37dp"
+                android:layout_height="35dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:visibility="invisible"
@@ -227,7 +235,7 @@
             <TextView
                 android:id="@+id/textView_current_location4"
                 android:layout_width="0dp"
-                android:layout_height="37dp"
+                android:layout_height="35dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:visibility="invisible"
@@ -282,7 +290,7 @@
             <TextView
                 android:id="@+id/textView_current_location5"
                 android:layout_width="0dp"
-                android:layout_height="37dp"
+                android:layout_height="35dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
                 android:visibility="invisible"
