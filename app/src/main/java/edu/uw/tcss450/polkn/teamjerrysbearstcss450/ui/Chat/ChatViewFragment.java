@@ -141,7 +141,6 @@ public class ChatViewFragment extends Fragment {
         Bundle args = new Bundle();
         args.putSerializable("Intent key for creds", //set a key at here to open the door. "Intetnt key for creds"
                 new ArrayList<String>(theNames));
-
         Navigation.findNavController(getView()).navigate(R.id.action_nav_chat_to_contactDisplay,args); //args
 
     }
