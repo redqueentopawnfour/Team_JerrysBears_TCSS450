@@ -9,7 +9,11 @@
         android:id="@+id/nav_home"
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_chat"
+            app:destination="@id/nav_chat" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_weather"

@@ -138,8 +138,6 @@ public class ChatViewFragment extends Fragment {
 
         Navigation.findNavController(getView()).navigate(R.id.action_nav_chat_to_contactDisplay,args); //args
 
-
-
     }
 
 
