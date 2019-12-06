@@ -73,6 +73,8 @@ public class HomeActivity extends AppCompatActivity {
     private MenuItem mChat;
     private MenuItem mNavContactList;
     private MenuItem mAddGroup;
+    private MenuItem mDisplayGroup;
+
     private Contact mMyProfile;
     private ChatMessageNotification mChatMessage;
     private ContactNotification mContactNotification;
@@ -165,6 +167,8 @@ public class HomeActivity extends AppCompatActivity {
                 mViewOwnProfile.setVisible(false);              // but since HomeFragment loads before the menu inflater, HomeFragment must be handled from HomeActivity
                 mAddContacts.setVisible(false);
                 mAddGroup.setVisible(false);
+                mDisplayGroup.setVisible(false);
+
                 navController.navigate(R.id.nav_home, getIntent().getExtras());
                 break;
             case R.id.nav_contactList:
@@ -239,6 +243,7 @@ public class HomeActivity extends AppCompatActivity {
         mViewOwnProfile = menu.findItem(R.id.action_viewOwnProfile);
         mChat = menu.findItem(R.id.action_chat);
         mAddGroup = menu.findItem(R.id.action_addGroup);
+        mDisplayGroup = menu.findItem(R.id.action_display);
         return true;
     }
 
@@ -286,8 +291,10 @@ public class HomeActivity extends AppCompatActivity {
         } else if (id == R.id.action_addGroup) {
             loadContacts(this::handleAddGroupOnPostExecute);
 
-
         }
+//        } else if (id  == R.id.action_display) {
+//            MobileNavigationDirections.
+//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -617,6 +624,19 @@ public class HomeActivity extends AppCompatActivity {
     public void hideAddGroup() {
         if(mAddGroup != null){
             mAddGroup.setVisible(false);
+        }
+    }
+
+
+    public void showDisplayMember() {
+        if(mDisplayGroup != null) {
+            mDisplayGroup.setVisible(true);
+        }
+    }
+
+    public void hideDisplayMember() {
+        if(mDisplayGroup != null ) {
+            mDisplayGroup.setVisible(false);
         }
     }
 

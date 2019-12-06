@@ -54,6 +54,7 @@ public class ChatViewFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
 
     private List<Message> mMessage;
+    private List<String> mNames;
 
     private static final String TAG = "CHAT_FRAG";
 
@@ -70,6 +71,8 @@ public class ChatViewFragment extends Fragment {
     private String mSendUrl;
     private int mChatId;
     private String mUsername;
+
+    private View mDisplayButton;
 
 
     /**
@@ -98,10 +101,6 @@ public class ChatViewFragment extends Fragment {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
         mMessage = new ArrayList<Message>();
-//        mMessage = loadChatHistory();
-//        mMessage = (List) Arrays.asList(args.getMessage());
-
-//        mMessage = new ArrayList<Message>();
 
 
 //        mMessage = new ArrayList(Arrays.asList(args.getMessage()));
@@ -118,30 +117,28 @@ public class ChatViewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_chatview_list, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.list);
 
-
-//        recyclerView.smoothScrollToPosition(mMessage.size()-1);
-//        getActivity().setTitle(mMessage.get(0).getUsername());
-//        Context context = view.getContext();
         Context context = recyclerView.getContext();
 
-
-
-
-//        if (recyclerView instanceof RecyclerView) {
-//            GridLayoutManager layoutManager = new GridLayoutManager(context, 1);
-//
-////            layoutManager.setReverseLayout(true);
-////            recyclerView.setLayoutManager(layoutManager);
-//
-//            Log.d("recycle view instance", recyclerView.toString());
-//
-//        }
         recyclerView.setAdapter(new MyChatViewRecyclerViewAdapter(mMessage, this::displayMessage, mUsername));
         ((HomeActivity)getActivity()).hideViewProfile();
         ((HomeActivity)getActivity()).hideAddUser();
         ((HomeActivity)getActivity()).hideAddGroup();
+        ((HomeActivity)getActivity()).showDisplayMember();
 
+        mDisplayButton = getActivity().findViewById(R.id.action_display);
+        mDisplayButton.setOnClickListener(b -> displayClicked(mNames));
         return view;
+    }
+
+    private void displayClicked(final List<String> theNames) {
+        Bundle args = new Bundle();
+        args.putSerializable("Intent key for creds", //set a key at here to open the door. "Intetnt key for creds"
+                new ArrayList<String>(theNames));
+
+        Navigation.findNavController(getView()).navigate(R.id.action_nav_chat_to_contactDisplay,args); //args
+
+
+
     }
 
 
@@ -170,7 +167,7 @@ public class ChatViewFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
+        mNames = new ArrayList<>();
         ChatViewFragmentArgs args = ChatViewFragmentArgs.fromBundle(getArguments());
         mEmail = ((HomeActivity)getActivity()).getmEmail();
 
@@ -312,12 +309,17 @@ public class ChatViewFragment extends Fragment {
                     && !res.getBoolean(getString(R.string.keys_json_success))) {
             } else {
                 JSONArray messages = (JSONArray) res.get(getString(R.string.keys_json_messages));
+                JSONArray names = (JSONArray) res.get("usernames");
                 for(int i = 0; i < messages.length(); i++) {
                     JSONObject message =  (JSONObject) messages.get(i);
                     Message tempmessage = new Message(message.getString("message"), message.getString("username"));
                     Log.d(" loaded message", tempmessage.toString());
                     mMessage.add(tempmessage);
-
+                }
+                for (int i = 0; i < names.length();i++) {
+                    JSONObject name = (JSONObject) names.get(i);
+                    String tempName = name.getString("username");
+                    mNames.add(tempName);
                 }
             }
         } catch (JSONException e) {
@@ -325,6 +327,7 @@ public class ChatViewFragment extends Fragment {
         }
         recyclerView.scrollToPosition(mMessage.size()-1); // updating all message from chat history
         Log.d("TESTING MESSAGE:", mMessage.toString());
+        Log.d("TESTING NAMES:", mNames.toString());
 
     }
 
@@ -360,8 +363,11 @@ public class ChatViewFragment extends Fragment {
         getActivity().registerReceiver(mPushMessageReciever, iFilter);
         Log.i("Resume", "Resume happened");
         loadChatHistory();
+
 //        final RecyclerView.Adapter adapter = recyclerView.getAdapter();
 //        getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
+
+
     }
 
     @Override
@@ -371,6 +377,8 @@ public class ChatViewFragment extends Fragment {
             getActivity().unregisterReceiver(mPushMessageReciever);
         }
         Log.i("Is this happening", "happened");
+        ((HomeActivity)getActivity()).hideDisplayMember();
+
     }
 
     /**
