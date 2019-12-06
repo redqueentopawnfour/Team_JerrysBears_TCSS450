@@ -139,7 +139,7 @@ public class ChatViewFragment extends Fragment {
         recyclerView.setAdapter(new MyChatViewRecyclerViewAdapter(mMessage, this::displayMessage, mUsername));
         ((HomeActivity)getActivity()).hideViewProfile();
         ((HomeActivity)getActivity()).hideAddUser();
-
+        ((HomeActivity)getActivity()).hideAddGroup();
         return view;
     }
 
