@@ -776,4 +776,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public String getmUsername() { return mMyProfile.getUsername(); }
+
+    public Contact[] getContacts() { return mContacts;}
 }

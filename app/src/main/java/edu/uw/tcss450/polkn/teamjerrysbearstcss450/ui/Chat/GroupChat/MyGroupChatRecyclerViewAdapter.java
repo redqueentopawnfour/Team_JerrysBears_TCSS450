@@ -147,7 +147,7 @@ public class MyGroupChatRecyclerViewAdapter extends RecyclerView.Adapter<MyGroup
             txtNewContact.setVisibility(View.GONE);
             layout.setVisibility(View.GONE);
 
-            Toast toast = Toast.makeText(mView.getContext(), "Contact " + usernameRequested + " removed.",
+            Toast toast = Toast.makeText(mView.getContext(), "Group " + usernameRequested + " Left.",
                     Toast.LENGTH_LONG);
             View view = toast.getView();
             view.setBackgroundResource(R.drawable.customborder_goldblack);

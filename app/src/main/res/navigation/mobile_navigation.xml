@@ -138,6 +138,11 @@
         <action
             android:id="@+id/action_nav_groupChat_to_nav_chat"
             app:destination="@id/nav_chat" />
+        <argument
+            android:name="Contact"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/nav_groupContacts"
