@@ -25,6 +25,7 @@ public class WeatherObject implements Serializable, Parcelable {
     private final String mDesciption;
     private final String mLocation;
     private final String mDate;
+    private final String mTime;
 
     protected WeatherObject(Parcel in) {
         mTemp = in.readString();
@@ -36,6 +37,7 @@ public class WeatherObject implements Serializable, Parcelable {
         mDesciption = in.readString();
         mLocation = in.readString();
         mDate = in.readString();
+        mTime = in.readString();
     }
 
     public static final Creator<WeatherObject> CREATOR = new Creator<WeatherObject>() {
@@ -64,6 +66,8 @@ public class WeatherObject implements Serializable, Parcelable {
         dest.writeString(mMinTemp);
         dest.writeString(mIcon);
         dest.writeString(mDesciption);
+        dest.writeString(mDate);
+        dest.writeString(mTime);
     }
 
     /**
@@ -82,6 +86,7 @@ public class WeatherObject implements Serializable, Parcelable {
         private String mDesciption = "";
         private String mLocation = "";
         private String mDate ="";
+        private String mTime ="";
 
         /**
          * Constructs a new Current Weather Builder.
@@ -128,6 +133,11 @@ public class WeatherObject implements Serializable, Parcelable {
             return this;
         }
 
+        public Builder addTime(final String val) {
+            mTime = val;
+            return this;
+        }
+
         // Handles possible conversion from doubles in Kelvin to integers in Fahrenheit
         private String tempConverter(String theKelvin) {
             double maybeKelvin = Double.parseDouble(theKelvin);
@@ -153,6 +163,7 @@ public class WeatherObject implements Serializable, Parcelable {
         this.mDesciption = builder.mDesciption;
         this.mLocation = builder.mLocation;
         this.mDate = builder.mDate;
+        this.mTime = builder.mTime;
     }
 
     public String getTemp() {
@@ -186,5 +197,7 @@ public class WeatherObject implements Serializable, Parcelable {
     public String getLocation() { return mLocation; }
 
     public String getDate() { return mDate; }
+
+    public String getTime() { return mTime; }
 
 }

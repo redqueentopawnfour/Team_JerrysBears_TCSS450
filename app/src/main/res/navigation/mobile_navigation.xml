@@ -187,5 +187,16 @@
         android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.contactDisplay.contactDisplay"
         android:label="Members"
         tools:layout="@layout/fragment_contact_display" />
+    <fragment
+        android:id="@+id/weatherForecast24Fragment"
+        android:name="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherForecast24Fragment"
+        android:label="WeatherForecast24Fragment" >
+        <argument
+            android:name="WeatherObject"
+            app:argType="edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherObject[]" />
+    </fragment>
+    <action
+        android:id="@+id/action_global_weatherForecast24Fragment"
+        app:destination="@id/weatherForecast24Fragment" />
 
 </navigation>

@@ -55,7 +55,7 @@ public class WeatherFragment extends Fragment {
     private int mNextLocation = 1;
     private ArrayList<String[]> mSavedLocations = new ArrayList<>();
     private ArrayList<WeatherObject> mCurrentLocations = new ArrayList<>();
-    private AsyncTask mForecastWeatherTask = null;
+//    private AsyncTask mForecastWeatherTask = null;
 
     private WeatherViewModel weatherViewModel;
 
@@ -449,7 +449,6 @@ public class WeatherFragment extends Fragment {
                     weathers[i] = weather;
                 }
 
-
                 return weathers;
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -463,9 +462,9 @@ public class WeatherFragment extends Fragment {
             //updateInfo(result);
             final Bundle args = new Bundle();
             args.putSerializable("weather", result);
-            mForecastWeatherTask = null; // reset this holder for the currently running task.. probably not needed.
+//            mForecastWeatherTask = null; // reset this holder for the currently running task.. probably not needed.
             Navigation.findNavController(getView())
-                    .navigate(R.id.action_nav_weather_to_viewWeatherFragment, args);
+                    .navigate(R.id.action_global_viewWeatherFragment, args);
         }
 
 //        private void updateIcon(ImageView imageView) {
@@ -730,6 +729,7 @@ public class WeatherFragment extends Fragment {
         mNextLocation++;
 
         if (mNextLocation > 5)
+
             return;
 
         String tempName, locationName, descriptionName, backgroundName, idName;
@@ -767,8 +767,8 @@ public class WeatherFragment extends Fragment {
         desciption.setVisibility((View.VISIBLE));
         location.setVisibility(View.VISIBLE);
         background.setVisibility(View.VISIBLE);
+
         setCorrectIcon(image, theWeather);
-//        image.setImageResource(R.drawable.bear_snow_icon);
         image.setVisibility(View.VISIBLE);
 
         /*

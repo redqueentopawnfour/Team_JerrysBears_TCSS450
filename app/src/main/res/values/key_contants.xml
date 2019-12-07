@@ -16,7 +16,9 @@
     <string name="keys_json_weather_forecast_temp">temp</string>
     <string name="keys_json_weather_forecast_description">description</string>
     <string name="keys_json_weather_forecast_city">city_name</string>
+    <string name="keys_json_weather_forecast_country">country_code</string>
     <string name="keys_json_weather_forecast_date">valid_date</string>
+    <string name="keys_json_weather_forecast_time">timestamp_local</string>
 
     <string name="weather_degrees_symbol">°</string>
 
@@ -31,7 +33,13 @@
     <string name="constraint_current_background_notnumbered">constraintLayout_weatherFragment_location</string>
     <string name="image_current_notnumbered">imageView_current</string>
     <string name="image_forecast_notnumbered">imageView_forecast</string>
+    <string name="image_forecast24_notnumbered">imageView_forecast24</string>
 
+
+    <string name="text_forecast24_temp_notnumbered">textView_forecast24_temp</string>
+    <string name="text_forecast24_time_notnumbered">textView_forecast24_day</string>
+    <string name="text_forecast24_description_notnumbered">textView_forecast24_descrip</string>
+    <string name="layout_forecast24_background_notnumbered">constraintLayout_weatherFragment24_location</string>
 
 
 </resources>
