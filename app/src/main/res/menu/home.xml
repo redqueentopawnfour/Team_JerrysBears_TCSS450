@@ -3,6 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/action_addFavorite"
+        android:checkable="true"
+        android:icon="@drawable/ic_home_favorite"
+        android:title="action_addFavorite"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_addGroup"
         android:icon="@drawable/ic_group_addgroup"
         android:title="action_addGroup"

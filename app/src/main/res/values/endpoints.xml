@@ -18,9 +18,9 @@
     <string name="ep_messaging_base">messaging</string>
     <string name="ep_messaging_send">send</string>
     <string name="ep_messaging_getall">getall</string>
-
-
-
+    <string name="ep_messaging_addfavorite">addfavorite</string>
+    <string name="ep_messaging_getfavorites">getfavorites</string>
+    <string name="ep_messaging_removefavorite">removefavorite</string>
     <!--    group chat fragment-->
     <string name="ep_groupchat_getGroup">getgroupchats</string>
 

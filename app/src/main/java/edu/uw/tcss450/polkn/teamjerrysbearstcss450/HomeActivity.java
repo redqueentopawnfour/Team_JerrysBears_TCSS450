@@ -74,6 +74,7 @@ public class HomeActivity extends AppCompatActivity {
     private MenuItem mNavContactList;
     private MenuItem mAddGroup;
     private MenuItem mDisplayGroup;
+    private MenuItem mFavorite;
 
     private Contact mMyProfile;
     private ChatMessageNotification mChatMessage;
@@ -172,6 +173,7 @@ public class HomeActivity extends AppCompatActivity {
                 mAddContacts.setVisible(false);
                 mAddGroup.setVisible(false);
                 mDisplayGroup.setVisible(false);
+                mFavorite.setVisible(false);
 
                 navController.navigate(R.id.nav_home, getIntent().getExtras());
                 break;
@@ -250,6 +252,7 @@ public class HomeActivity extends AppCompatActivity {
         mChat = menu.findItem(R.id.action_chat);
         mAddGroup = menu.findItem(R.id.action_addGroup);
         mDisplayGroup = menu.findItem(R.id.action_display);
+        mFavorite = menu.findItem(R.id.action_addFavorite);
         return true;
     }
 
@@ -641,6 +644,18 @@ public class HomeActivity extends AppCompatActivity {
     public void hideDisplayMember() {
         if(mDisplayGroup != null ) {
             mDisplayGroup.setVisible(false);
+        }
+    }
+
+    public void showFavorite() {
+        if(mFavorite != null) {
+            mFavorite.setVisible(true);
+        }
+    }
+
+    public void hideFavorite() {
+        if(mFavorite != null ) {
+            mFavorite.setVisible(false);
         }
     }
 

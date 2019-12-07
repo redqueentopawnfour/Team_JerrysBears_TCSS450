@@ -150,7 +150,6 @@ public class GroupContact implements Serializable, Parcelable{
 
     public Integer getChatId() { return mChatId; }
 
-
     @NonNull
     @Override
     public String toString() {

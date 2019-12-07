@@ -1,6 +1,7 @@
 package edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.home;
 
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,10 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -32,15 +35,20 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivityArgs;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.MobileNavigationDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragmentDirections;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.Message.Message;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherFragment;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupContact.GroupContact;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherObject;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.GetAsyncTask;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
 
 public class HomeFragment extends Fragment {
 
@@ -48,9 +56,7 @@ public class HomeFragment extends Fragment {
     private WeatherObject mWeather;
 
     private List<String> mNames;
-    private List<Integer> mChatIds;
-
-//    private HashMap<Integer, String> mContacts; // for the most recent
+    private int[] mChatIds;
 
     private String mEmail;
     private String mJwToken;
@@ -58,26 +64,28 @@ public class HomeFragment extends Fragment {
     private TextView view1;
     private TextView view2;
     private TextView view3;
+    private List<TextView> mChatViews;
+    private List<View> mLayoutFavorites;
+    private List<View> mRemoveFavorites;
+    private View mView;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+        HomeActivityArgs args = HomeActivityArgs.fromBundle(getArguments());
+        Credentials credentials = args.getCredentials();
+//        ((TextView) getActivity().findViewById(R.id.text_email)).
+//                setText(credentials.getEmail());
+        mJwToken = args.getJwt();
+        mEmail = credentials.getEmail();
+        Log.d("JWT", mJwToken);
+        Log.d("Email", mEmail);
+        homeViewModel = ViewModelProviders.of(getActivity(),
+                new MyHomeViewModelFactory(mEmail,  mJwToken)).get(HomeViewModel.class);
+        Log.d("homeViewModel from home", homeViewModel.toString());
+//        homeViewModel =
+//                ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-
-        mNames = new ArrayList<>();
-        mChatIds = new ArrayList<>();
-
-
-
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
 
         return root;
     }
@@ -88,15 +96,73 @@ public class HomeFragment extends Fragment {
 
 //        TextView test = view.findViewById(R.id.textView_email);
 
-        HomeActivityArgs args = HomeActivityArgs.fromBundle(getArguments());
-        Credentials credentials = args.getCredentials();
-        ((TextView) getActivity().findViewById(R.id.text_email)).
-                setText(credentials.getEmail());
-        mJwToken = args.getJwt();
-        mEmail = credentials.getEmail();
-        Log.d("JWT", mJwToken);
-        Log.d("Email", mEmail);
+//        HomeActivityArgs args = HomeActivityArgs.fromBundle(getArguments());
+//        Credentials credentials = args.getCredentials();
+//        ((TextView) getActivity().findViewById(R.id.text_email)).
+//                setText(credentials.getEmail());
+//        mJwToken = args.getJwt();
+//        mEmail = credentials.getEmail();
+//        Log.d("JWT", mJwToken);
+//        Log.d("Email", mEmail);
+        mView = view;
+        mChatIds = new int[3];
+        mChatViews = new ArrayList<TextView>();
+        mLayoutFavorites = new ArrayList<View>();
+        mRemoveFavorites = new ArrayList<>();
+        View remove1 = view.findViewById(R.id.button_delete1);
+        view1 = view.findViewById(R.id.button_chat1);
+        View layout1 = view.findViewById(R.id.layout1);
+        mChatViews.add(view1);
+        mLayoutFavorites.add(layout1);
+        view2 = view.findViewById(R.id.button_chat2);
+        View layout2 = view.findViewById(R.id.layout2);
+        mChatViews.add(view2);
+        View remove2 = view.findViewById(R.id.button_delete2);
+        mLayoutFavorites.add(layout2);
+        view3 = view.findViewById(R.id.button_chat3);
+        View layout3 = view.findViewById(R.id.layout3);
+        View remove3 = view.findViewById(R.id.button_delete3);
+        mLayoutFavorites.add(layout3);
+        mChatViews.add(view3);
+        Log.d("chatviews?", mChatViews.toString());
+        mRemoveFavorites.add(remove1);
+        mRemoveFavorites.add(remove2);
+        mRemoveFavorites.add(remove3);
 
+        final TextView textView = view.findViewById(R.id.text_home);
+        homeViewModel.getText().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                textView.setText(s);
+            }
+        });
+        homeViewModel.getFavoriteChats().observe(this, new Observer<Map<Integer, GroupContact>>() {
+            @Override
+            public void onChanged(@Nullable Map<Integer, GroupContact> favorites) {
+                Object[] keyArray = favorites.keySet().toArray();
+                Log.d("favorites observe triggered", favorites.toString());
+                int i;
+                for (i = 0; i < keyArray.length && i < mChatViews.size(); i++) {
+                    GroupContact current = favorites.get(keyArray[i]);
+                    //if the chat is a person to person chat, set the text to be the name of the chatmember
+                    if (current.getGroupname().equals("primary")) {
+                        mLayoutFavorites.get(i).setVisibility(View.VISIBLE);
+                        mChatViews.get(i).setText("Chat with: " + current.getContact().get(0).getUsername());
+                    } else {//otherwise set the text to be the groupname
+                        Log.d("should be a group chat", current.getGroupname());
+                        StringBuilder sb = new StringBuilder("Group chat: ");
+                        sb.append(current.getGroupname());
+                        mChatViews.get(i).setText(sb.toString());
+                        mLayoutFavorites.get(i).setVisibility(View.VISIBLE);
+                    }
+                    mChatIds[i] = current.getChatId();
+                }
+                for (;i < mChatViews.size(); i++) {
+                    Log.d("should hide", i+"");
+                    mLayoutFavorites.get(i).setVisibility(View.GONE);
+                }
+            }
+        });
         ConstraintLayout constraint = getActivity().findViewById(R.id.constraintLayout_home_location1);
         constraint.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -107,20 +173,83 @@ public class HomeFragment extends Fragment {
         //        TextView test = view.findViewById(R.id.textView_email);
 
         view1 = view.findViewById(R.id.button_chat1);
-        view1.setOnClickListener(b -> chatClicked(mChatIds.get(0)));
+        view1.setOnClickListener(b -> chatClicked(mChatIds[0], homeViewModel.getFavoriteChats().getValue().get(mChatIds[0]).getGroupname()));
 
 
         view2 = view.findViewById(R.id.button_chat2);
-        view2.setOnClickListener(b -> chatClicked(mChatIds.get(1)));
+        view2.setOnClickListener(b -> chatClicked(mChatIds[1], homeViewModel.getFavoriteChats().getValue().get(mChatIds[1]).getGroupname()));
 
 
         view3 = view.findViewById(R.id.button_chat3);
-        view3.setOnClickListener(b -> chatClicked(mChatIds.get(2)));
+        view3.setOnClickListener(b -> chatClicked(mChatIds[2], homeViewModel.getFavoriteChats().getValue().get(mChatIds[2]).getGroupname()));
+        remove1.setOnClickListener((b -> removeFavoriteClicked(mChatIds[0])));
+        remove2.setOnClickListener((b -> removeFavoriteClicked(mChatIds[1])));
+        remove3.setOnClickListener((b -> removeFavoriteClicked(mChatIds[2])));
+
+    }
+    private void removeFavoriteClicked(int chatid) {
+        Log.d("remove a favorite", chatid+"");
+        Map<Integer, GroupContact> currentFavoriteChats = homeViewModel.getFavoriteChats().getValue();
+        if(currentFavoriteChats != null && currentFavoriteChats.keySet().size() == 0) {
+            Toast toast = Toast.makeText(getActivity().getBaseContext(), "No favorites",
+                    Toast.LENGTH_LONG);
+            View view = toast.getView();
+            view.setBackgroundResource(R.drawable.customborder_greypurple);
+            toast.show();
+            return;
+        }
+        try {
+            Log.d("remove a favorite", chatid+"");
+            JSONObject req = new JSONObject();
+            req.put("chatid", chatid);
+            req.put("email", mEmail);
+            String url = new Uri.Builder()
+                    .scheme("https")
+                    .appendPath(getString(R.string.ep_base_url))
+                    .appendPath(getString(R.string.ep_messaging_base))
+                    .appendPath(getString(R.string.ep_messaging_removefavorite))
+                    .build()
+                    .toString();
+            new SendPostAsyncTask.Builder(url, req).
+                    addHeaderField("authorization", mJwToken).
+                    onPostExecute(this::handleRemoveFavoritesOnPost).build().execute();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void displayMessage(final Message theMessage) {
+        final Bundle args = new Bundle();
+    }
+
+    private void handleRemoveFavoritesOnPost(String result) {
+        try {
+            //This is the result from the web service
+            JSONObject res = new JSONObject(result);
+            Log.d("removed?", res.toString());
+            if(res.has(getString(R.string.keys_json_success))  && res.getBoolean(getString(R.string.keys_json_success))) {
+                Toast toast = Toast.makeText(getActivity().getBaseContext(), R.string.toast_chat_favoriteremoved,
+                        Toast.LENGTH_LONG);
+                View view = toast.getView();
+                view.setBackgroundResource(R.drawable.customborder_greypurple);
+                toast.show();
+                homeViewModel.removeFavorite(res.getInt("chatid"));
+            } else if (res.has(getString(R.string.keys_json_success))) {
+                Log.d("bummer man", res.getJSONObject("error").toString());
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    private void chatClicked(Integer integer) {
+    private void chatClicked(int chatid, String chatName) {
+        MobileNavigationDirections.ActionGlobalNavChat directions
+                = ChatViewFragmentDirections.actionGlobalNavChat().setChatid(chatid)
+                .setJwt(mJwToken).setUsername(((HomeActivity)getActivity()).getmUsername()).setChatname(chatName);
 
+        Navigation.findNavController(mView).navigate(directions);
     }
 
     //fills in weather panel with current weather
@@ -128,6 +257,7 @@ public class HomeFragment extends Fragment {
     public void onStart() {
         super.onStart();
         new CurrentWeatherTask().execute();
+        homeViewModel.loadFavorites();
         Log.e("onStart", "calling onStart");
     }
 
@@ -322,48 +452,5 @@ public class HomeFragment extends Fragment {
                     .navigate(R.id.action_global_viewWeatherFragment, args);
         }
 
-    }
-
-
-    /**
-     * Method to load chat history
-     */
-    private void loadRecentChatHistory() {
-        String getUrl = new Uri.Builder()
-                .scheme("https")
-                .appendPath(getString(R.string.ep_base_url))
-                .appendPath(getString(R.string.ep_messaging_base))
-                .appendPath(getString(R.string.ep_home_getfavorite))
-                .build()
-                .toString();
-        new GetAsyncTask.Builder(getUrl).addHeaderField("email", mEmail)
-                .addHeaderField("authorization", mJwToken)
-                .onCancelled(error -> Log.e("an error", error))
-                .onPostExecute(this::endOfLoadChatTask).build().execute();
-//        Log.d("TESTING MESSAGE:", mMessage.toString());
-    }
-
-    private void endOfLoadChatTask(final String result) {
-        try {
-            JSONObject res = new JSONObject(result);
-            if (res.has(getString(R.string.keys_json_success))
-                    && !res.getBoolean(getString(R.string.keys_json_success))) {
-            } else {
-//                JSONArray chats = (JSONArray) res.get(getString(R.string.keys_json_messages));
-                JSONArray details = (JSONArray) res.get("details");
-                for (int i = 0; i < details.length(); i++) {
-                    JSONObject temp = (JSONObject) details.get(i);
-                    String tempName = temp.getString("chatname");
-                    int tempChatId = temp.getInt("chatid");
-                    mNames.add(tempName);
-                    mChatIds.add(tempChatId);
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-
-            Log.d("TESTING Names:", mNames.toString());
-            Log.d("TESTING Chat ID:", mChatIds.toString());
-        }
     }
 }

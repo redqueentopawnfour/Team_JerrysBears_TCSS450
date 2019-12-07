@@ -34,10 +34,12 @@
 
     <ImageView
         android:id="@+id/image_home_bears"
-        android:layout_width="170dp"
-        android:layout_height="158dp"
-        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/bears_color_image2_transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,12 +102,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/layout1"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/customborder"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -113,61 +116,96 @@
 
         <Button
             android:id="@+id/button_chat1"
-            android:layout_width="360dp"
+            android:layout_width="wrap_content"
             android:layout_height="54dp"
+            android:layout_weight="1"
             android:background="@color/colorPrimaryAlpha"
-            android:textAllCaps="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.313"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:textAllCaps="false" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageButton
+            android:id="@+id/button_delete1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorPrimaryAlpha"
+            android:visibility="visible"
+            app:srcCompat="@drawable/ic_reject_red_24dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/layout2"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"
         android:background="@drawable/customborder"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout1">
 
         <Button
             android:id="@+id/button_chat2"
-            android:layout_width="360dp"
-            android:layout_height="54dp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
             android:background="@color/colorPrimaryAlpha"
-            android:textAllCaps="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.313"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textAllCaps="false" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageButton
+            android:id="@+id/button_delete2"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorPrimaryAlpha"
+            android:visibility="visible"
+            app:srcCompat="@drawable/ic_reject_red_24dp" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/layout3"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/customborder"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/layout2">
 
         <Button
             android:id="@+id/button_chat3"
-            android:layout_width="360dp"
+            android:layout_width="wrap_content"
             android:layout_height="54dp"
+            android:layout_weight="1"
             android:background="@color/colorPrimaryAlpha"
-            android:textAllCaps="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.313"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textAllCaps="false" />
+        <ImageButton
+            android:id="@+id/button_delete3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/colorPrimaryAlpha"
+            android:visibility="visible"
+            app:srcCompat="@drawable/ic_reject_red_24dp" />
+    </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:gravity="center_horizontal"
+        android:text="@string/text_home_favorite"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/layout1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_home_location1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -114,7 +114,6 @@ public class GroupContactFragment extends Fragment {
         mGroupNameInput = view.findViewById(R.id.editText_createGroup);
         mCreateChat.setOnClickListener(b -> createClicked());
         viewNoContacts = view.findViewById(R.id.layout_groupcontacts_noconnections);
-        Log.d("the contacts on load groupcontact", Arrays.deepToString(mContacts.toArray()));
         if (recyclerView != null) {
             if (mContacts != null) {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));

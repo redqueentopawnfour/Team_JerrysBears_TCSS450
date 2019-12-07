@@ -22,12 +22,12 @@
 
             <TextView
                 android:id="@+id/text_groupchat_username"
-                android:layout_width="211dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginEnd="8dp"
-                android:layout_weight="0.5"
+                android:layout_weight="1"
                 android:drawablePadding="5dp"
                 android:maxLines="10"
                 android:paddingTop="10dp"
@@ -44,9 +44,10 @@
 
             <Button
                 android:id="@+id/button_leavegroup"
-                android:layout_width="1dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.5"
+                android:layout_marginEnd="16dp"
+                android:layout_weight="0.1"
                 android:background="@color/leaveGroup"
                 android:text="@string/leaveGroup"
                 android:textColor="@color/text_leave" />

@@ -8,8 +8,12 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.function.Function;
+
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
 
 /**
  * Implemented AsyncTask that makes a Get call to a web service.  Builds the Task
@@ -26,9 +30,10 @@ import java.util.function.Consumer;
  * Note that external cancellation will cause the same action to execute.
  *
  * Created by Charles Bryan on 3/22/2018.
- *
+ * Modified by Sterling Quinn
  * @author Charles Bryan
- * @version 1 OCT 2018
+ * @author Sterling Quinn
+ * @version 6 DEC 2019
  */
 public class GetAsyncTask extends AsyncTask<Void, String, String> {
 
@@ -101,7 +106,6 @@ public class GetAsyncTask extends AsyncTask<Void, String, String> {
             onPost = val;
             return this;
         }
-
         /**
          * Set the action to perform during AsyncTask onCancelled. The AsyncTask method cancel() is
          * called in doInBackGround during exception handling. Use this action to respond to

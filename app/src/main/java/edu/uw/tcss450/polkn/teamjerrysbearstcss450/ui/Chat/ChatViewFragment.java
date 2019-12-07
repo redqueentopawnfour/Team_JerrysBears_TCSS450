@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,18 +24,25 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.HomeActivity;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.R;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupContact.GroupContact;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.Message.Message;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.home.HomeViewModel;
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.home.MyHomeViewModelFactory;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.GetAsyncTask;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.PushReceiver;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
@@ -47,6 +55,8 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
  */
 public class ChatViewFragment extends Fragment {
 
+
+    HomeViewModel homeViewModel;
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
@@ -74,6 +84,7 @@ public class ChatViewFragment extends Fragment {
 
     private String mChatname;
     private View mDisplayButton;
+    private View mFavorite;
 
 
     /**
@@ -95,7 +106,8 @@ public class ChatViewFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        homeViewModel = ViewModelProviders.of(getActivity(),
+                new MyHomeViewModelFactory(mEmail,  mJwToken)).get(HomeViewModel.class);
         ChatViewFragmentArgs args = ChatViewFragmentArgs.fromBundle(getArguments());
         mUsername = args.getUsername();
 
@@ -131,9 +143,12 @@ public class ChatViewFragment extends Fragment {
         ((HomeActivity)getActivity()).hideAddUser();
         ((HomeActivity)getActivity()).hideAddGroup();
         ((HomeActivity)getActivity()).showDisplayMember();
-
+        ((HomeActivity) getActivity()).showFavorite();
         mDisplayButton = getActivity().findViewById(R.id.action_display);
         mDisplayButton.setOnClickListener(b -> displayClicked(mNames));
+        mFavorite = getActivity().findViewById(R.id.action_addFavorite);
+
+        mFavorite.setOnClickListener(b -> favoriteClicked());
         return view;
     }
 
@@ -143,13 +158,69 @@ public class ChatViewFragment extends Fragment {
                 new ArrayList<String>(theNames));
         Navigation.findNavController(getView()).navigate(R.id.action_nav_chat_to_contactDisplay,args); //args
 
+
+
     }
 
+    private void favoriteClicked() {
+        Map<Integer, GroupContact> currentFavoriteChats = homeViewModel.getFavoriteChats().getValue();
+        if(currentFavoriteChats != null && currentFavoriteChats.keySet().size() > 3) {
+            Toast toast = Toast.makeText(getActivity().getBaseContext(), getString(R.string.toast_chat_favoritesfull),
+                    Toast.LENGTH_LONG);
+            View view = toast.getView();
+            view.setBackgroundResource(R.drawable.customborder_greypurple);
+            toast.show();
+            return;
+        }
+        try {
+            JSONObject req = new JSONObject();
+            req.put("chatid", mChatId);
+            req.put("email", mEmail);
+            String url = new Uri.Builder()
+                    .scheme("https")
+                    .appendPath(getString(R.string.ep_base_url))
+                    .appendPath(getString(R.string.ep_messaging_base))
+                    .appendPath(getString(R.string.ep_messaging_addfavorite))
+                    .build()
+                    .toString();
+            new SendPostAsyncTask.Builder(url, req).
+                    addHeaderField("authorization", mJwToken).
+                    onPostExecute(this::handleFavoritesOnPost).build().execute();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void displayMessage(final Message theMessage) {
         final Bundle args = new Bundle();
     }
 
+    private void handleFavoritesOnPost(String result) {
+        try {
+            //This is the result from the web service
+            JSONObject res = new JSONObject(result);
+
+            if(res.has(getString(R.string.keys_json_success))  && res.getBoolean(getString(R.string.keys_json_success))) {
+                    Toast toast = Toast.makeText(getActivity().getBaseContext(), R.string.toast_chat_favorited,
+                            Toast.LENGTH_LONG);
+                    View view = toast.getView();
+                    view.setBackgroundResource(R.drawable.customborder_greypurple);
+                    toast.show();
+                homeViewModel.loadFavorites();
+            } else if (res.has(getString(R.string.keys_json_success))) {
+                Log.d("bummer man", res.getJSONObject("error").toString());
+                Toast toast = Toast.makeText(getActivity().getBaseContext(), getString(R.string.toast_chat_alreadyfavorite),
+                        Toast.LENGTH_LONG);
+                View view = toast.getView();
+                view.setBackgroundResource(R.drawable.customborder_greypurple);
+                toast.show();
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -239,30 +310,6 @@ public class ChatViewFragment extends Fragment {
      * A BroadcastReceiver that listens for messages sent from PushReceiver
      */
     private class PushMessageReceiver extends BroadcastReceiver {
-//
-//        @Override
-//        public void onReceive(Context context, Intent intent) {
-//            if(intent.hasExtra("SENDER") && intent.hasExtra("MESSAGE") && intent.hasExtra("TYPE")) {
-//                String type = intent.getStringExtra("TYPE");
-//                if (type.equals("msg")) {
-//                    String sender = intent.getStringExtra("SENDER");
-//                    String messageText = intent.getStringExtra("MESSAGE");
-//                    int fromChatId = intent.getIntExtra("CHATID", 0);
-//                    Log.d("from chat id", fromChatId + "");
-//                    Log.d("get  chat id", mChatId + "");
-//                    mMessage.add(new Message("HELLO", "MESSAGE"));
-//                    final RecyclerView.Adapter adapter = recyclerView.getAdapter();
-//                    getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
-//                    //it can load the latest message after sending
-////                if (fromChatId != 0 && fromChatId == mChatId) {
-////                    mMessageOutputTextView.append(sender + ":" + messageText);
-////                    mMessageOutputTextView.append(System.lineSeparator());
-////                }
-//                }
-//                recyclerView.scrollToPosition(mMessage.size() - 1);
-//            }
-//        }
-//    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -276,11 +323,6 @@ public class ChatViewFragment extends Fragment {
             mMessage.add(new Message(messageText,sender));
             final RecyclerView.Adapter adapter = recyclerView.getAdapter();
             getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
-            //it can load the latest message after sending
-//                if (fromChatId != 0 && fromChatId == mChatId) {
-//                    mMessageOutputTextView.append(sender + ":" + messageText);
-//                    mMessageOutputTextView.append(System.lineSeparator());
-//                }
         }
         recyclerView.scrollToPosition(mMessage.size()-1);
 
@@ -351,26 +393,6 @@ public class ChatViewFragment extends Fragment {
 
     }
 
-//    private void endOfLoadChatTask(final String result) {
-//        try {
-//            JSONObject res = new JSONObject(result);
-//            if (res.has(getString(R.string.keys_json_success))
-//                    && !res.getBoolean(getString(R.string.keys_json_success))) {
-//            } else {
-//                JSONArray messages = (JSONArray) res.get(getString(R.string.keys_json_messages));
-//                for(int i = 0; i < messages.length(); i++) {
-//                    JSONObject message =  (JSONObject) messages.get(i);
-//                    mMessageOutputTextView.append(message
-//                            .get(getString(R.string.keys_json_contact_username)) + ":"
-//                            + message.get(getString(R.string.keys_json_message)));
-//                    mMessageOutputTextView.append(System.lineSeparator());
-//                }
-//            }
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
 
 
     @Override
@@ -383,6 +405,7 @@ public class ChatViewFragment extends Fragment {
         getActivity().registerReceiver(mPushMessageReciever, iFilter);
         Log.i("Resume", "Resume happened");
         loadChatHistory();
+
 
 //        final RecyclerView.Adapter adapter = recyclerView.getAdapter();
 //        getActivity().runOnUiThread(() -> adapter.notifyDataSetChanged());
@@ -398,7 +421,7 @@ public class ChatViewFragment extends Fragment {
         }
         Log.i("Is this happening", "happened");
         ((HomeActivity)getActivity()).hideDisplayMember();
-
+        ((HomeActivity) getActivity()).hideFavorite();
     }
 
     /**
