@@ -137,10 +137,10 @@ public class GroupChatFragment extends Fragment {
         ((HomeActivity) getActivity()).hideViewProfile();
         ((HomeActivity) getActivity()).hideChatIcon();
         if (mContacts.size() == 0) {
-            ((HomeActivity) getActivity()).showAddGroup();
+            ((HomeActivity) getActivity()).hideAddGroup();
         }
         else {
-            ((HomeActivity) getActivity()).hideAddGroup();
+            ((HomeActivity) getActivity()).showAddGroup();
         }
 
         return view;
@@ -155,14 +155,24 @@ public class GroupChatFragment extends Fragment {
         IntentFilter iFilter = new IntentFilter(PushReceiver.RECEIVED_NEW_MESSAGE);
         getActivity().registerReceiver(mPushMessageReciever,iFilter);
         loadGroupHistory();
+
+        GroupChatFragmentArgs args = GroupChatFragmentArgs.fromBundle(getArguments());
+        myGroupContacts = new ArrayList<>();
+        mContacts = new ArrayList<>();
+        Contact[] temp = args.getContact();
+        if (args.getContact() != null){
+            for (int i = 0; i<temp.length; i++) {
+                mContacts.add(temp[i]);
+            }
+        }
         ((HomeActivity) getActivity()).hideAddUser();
         ((HomeActivity) getActivity()).hideViewProfile();
         ((HomeActivity) getActivity()).hideChatIcon();
         if (mContacts.size() == 0) {
-            ((HomeActivity) getActivity()).showAddGroup();
+            ((HomeActivity) getActivity()).hideAddGroup();
         }
         else {
-            ((HomeActivity) getActivity()).hideAddGroup();
+            ((HomeActivity) getActivity()).showAddGroup();
         }
     }
 

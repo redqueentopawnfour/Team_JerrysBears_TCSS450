@@ -12,13 +12,16 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -33,42 +36,22 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.drawerlayout.widget.DrawerLayout;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.view.Menu;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.function.Consumer;
 
+import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatMessageNotification;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.ChatViewFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Chat.GroupChat.GroupChatFragmentDirections;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragment;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ContactNotification;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.ViewProfileFragmentDirections;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Connection.contact.Contact;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherFragment;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.ui.Weather.WeatherObject;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.PushReceiver;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
-import edu.uw.tcss450.polkn.teamjerrysbearstcss450.model.Credentials;
-
 import me.pushy.sdk.Pushy;
 
 public class HomeActivity extends AppCompatActivity {
@@ -951,9 +934,10 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController =
                 Navigation.findNavController(this, R.id.nav_host_fragment);
         NavDestination nd = navController.getCurrentDestination();
-        if (nd.getId() == R.id.nav_viewProfileFragment || nd.getId() == R.id.nav_addContactFragment) {
+        if (nd.getId() == R.id.nav_viewProfileFragment || nd.getId() == R.id.nav_addContactFragment|| nd.getId() == R.id.nav_chat) {
             reloadContactList();                                                    // NP 11/23/2019 -ONLY show View Profile and Add Contact icons in Contacts so that this Back press works as expected
         }                                                                           // , otherwise contact list doesn't load properly on back pressed
+
 
         super.onBackPressed();  // optional depending on your needs
     }
