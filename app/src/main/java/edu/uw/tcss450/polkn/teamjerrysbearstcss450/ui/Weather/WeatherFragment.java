@@ -72,7 +72,7 @@ public class WeatherFragment extends Fragment {
         String formattedDate = df.format(c);
 
 
-        ((HomeActivity) getActivity()).setActionBarTitle("Weather " + formattedDate);
+        ((HomeActivity) getActivity()).setActionBarTitle("Current Weather " + formattedDate);
         //final TextView textView = root.findViewById(R.id.somethingelse);
 //        weatherViewModel.getText().observe(this, new Observer<String>() {
 //            @Override
@@ -729,7 +729,7 @@ public class WeatherFragment extends Fragment {
         mNextLocation++;
 
         if (mNextLocation > 5)
-
+            // can only display 5 locations at a time
             return;
 
         String tempName, locationName, descriptionName, backgroundName, idName;
@@ -771,31 +771,6 @@ public class WeatherFragment extends Fragment {
         setCorrectIcon(image, theWeather);
         image.setVisibility(View.VISIBLE);
 
-        /*
-                String tempName = getString(R.string.text_forecast_temp_notnumbered);
-        String dateName = getString(R.string.text_forecast_date_notnumbered);
-        String deetsName = getString(R.string.text_forecast_description_notnumbered);
-        int id;
-
-        // Iterate through the TextViews by finding then with that similar beginning + their index number
-        // Set the temperature/ description/ date for each of the WeatherObjects we're writing to the screen
-        for (int i = 0; i <= 9 ; i++) {
-            String tempNameWithI = tempName + (i+1);
-            id = getResources().getIdentifier(tempNameWithI, "id", MainActivity.PACKAGE_NAME);
-            TextView temp = getActivity().findViewById(id);
-            temp.setText(weathers[i].getTemp() + getString(R.string.weather_degrees_symbol));
-
-            String dateNameWithI = dateName + (i+1);
-            id = getResources().getIdentifier(dateNameWithI, "id", MainActivity.PACKAGE_NAME);
-            TextView date = getActivity().findViewById(id);
-            date.setText(weathers[i].getDate());
-
-            String deetsNameWithI = deetsName + (i+1);
-            id = getResources().getIdentifier(deetsNameWithI, "id", MainActivity.PACKAGE_NAME);
-            TextView deets = getActivity().findViewById(id);
-            deets.setText(weathers[i].getDesciption());
-        }
-         */
     }
 
     public static void setCorrectIcon(ImageView image, WeatherObject theWeather) {
@@ -819,32 +794,6 @@ public class WeatherFragment extends Fragment {
             image.setImageResource(R.drawable.bears_color_image_transparent);
         }
     }
-
-/*
- @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Button b = view.findViewById(R.id.button_login_login);
-        b.setOnClickListener(butt -> onLoginClicked());
-        b = view.findViewById(R.id.button_login_register);
-        b.setOnClickListener(butt -> onRegisterClicked());
-    }
-
-
-    private void onLoginClicked() {
-        View v = getView();
-
-        EditText email = v.findViewById(R.id.editText_login_email);
-        EditText pw = v.findViewById(R.id.editText_login_pw);
-        if (MainActivity.validateEmail(email) && MainActivity.validatePassword(pw)) {
-            doLogin(new Credentials.Builder(
-                    email.getText().toString(), pw.getText().toString()
-            ).build());
-        }
-    }
-
- */
-
 
 
 
