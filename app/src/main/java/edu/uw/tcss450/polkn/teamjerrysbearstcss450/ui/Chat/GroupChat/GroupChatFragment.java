@@ -158,12 +158,15 @@ public class GroupChatFragment extends Fragment {
         ((HomeActivity) getActivity()).hideAddUser();
         ((HomeActivity) getActivity()).hideViewProfile();
         ((HomeActivity) getActivity()).hideChatIcon();
-        if (mContacts.size() == 0) {
+
+        ((HomeActivity)getActivity()).showAddGroup();
+        /*
+        if (mContacts.size() != 0) {
             ((HomeActivity) getActivity()).showAddGroup();
         }
         else {
             ((HomeActivity) getActivity()).hideAddGroup();
-        }
+        }*/
     }
 
     @Override

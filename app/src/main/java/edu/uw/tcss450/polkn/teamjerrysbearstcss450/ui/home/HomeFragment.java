@@ -135,14 +135,18 @@ public class HomeFragment extends Fragment {
         protected WeatherObject doInBackground(String... strings) {
             Log.e("CurrentWeatherTask", "CurrentWeatherTask");
 
+            double latdouble = ((HomeActivity) getActivity()).getLatitude();
+            double londouble = ((HomeActivity) getActivity()).getLonitude();
+
             Uri uri_weather = new Uri.Builder()
                     .scheme("https")
                     .appendPath(getString(R.string.ep_base_url))
                     .appendPath(getString(R.string.ep_weather))
                     .appendPath(getString(R.string.ep_weather_params))
-                    .appendQueryParameter("lat", "47.2446")
-                    .appendQueryParameter("lon", "-122.4376")
+                    .appendQueryParameter("lat", ""+latdouble)
+                    .appendQueryParameter("lon", ""+londouble)
                     .build();
+
 
             String resultString = "";
             HttpURLConnection urlConnection = null;
@@ -181,15 +185,24 @@ public class HomeFragment extends Fragment {
                     JSONObject detailsObject = (JSONObject) detailsArray.get(0); // lol will this casting even work?
                     mainDescript = detailsObject.getString(getString(R.string.keys_json_weather_main));
                 }
+                boolean countryCheck = false;
                 if (weather.has("sys")) {
                     JSONObject sys = weather.getJSONObject("sys");
-                    country = sys.getString("country");
+                    if (sys.has("country")) {
+                        country = sys.getString("country");
+                        countryCheck = true;
+                    }
                 }
 
                 location = weather.optString(getString(R.string.keys_json_weather_city));
 
-                mWeather = new WeatherObject.Builder(
-                        temp, lat, lon).addDescription(mainDescript).addLocation(location + ", " + country).build();
+                if (countryCheck) {
+                    mWeather = new WeatherObject.Builder(
+                            temp, lat, lon).addDescription(mainDescript).addLocation(location + ", " + country).build();
+                } else {
+                    mWeather = new WeatherObject.Builder(
+                            temp, lat, lon).addDescription(mainDescript).addLocation(location).build();
+                }
                 return mWeather;
 
             } catch (JSONException e) {

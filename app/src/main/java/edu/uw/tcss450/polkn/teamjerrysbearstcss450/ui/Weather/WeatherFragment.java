@@ -154,13 +154,16 @@ public class WeatherFragment extends Fragment {
         // jk just get it now .. add this asynctask to the sidebar when you click weather fragment tho
 
 
+        double latdouble = ((HomeActivity) getActivity()).getLatitude();
+        double londouble = ((HomeActivity) getActivity()).getLonitude();
+
         Uri uri_weather = new Uri.Builder()
                 .scheme("https")
                 .appendPath(getString(R.string.ep_base_url))
                 .appendPath(getString(R.string.ep_weather))
                 .appendPath(getString(R.string.ep_weather_params))
-                .appendQueryParameter("lat", "47.2446")
-                .appendQueryParameter("lon", "-122.4376")
+                .appendQueryParameter("lat", ""+latdouble)
+                .appendQueryParameter("lon", ""+londouble)
                 .build();
 
         new CurrentWeatherTask().execute(uri_weather.toString());
