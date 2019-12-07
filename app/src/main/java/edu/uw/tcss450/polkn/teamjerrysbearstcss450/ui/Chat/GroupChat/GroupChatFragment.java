@@ -155,6 +155,15 @@ public class GroupChatFragment extends Fragment {
         IntentFilter iFilter = new IntentFilter(PushReceiver.RECEIVED_NEW_MESSAGE);
         getActivity().registerReceiver(mPushMessageReciever,iFilter);
         loadGroupHistory();
+        ((HomeActivity) getActivity()).hideAddUser();
+        ((HomeActivity) getActivity()).hideViewProfile();
+        ((HomeActivity) getActivity()).hideChatIcon();
+        if (mContacts.size() == 0) {
+            ((HomeActivity) getActivity()).showAddGroup();
+        }
+        else {
+            ((HomeActivity) getActivity()).hideAddGroup();
+        }
     }
 
     @Override

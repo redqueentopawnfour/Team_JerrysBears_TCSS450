@@ -36,6 +36,7 @@
     <string name="ep_weather">weather</string>
     <string name="ep_weather_params">weatherParams</string>
     <string name="ep_weather_forecast">weatherForecast</string>
+    <string name="ep_weather_forecast24">weatherForecast24</string>
     <string name="ep_weather_getCordsFromZipCode">zipCode</string>
     <string name="ep_weather_getlocations">getlocations</string>
     <string name="ep_weather_addlocation">addlocation</string>

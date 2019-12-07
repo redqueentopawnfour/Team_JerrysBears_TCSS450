@@ -69,6 +69,7 @@ public class HomeFragment extends Fragment {
     private List<View> mRemoveFavorites;
     private View mView;
 
+    private TextView mFavoritesTitle;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -86,24 +87,13 @@ public class HomeFragment extends Fragment {
 //        homeViewModel =
 //                ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-
         return root;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-//        TextView test = view.findViewById(R.id.textView_email);
-
-//        HomeActivityArgs args = HomeActivityArgs.fromBundle(getArguments());
-//        Credentials credentials = args.getCredentials();
-//        ((TextView) getActivity().findViewById(R.id.text_email)).
-//                setText(credentials.getEmail());
-//        mJwToken = args.getJwt();
-//        mEmail = credentials.getEmail();
-//        Log.d("JWT", mJwToken);
-//        Log.d("Email", mEmail);
+        mFavoritesTitle = view.findViewById(R.id.textView_home_favorites);
         mView = view;
         mChatIds = new int[3];
         mChatViews = new ArrayList<TextView>();
@@ -143,6 +133,7 @@ public class HomeFragment extends Fragment {
                 Log.d("favorites observe triggered", favorites.toString());
                 int i;
                 for (i = 0; i < keyArray.length && i < mChatViews.size(); i++) {
+                    mFavoritesTitle.setVisibility(View.VISIBLE);
                     GroupContact current = favorites.get(keyArray[i]);
                     //if the chat is a person to person chat, set the text to be the name of the chatmember
                     if (current.getGroupname().equals("primary")) {
@@ -158,6 +149,8 @@ public class HomeFragment extends Fragment {
                     mChatIds[i] = current.getChatId();
                 }
                 for (;i < mChatViews.size(); i++) {
+                    if (i == 0)
+                        mFavoritesTitle.setVisibility(View.GONE);
                     Log.d("should hide", i+"");
                     mLayoutFavorites.get(i).setVisibility(View.GONE);
                 }
@@ -265,13 +258,16 @@ public class HomeFragment extends Fragment {
         protected WeatherObject doInBackground(String... strings) {
             Log.e("CurrentWeatherTask", "CurrentWeatherTask");
 
+            double latdouble = ((HomeActivity) getActivity()).getLatitude();
+            double londouble = ((HomeActivity) getActivity()).getLonitude();
+
             Uri uri_weather = new Uri.Builder()
                     .scheme("https")
                     .appendPath(getString(R.string.ep_base_url))
                     .appendPath(getString(R.string.ep_weather))
                     .appendPath(getString(R.string.ep_weather_params))
-                    .appendQueryParameter("lat", "47.2446")
-                    .appendQueryParameter("lon", "-122.4376")
+                    .appendQueryParameter("lat", ""+latdouble)
+                    .appendQueryParameter("lon", ""+londouble)
                     .build();
 
             String resultString = "";

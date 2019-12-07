@@ -52,6 +52,9 @@
     <string name="menu_contacts">Contacts</string>
     <string name="menu_chat">Chat</string>
     <string name="menu_weather">Weather</string>
+    <string name="menu_weather_current">Current Weather</string>
+    <string name="menu_weather_forecast">10 Day Forecast</string>
+    <string name="menu_weather_forecast24">24 Hour Forecast</string>
     <string name="menu_share">Share</string>
     <string name="menu_notification">Notification</string>
     <string name="menu_groupchat">Group Chat</string>

@@ -55,7 +55,7 @@ public class WeatherFragment extends Fragment {
     private int mNextLocation = 1;
     private ArrayList<String[]> mSavedLocations = new ArrayList<>();
     private ArrayList<WeatherObject> mCurrentLocations = new ArrayList<>();
-    private AsyncTask mForecastWeatherTask = null;
+//    private AsyncTask mForecastWeatherTask = null;
 
     private WeatherViewModel weatherViewModel;
 
@@ -72,7 +72,7 @@ public class WeatherFragment extends Fragment {
         String formattedDate = df.format(c);
 
 
-        ((HomeActivity) getActivity()).setActionBarTitle("Weather " + formattedDate);
+        ((HomeActivity) getActivity()).setActionBarTitle("Current Weather " + formattedDate);
         //final TextView textView = root.findViewById(R.id.somethingelse);
 //        weatherViewModel.getText().observe(this, new Observer<String>() {
 //            @Override
@@ -125,20 +125,6 @@ public class WeatherFragment extends Fragment {
                 new ForecastWeatherTask().execute(mWeather);
             }
         });
-
-//        // Handles deleting weather locations///////////////////////////////////////////////////////////////////////
-//        Button b = view.findViewById(R.id.button_current_save1);
-//        b.setOnClickListener( new View.OnClickListener() {
-//            public void onClick(View v ) {
-//                // endpoint needs to addlocation with lat/long
-//
-//            }
-//        });
-        /*
-        Button b = view.findViewById(R.id.button_login_login);
-        b.setOnClickListener(butt -> onLoginClicked());
-        b = view.findViewById(R.id.button_login_register);
-        b.setOnClickListener(butt -> onRegisterClicked());*/
     }
 
 
@@ -153,14 +139,19 @@ public class WeatherFragment extends Fragment {
         // Grab our param WeatherObject and display it
         // jk just get it now .. add this asynctask to the sidebar when you click weather fragment tho
 
+        double latdouble = ((HomeActivity) getActivity()).getLatitude();
+        double londouble = ((HomeActivity) getActivity()).getLonitude();
+
+        Log.e("current lat", ""+latdouble);
+        Log.d("current lon", ""+londouble);
 
         Uri uri_weather = new Uri.Builder()
                 .scheme("https")
                 .appendPath(getString(R.string.ep_base_url))
                 .appendPath(getString(R.string.ep_weather))
                 .appendPath(getString(R.string.ep_weather_params))
-                .appendQueryParameter("lat", "47.2446")
-                .appendQueryParameter("lon", "-122.4376")
+                .appendQueryParameter("lat", ""+latdouble)
+                .appendQueryParameter("lon", ""+londouble)
                 .build();
 
         new CurrentWeatherTask().execute(uri_weather.toString());
@@ -449,7 +440,6 @@ public class WeatherFragment extends Fragment {
                     weathers[i] = weather;
                 }
 
-
                 return weathers;
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -463,9 +453,9 @@ public class WeatherFragment extends Fragment {
             //updateInfo(result);
             final Bundle args = new Bundle();
             args.putSerializable("weather", result);
-            mForecastWeatherTask = null; // reset this holder for the currently running task.. probably not needed.
+//            mForecastWeatherTask = null; // reset this holder for the currently running task.. probably not needed.
             Navigation.findNavController(getView())
-                    .navigate(R.id.action_nav_weather_to_viewWeatherFragment, args);
+                    .navigate(R.id.action_global_viewWeatherFragment, args);
         }
 
 //        private void updateIcon(ImageView imageView) {
@@ -730,6 +720,7 @@ public class WeatherFragment extends Fragment {
         mNextLocation++;
 
         if (mNextLocation > 5)
+            // can only display 5 locations at a time
             return;
 
         String tempName, locationName, descriptionName, backgroundName, idName;
@@ -767,35 +758,10 @@ public class WeatherFragment extends Fragment {
         desciption.setVisibility((View.VISIBLE));
         location.setVisibility(View.VISIBLE);
         background.setVisibility(View.VISIBLE);
+
         setCorrectIcon(image, theWeather);
-//        image.setImageResource(R.drawable.bear_snow_icon);
         image.setVisibility(View.VISIBLE);
 
-        /*
-                String tempName = getString(R.string.text_forecast_temp_notnumbered);
-        String dateName = getString(R.string.text_forecast_date_notnumbered);
-        String deetsName = getString(R.string.text_forecast_description_notnumbered);
-        int id;
-
-        // Iterate through the TextViews by finding then with that similar beginning + their index number
-        // Set the temperature/ description/ date for each of the WeatherObjects we're writing to the screen
-        for (int i = 0; i <= 9 ; i++) {
-            String tempNameWithI = tempName + (i+1);
-            id = getResources().getIdentifier(tempNameWithI, "id", MainActivity.PACKAGE_NAME);
-            TextView temp = getActivity().findViewById(id);
-            temp.setText(weathers[i].getTemp() + getString(R.string.weather_degrees_symbol));
-
-            String dateNameWithI = dateName + (i+1);
-            id = getResources().getIdentifier(dateNameWithI, "id", MainActivity.PACKAGE_NAME);
-            TextView date = getActivity().findViewById(id);
-            date.setText(weathers[i].getDate());
-
-            String deetsNameWithI = deetsName + (i+1);
-            id = getResources().getIdentifier(deetsNameWithI, "id", MainActivity.PACKAGE_NAME);
-            TextView deets = getActivity().findViewById(id);
-            deets.setText(weathers[i].getDesciption());
-        }
-         */
     }
 
     public static void setCorrectIcon(ImageView image, WeatherObject theWeather) {
@@ -819,32 +785,6 @@ public class WeatherFragment extends Fragment {
             image.setImageResource(R.drawable.bears_color_image_transparent);
         }
     }
-
-/*
- @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Button b = view.findViewById(R.id.button_login_login);
-        b.setOnClickListener(butt -> onLoginClicked());
-        b = view.findViewById(R.id.button_login_register);
-        b.setOnClickListener(butt -> onRegisterClicked());
-    }
-
-
-    private void onLoginClicked() {
-        View v = getView();
-
-        EditText email = v.findViewById(R.id.editText_login_email);
-        EditText pw = v.findViewById(R.id.editText_login_pw);
-        if (MainActivity.validateEmail(email) && MainActivity.validatePassword(pw)) {
-            doLogin(new Credentials.Builder(
-                    email.getText().toString(), pw.getText().toString()
-            ).build());
-        }
-    }
-
- */
-
 
 
 

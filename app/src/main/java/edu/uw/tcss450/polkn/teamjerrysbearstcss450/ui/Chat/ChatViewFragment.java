@@ -48,20 +48,15 @@ import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.PushReceiver;
 import edu.uw.tcss450.polkn.teamjerrysbearstcss450.utils.SendPostAsyncTask;
 
 /**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {//@link OnListFragmentInteractionListener}
- * interface.
+ * The chat fragment, used for both group and single chats.
+ *
  */
 public class ChatViewFragment extends Fragment {
 
 
     HomeViewModel homeViewModel;
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
 
     private List<Message> mMessage;
     private List<String> mNames;
@@ -70,7 +65,6 @@ public class ChatViewFragment extends Fragment {
 
     private static final String CHAT_ID = "1";
 
-    private TextView mMessageOutputTextView;
     private EditText mMessageInputEditText;
 
     private PushMessageReceiver mPushMessageReciever;
@@ -435,7 +429,6 @@ public class ChatViewFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(Message item);
     }
 }
