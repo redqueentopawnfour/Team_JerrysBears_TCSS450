@@ -74,7 +74,7 @@ public class HomeActivity extends AppCompatActivity {
     private ContactNotification mContactNotification;
     private Contact[] mContacts;
 
-    private Location mLocation;
+    public Location mLocation;
 
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
@@ -110,8 +110,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mLocation = new Location("dummyprovider");
 
-        mLocation.setLatitude(20.3);
-        mLocation.setLongitude(52.6);
+        mLocation.setLatitude(47.2446);
+        mLocation.setLongitude(-122.4376);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

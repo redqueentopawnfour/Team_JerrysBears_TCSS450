@@ -198,5 +198,8 @@
     <action
         android:id="@+id/action_global_weatherForecast24Fragment"
         app:destination="@id/weatherForecast24Fragment" />
+    <action
+        android:id="@+id/action_global_contactDisplay"
+        app:destination="@id/contactDisplay" />
 
 </navigation>
