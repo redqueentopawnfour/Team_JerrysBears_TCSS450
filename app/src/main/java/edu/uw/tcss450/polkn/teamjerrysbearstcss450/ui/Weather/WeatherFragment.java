@@ -125,20 +125,6 @@ public class WeatherFragment extends Fragment {
                 new ForecastWeatherTask().execute(mWeather);
             }
         });
-
-//        // Handles deleting weather locations///////////////////////////////////////////////////////////////////////
-//        Button b = view.findViewById(R.id.button_current_save1);
-//        b.setOnClickListener( new View.OnClickListener() {
-//            public void onClick(View v ) {
-//                // endpoint needs to addlocation with lat/long
-//
-//            }
-//        });
-        /*
-        Button b = view.findViewById(R.id.button_login_login);
-        b.setOnClickListener(butt -> onLoginClicked());
-        b = view.findViewById(R.id.button_login_register);
-        b.setOnClickListener(butt -> onRegisterClicked());*/
     }
 
 
@@ -153,14 +139,19 @@ public class WeatherFragment extends Fragment {
         // Grab our param WeatherObject and display it
         // jk just get it now .. add this asynctask to the sidebar when you click weather fragment tho
 
+        double latdouble = ((HomeActivity) getActivity()).getLatitude();
+        double londouble = ((HomeActivity) getActivity()).getLonitude();
+
+        Log.e("current lat", ""+latdouble);
+        Log.d("current lon", ""+londouble);
 
         Uri uri_weather = new Uri.Builder()
                 .scheme("https")
                 .appendPath(getString(R.string.ep_base_url))
                 .appendPath(getString(R.string.ep_weather))
                 .appendPath(getString(R.string.ep_weather_params))
-                .appendQueryParameter("lat", "47.2446")
-                .appendQueryParameter("lon", "-122.4376")
+                .appendQueryParameter("lat", ""+latdouble)
+                .appendQueryParameter("lon", ""+londouble)
                 .build();
 
         new CurrentWeatherTask().execute(uri_weather.toString());
