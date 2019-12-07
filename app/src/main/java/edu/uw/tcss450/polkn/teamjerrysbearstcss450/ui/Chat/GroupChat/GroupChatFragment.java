@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -154,7 +155,6 @@ public class GroupChatFragment extends Fragment {
         }
         IntentFilter iFilter = new IntentFilter(PushReceiver.RECEIVED_NEW_MESSAGE);
         getActivity().registerReceiver(mPushMessageReciever,iFilter);
-        loadGroupHistory();
 
         GroupChatFragmentArgs args = GroupChatFragmentArgs.fromBundle(getArguments());
         myGroupContacts = new ArrayList<>();
@@ -165,6 +165,7 @@ public class GroupChatFragment extends Fragment {
                 mContacts.add(temp[i]);
             }
         }
+        loadGroupHistory();
         ((HomeActivity) getActivity()).hideAddUser();
         ((HomeActivity) getActivity()).hideViewProfile();
         ((HomeActivity) getActivity()).hideChatIcon();
